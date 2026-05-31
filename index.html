@@ -5,39 +5,315 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PJeyLabs - Software Development & Experimental Lab</title>
     <style>
-        body {
+        :root {
+            --bg-color: #12161a;
+            --card-bg: #1a2126;
+            --accent-green: #00ff88;
+            --text-main: #ffffff;
+            --text-muted: #8a99ad;
+        }
+
+        * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            background-color: #12161a; /* Dopasowane do ciemnego tła z grafiki */
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            min-height: 100vh;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        /* Nawigacja / Górne Menu */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: rgba(18, 22, 26, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0, 255, 136, 0.1);
+            z-index: 1000;
+            padding: 1rem 2rem;
+        }
+
+        nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
             align-items: center;
-            height: 100vh;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            overflow: hidden;
         }
-        .container {
+
+        .nav-logo {
+            font-weight: 700;
+            font-size: 1.2rem;
+            letter-spacing: 1px;
+            color: var(--text-main);
+            text-decoration: none;
+        }
+
+        .nav-logo span {
+            color: var(--accent-green);
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: color 0.3s ease, border-bottom 0.3s ease;
+            padding: 0.5rem 0;
+            border-bottom: 2px solid transparent;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: var(--accent-green);
+            border-bottom: 2px solid var(--accent-green);
+        }
+
+        /* Główny Kontener */
+        main {
+            margin-top: 80px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        section {
+            padding: 6rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+            min-height: calc(100vh - 80px);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        /* Sekcja HOME */
+        #home {
             text-align: center;
-            max-width: 90%;
+            align-items: center;
         }
-        .logo {
-            max-width: 600px; /* Maksymalna szerokość logo na ekranie */
+
+        .main-logo-img {
+            max-width: 550px;
             width: 100%;
             height: auto;
-            animation: fadeIn 1.5s ease-in-out;
+            animation: fadeInLogo 1.5s ease-out;
         }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
+
+        @keyframes fadeInLogo {
+            from { opacity: 0; transform: scale(0.98); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        /* Stylistyka Nagłówków Sekcji */
+        section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        section h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background-color: var(--accent-green);
+        }
+
+        section p.section-desc {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            max-width: 700px;
+            line-height: 1.6;
+            margin-bottom: 3rem;
+        }
+
+        /* Siatka projektów i aplikacji */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            width: 100%;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            padding: 2rem;
+            transition: transform 0.3s ease, border-color 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(0, 255, 128, 0.3);
+        }
+
+        .card h3 {
+            font-size: 1.4rem;
+            margin-bottom: 0.8rem;
+            color: var(--text-main);
+        }
+
+        .card p {
+            color: var(--text-muted);
+            line-height: 1.5;
+            font-size: 0.95rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .badge {
+            background-color: rgba(0, 255, 136, 0.1);
+            color: var(--accent-green);
+            padding: 0.3rem 0.6rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Stopka */
+        footer {
+            background-color: #0d1114;
+            padding: 2rem;
+            text-align: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        /* Responsywność dla urządzeń mobilnych */
+        @media (max-width: 768px) {
+            .nav-links { gap: 1rem; }
+            .nav-links a { font-size: 0.9rem; }
+            section h2 { font-size: 2rem; }
         }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <!-- Nasze nowe logo jako główny element strony -->
-        <img src="logo.png" alt="PJeyLabs Logo" class="logo">
-    </div>
+    <!-- Menu Górne -->
+    <header>
+        <nav>
+            <a href="#home" class="nav-logo">PJey<span>Labs</span></a>
+            <ul class="nav-links">
+                <li><a href="#home" class="active">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#projects">Projects</a></li>
+                <li><a href="#apps">Apps</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Główna zawartość strony -->
+    <main>
+
+        <!-- Sekcja HOME -->
+        <section id="home">
+            <img src="logo.png" alt="PJeyLabs Logo" class="main-logo-img">
+        </section>
+
+        <!-- Sekcja ABOUT -->
+        <section id="about">
+            <h2>About Us</h2>
+            <p class="section-desc">We are an independent development studio and experimental laboratory focused on crafting high-performance desktop tools, utility ecosystems, and intelligent software automation.</p>
+            <div class="grid">
+                <div class="card">
+                    <h3>Clean Code Architecture</h3>
+                    <p>Building scalable, cross-platform systems with modular foundations and highly responsive interfaces designed for seamless performance.</p>
+                </div>
+                <div class="card">
+                    <h3>Automation & Logic</h3>
+                    <p>Developing custom math libraries, script modules, and algorithmic engines that turn complex user criteria into effortless automated processes.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sekcja PROJECTS -->
+        <section id="projects">
+            <h2>Core Projects</h2>
+            <p class="section-desc">A look inside our development matrix. These foundational desktop systems and developer modules power our software suites.</p>
+            <div class="grid">
+                <div class="card">
+                    <h3>System Integrations & Core APIs</h3>
+                    <p>High-speed local database structures and network bridges designed to aggregate data securely and synchronize environment profiles seamlessly.</p>
+                    <span class="badge">Desktop / Core</span>
+                </div>
+                <div class="card">
+                    <h3>Algorithmic Engines</h3>
+                    <p>Dedicated processing tools designed for intense data manipulation, real-time feedback loops, and complex logic execution.</p>
+                    <span class="badge">Logic Module</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sekcja APPS -->
+        <section id="apps">
+            <h2>Featured Applications</h2>
+            <p class="section-desc">Ready-to-deploy user software. Clean UX meets powerful backend performance to streamline complex workflows.</p>
+            <div class="grid">
+                <div class="card">
+                    <h3>Advanced Equation Lab</h3>
+                    <p>A precision math calculator designed with custom fraction parsing, real-time dynamic rendering, and interactive visual equation history logs.</p>
+                    <span class="badge">Production UI</span>
+                </div>
+                <div class="card">
+                    <h3>Task & Notification Ecosystem</h3>
+                    <p>A smart utility app featuring background audio dispatch, deep native scheduling, and real-time state alerts to keep your timeline on track.</p>
+                    <span class="badge">Mobile / Cross-Platform</span>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Stopka -->
+    <footer>
+        <p>&copy; 2026 PJeyLabs. All rights reserved. Software Development & Experimental Lab.</p>
+    </footer>
+
+    <!-- Prosty skrypt do podświetlania aktywnej sekcji w menu podczas przewijania -->
+    <script>
+        const sections = document.querySelectorAll('section');
+        const navLi = document.querySelectorAll('.nav-links a');
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (pageYOffset >= (sectionTop - 200)) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLi.forEach(a => {
+                a.classList.remove('active');
+                if (a.getAttribute('href').includes(current)) {
+                    a.classList.add('active');
+                }
+            });
+        });
+    </script>
 
 </body>
 </html>
