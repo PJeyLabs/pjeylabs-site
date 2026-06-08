@@ -2,321 +2,866 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <!-- Ikona dla zakładki przeglądarki (Favicon) -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="PJey Labs builds modern software tools, admin systems, automation workflows, and AI-assisted products for teams that need to create anywhere and run anywhere.">
+    <title>PJey Labs | Create Anywhere. Run Anywhere.</title>
     <link rel="icon" type="image/png" href="favicon.png">
     <link rel="apple-touch-icon" href="favicon.png">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PJeyLabs - Software Development & Experimental Lab</title>
     <style>
         :root {
-            --bg-color: #12161a;
-            --card-bg: #1a2126;
-            --accent-green: #00ff88;
-            --text-main: #ffffff;
-            --text-muted: #8a99ad;
+            --bg: #060b0f;
+            --bg-soft: #0b1218;
+            --surface: #101922;
+            --surface-strong: #14202a;
+            --line: rgba(179, 227, 239, 0.13);
+            --line-strong: rgba(36, 232, 159, 0.36);
+            --text: #eef8fb;
+            --muted: #9db0bd;
+            --dim: #667784;
+            --green: #25e69a;
+            --blue: #37b7ff;
+            --cyan: #79f2ff;
+            --shadow: 0 24px 70px rgba(0, 0, 0, 0.38);
+            --radius: 8px;
+            --max: 1180px;
         }
 
         * {
             box-sizing: border-box;
-            margin: 0;
-            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
         }
 
         body {
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            margin: 0;
             min-height: 100vh;
-            display: flex;
-            flex-direction: column;
+            background:
+                linear-gradient(180deg, rgba(9, 23, 32, 0.92) 0%, var(--bg) 46%, #05080b 100%),
+                linear-gradient(135deg, rgba(37, 230, 154, 0.09), transparent 38%, rgba(55, 183, 255, 0.08));
+            color: var(--text);
+            font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            line-height: 1.5;
             overflow-x: hidden;
         }
 
-        /* Nawigacja / Górne Menu */
-        header {
+        body::before {
+            content: "";
             position: fixed;
+            inset: 0;
+            z-index: -2;
+            background-image:
+                linear-gradient(rgba(255, 255, 255, 0.028) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.022) 1px, transparent 1px);
+            background-size: 72px 72px;
+            mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.9), transparent 82%);
+        }
+
+        a {
+            color: inherit;
+        }
+
+        img {
+            display: block;
+            max-width: 100%;
+        }
+
+        .site-header {
+            position: sticky;
             top: 0;
-            left: 0;
-            width: 100%;
-            background-color: rgba(18, 22, 26, 0.95);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid rgba(0, 255, 136, 0.1);
-            z-index: 1000;
-            padding: 1rem 2rem;
+            z-index: 20;
+            border-bottom: 1px solid var(--line);
+            background: rgba(6, 11, 15, 0.78);
+            backdrop-filter: blur(18px);
         }
 
-        nav {
-            max-width: 1200px;
-            margin: 0 auto;
+        .nav {
             display: flex;
-            justify-content: space-between;
             align-items: center;
+            justify-content: space-between;
+            gap: 1.5rem;
+            width: min(100% - 2rem, var(--max));
+            min-height: 72px;
+            margin: 0 auto;
         }
 
-        .nav-logo {
-            font-weight: 700;
-            font-size: 1.2rem;
-            letter-spacing: 1px;
-            color: var(--text-main);
+        .brand {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.7rem;
+            min-width: 0;
+            color: var(--text);
             text-decoration: none;
+            font-weight: 800;
+            letter-spacing: 0;
         }
 
-        .nav-logo span {
-            color: var(--accent-green);
+        .brand img {
+            width: 42px;
+            height: 42px;
+            object-fit: cover;
+            border: 1px solid rgba(37, 230, 154, 0.35);
+            border-radius: 8px;
+            box-shadow: 0 0 30px rgba(37, 230, 154, 0.18);
+        }
+
+        .brand span {
+            white-space: nowrap;
         }
 
         .nav-links {
             display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 0.35rem;
+            margin: 0;
+            padding: 0;
             list-style: none;
-            gap: 2rem;
         }
 
         .nav-links a {
-            color: var(--text-muted);
-            text-decoration: none;
-            font-size: 1rem;
-            font-weight: 500;
-            transition: color 0.3s ease, border-bottom 0.3s ease;
-            padding: 0.5rem 0;
-            border-bottom: 2px solid transparent;
-        }
-
-        .nav-links a:hover, .nav-links a.active {
-            color: var(--accent-green);
-            border-bottom: 2px solid var(--accent-green);
-        }
-
-        /* Główny Kontener */
-        main {
-            margin-top: 80px;
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-        }
-
-        section {
-            padding: 6rem 2rem;
-            max-width: 1200px;
-            margin: 0 auto;
-            width: 100%;
-            min-height: calc(100vh - 80px);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-
-        /* Sekcja HOME */
-        #home {
-            text-align: center;
+            display: inline-flex;
             align-items: center;
+            min-height: 40px;
+            padding: 0 0.8rem;
+            border-radius: 8px;
+            color: var(--muted);
+            font-size: 0.93rem;
+            font-weight: 650;
+            text-decoration: none;
+            transition: color 180ms ease, background 180ms ease;
         }
 
-        .main-logo-img {
-            max-width: 550px;
-            width: 100%;
-            height: auto;
-            animation: fadeInLogo 1.5s ease-out;
+        .nav-links a:hover,
+        .nav-links a:focus-visible {
+            background: rgba(255, 255, 255, 0.055);
+            color: var(--text);
+            outline: none;
         }
 
-        @keyframes fadeInLogo {
-            from { opacity: 0; transform: scale(0.98); }
-            to { opacity: 1; transform: scale(1); }
-        }
-
-        /* Stylistyka Nagłówków Sekcji */
-        section h2 {
-            font-size: 2.5rem;
-            margin-bottom: 1.5rem;
+        .hero {
             position: relative;
-            display: inline-block;
+            isolation: isolate;
+            min-height: clamp(560px, 82svh, 760px);
+            display: grid;
+            align-items: center;
+            overflow: hidden;
+            border-bottom: 1px solid var(--line);
         }
 
-        section h2::after {
-            content: '';
+        .hero::before {
+            content: "";
             position: absolute;
-            bottom: -10px;
-            left: 0;
-            width: 50px;
-            height: 3px;
-            background-color: var(--accent-green);
+            inset: 0;
+            z-index: -2;
+            background:
+                linear-gradient(90deg, rgba(6, 11, 15, 0.97) 0%, rgba(6, 11, 15, 0.82) 42%, rgba(6, 11, 15, 0.48) 100%),
+                url("logo.png") center right 8% / min(760px, 62vw) auto no-repeat;
+            opacity: 0.95;
         }
 
-        section p.section-desc {
-            color: var(--text-muted);
-            font-size: 1.1rem;
-            max-width: 700px;
-            line-height: 1.6;
+        .hero::after {
+            content: "";
+            position: absolute;
+            inset: auto 0 0;
+            z-index: -1;
+            height: 44%;
+            background: linear-gradient(180deg, transparent, rgba(6, 11, 15, 0.96));
+        }
+
+        .hero-inner {
+            width: min(100% - 2rem, var(--max));
+            margin: 0 auto;
+            padding: 5.5rem 0 4.5rem;
+        }
+
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.55rem;
+            margin: 0 0 1.25rem;
+            color: var(--cyan);
+            font-size: 0.82rem;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .eyebrow::before {
+            content: "";
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--green);
+            box-shadow: 0 0 20px rgba(37, 230, 154, 0.8);
+        }
+
+        h1,
+        h2,
+        h3,
+        p {
+            margin-top: 0;
+        }
+
+        h1 {
+            max-width: 760px;
+            margin-bottom: 1rem;
+            font-size: clamp(3.25rem, 8vw, 7rem);
+            line-height: 0.92;
+            letter-spacing: 0;
+        }
+
+        .hero-copy {
+            max-width: 650px;
+            margin-bottom: 2rem;
+            color: #c6d5dc;
+            font-size: clamp(1.08rem, 2vw, 1.35rem);
+        }
+
+        .hero-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
             margin-bottom: 3rem;
         }
 
-        /* Siatka projektów i aplikacji */
-        .grid {
+        .button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 46px;
+            padding: 0 1.05rem;
+            border: 1px solid transparent;
+            border-radius: 8px;
+            font-weight: 800;
+            text-decoration: none;
+            transition: transform 180ms ease, border-color 180ms ease, background 180ms ease;
+        }
+
+        .button:hover,
+        .button:focus-visible {
+            transform: translateY(-1px);
+            outline: none;
+        }
+
+        .button.primary {
+            background: linear-gradient(135deg, var(--green), var(--blue));
+            color: #031015;
+            box-shadow: 0 18px 42px rgba(37, 230, 154, 0.18);
+        }
+
+        .button.secondary {
+            border-color: var(--line);
+            background: rgba(255, 255, 255, 0.055);
+            color: var(--text);
+        }
+
+        .button.secondary:hover,
+        .button.secondary:focus-visible {
+            border-color: rgba(121, 242, 255, 0.42);
+            background: rgba(121, 242, 255, 0.09);
+        }
+
+        .hero-stats {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            width: 100%;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 1px;
+            max-width: 760px;
+            border: 1px solid var(--line);
+            border-radius: var(--radius);
+            background: var(--line);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        .stat {
+            min-height: 112px;
+            padding: 1.1rem;
+            background: rgba(10, 18, 24, 0.82);
+        }
+
+        .stat strong {
+            display: block;
+            margin-bottom: 0.35rem;
+            color: var(--text);
+            font-size: 1.55rem;
+            line-height: 1.1;
+        }
+
+        .stat span {
+            color: var(--muted);
+            font-size: 0.92rem;
+        }
+
+        .section {
+            padding: clamp(4.5rem, 8vw, 7rem) 0;
+            border-bottom: 1px solid var(--line);
+        }
+
+        .section.alt {
+            background: rgba(255, 255, 255, 0.018);
+        }
+
+        .container {
+            width: min(100% - 2rem, var(--max));
+            margin: 0 auto;
+        }
+
+        .section-header {
+            display: grid;
+            grid-template-columns: minmax(0, 0.82fr) minmax(260px, 0.55fr);
+            gap: clamp(1.5rem, 4vw, 4rem);
+            align-items: end;
+            margin-bottom: 2.3rem;
+        }
+
+        .section-kicker {
+            margin-bottom: 0.8rem;
+            color: var(--green);
+            font-size: 0.76rem;
+            font-weight: 850;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+        h2 {
+            margin-bottom: 0;
+            font-size: clamp(2rem, 4vw, 3.6rem);
+            line-height: 1;
+            letter-spacing: 0;
+        }
+
+        .section-lead {
+            margin-bottom: 0;
+            color: var(--muted);
+            font-size: 1.02rem;
+        }
+
+        .about-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 1.2fr) minmax(280px, 0.8fr);
+            gap: 1rem;
+            align-items: stretch;
+        }
+
+        .statement {
+            padding: clamp(1.4rem, 3vw, 2.2rem);
+            border: 1px solid var(--line);
+            border-radius: var(--radius);
+            background:
+                linear-gradient(135deg, rgba(37, 230, 154, 0.08), transparent 42%),
+                rgba(16, 25, 34, 0.76);
+            box-shadow: var(--shadow);
+        }
+
+        .statement p {
+            max-width: 780px;
+            margin-bottom: 1.2rem;
+            color: #d7e4e9;
+            font-size: clamp(1.15rem, 2.4vw, 1.65rem);
+            line-height: 1.35;
+        }
+
+        .statement p:last-child {
+            margin-bottom: 0;
+        }
+
+        .capability-list {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .capability {
+            min-height: 132px;
+            padding: 1.2rem;
+            border: 1px solid var(--line);
+            border-radius: var(--radius);
+            background: rgba(16, 25, 34, 0.82);
+        }
+
+        .capability h3 {
+            margin-bottom: 0.45rem;
+            font-size: 1.05rem;
+        }
+
+        .capability p {
+            margin-bottom: 0;
+            color: var(--muted);
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(5, minmax(0, 1fr));
+            gap: 1rem;
         }
 
         .card {
-            background-color: var(--card-bg);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: 8px;
-            padding: 2rem;
-            transition: transform 0.3s ease, border-color 0.3s ease;
+            position: relative;
+            min-height: 270px;
+            padding: 1.25rem;
+            border: 1px solid var(--line);
+            border-radius: var(--radius);
+            background:
+                linear-gradient(180deg, rgba(255, 255, 255, 0.055), rgba(255, 255, 255, 0.018)),
+                var(--surface);
+            overflow: hidden;
+            transition: transform 180ms ease, border-color 180ms ease, background 180ms ease;
+        }
+
+        .card::before {
+            content: "";
+            position: absolute;
+            inset: 0 0 auto;
+            height: 3px;
+            background: linear-gradient(90deg, var(--green), var(--blue));
+            opacity: 0.85;
         }
 
         .card:hover {
-            transform: translateY(-5px);
-            border-color: rgba(0, 255, 128, 0.3);
+            transform: translateY(-4px);
+            border-color: var(--line-strong);
+            background:
+                linear-gradient(180deg, rgba(37, 230, 154, 0.09), rgba(255, 255, 255, 0.018)),
+                var(--surface-strong);
+        }
+
+        .app-icon {
+            display: grid;
+            place-items: center;
+            width: 46px;
+            height: 46px;
+            margin-bottom: 1.2rem;
+            border: 1px solid rgba(121, 242, 255, 0.22);
+            border-radius: 8px;
+            background: rgba(121, 242, 255, 0.08);
+            color: var(--cyan);
+            font-size: 1.05rem;
+            font-weight: 900;
         }
 
         .card h3 {
-            font-size: 1.4rem;
-            margin-bottom: 0.8rem;
-            color: var(--text-main);
+            margin-bottom: 0.65rem;
+            font-size: 1.12rem;
+            line-height: 1.18;
         }
 
         .card p {
-            color: var(--text-muted);
-            line-height: 1.5;
-            font-size: 0.95rem;
-            margin-bottom: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--muted);
+            font-size: 0.96rem;
         }
 
-        .badge {
-            background-color: rgba(0, 255, 136, 0.1);
-            color: var(--accent-green);
-            padding: 0.3rem 0.6rem;
-            border-radius: 4px;
+        .status {
+            position: absolute;
+            left: 1.25rem;
+            right: 1.25rem;
+            bottom: 1.15rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.7rem;
+            color: var(--dim);
             font-size: 0.8rem;
-            font-weight: 600;
+            font-weight: 800;
+            letter-spacing: 0.05em;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
         }
 
-        /* Stopka */
-        footer {
-            background-color: #0d1114;
-            padding: 2rem;
-            text-align: center;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
-            color: var(--text-muted);
-            font-size: 0.9rem;
+        .status::after {
+            content: "";
+            width: 34px;
+            height: 2px;
+            background: linear-gradient(90deg, var(--green), var(--blue));
         }
 
-        /* Responsywność dla urządzeń mobilnych */
-        @media (max-width: 768px) {
-            .nav-links { gap: 1rem; }
-            .nav-links a { font-size: 0.9rem; }
-            section h2 { font-size: 2rem; }
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 1rem;
+        }
+
+        .tech-item {
+            min-height: 164px;
+            padding: 1.2rem;
+            border: 1px solid var(--line);
+            border-radius: var(--radius);
+            background: rgba(9, 17, 23, 0.74);
+        }
+
+        .tech-item h3 {
+            margin-bottom: 0.55rem;
+            font-size: 1.03rem;
+        }
+
+        .tech-item p {
+            margin-bottom: 0;
+            color: var(--muted);
+        }
+
+        .contact-band {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) auto;
+            gap: 2rem;
+            align-items: center;
+            padding: clamp(1.4rem, 4vw, 2.4rem);
+            border: 1px solid rgba(121, 242, 255, 0.22);
+            border-radius: var(--radius);
+            background:
+                linear-gradient(135deg, rgba(37, 230, 154, 0.11), rgba(55, 183, 255, 0.09) 48%, rgba(255, 255, 255, 0.035)),
+                rgba(10, 18, 24, 0.86);
+            box-shadow: var(--shadow);
+        }
+
+        .contact-band h2 {
+            margin-bottom: 0.8rem;
+        }
+
+        .contact-band p {
+            max-width: 720px;
+            margin-bottom: 0;
+            color: #c6d5dc;
+            font-size: 1.05rem;
+        }
+
+        .contact-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            justify-content: flex-end;
+        }
+
+        .site-footer {
+            padding: 2rem 0;
+            color: var(--muted);
+            background: #04070a;
+        }
+
+        .footer-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            width: min(100% - 2rem, var(--max));
+            margin: 0 auto;
+        }
+
+        .footer-brand {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: var(--text);
+            font-weight: 800;
+        }
+
+        .footer-brand img {
+            width: 34px;
+            height: 34px;
+            border-radius: 8px;
+            object-fit: cover;
+        }
+
+        .footer-domain {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        .footer-domain:hover,
+        .footer-domain:focus-visible {
+            color: var(--cyan);
+            outline: none;
+        }
+
+        @media (max-width: 1040px) {
+            .cards,
+            .tech-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .hero::before {
+                background:
+                    linear-gradient(90deg, rgba(6, 11, 15, 0.96), rgba(6, 11, 15, 0.74)),
+                    url("logo.png") center right -140px / 760px auto no-repeat;
+            }
+        }
+
+        @media (max-width: 760px) {
+            .nav {
+                align-items: flex-start;
+                flex-direction: column;
+                gap: 0.85rem;
+                padding: 0.9rem 0;
+            }
+
+            .nav-links {
+                width: 100%;
+                justify-content: flex-start;
+                gap: 0.2rem;
+                overflow-x: auto;
+                scrollbar-width: none;
+            }
+
+            .nav-links::-webkit-scrollbar {
+                display: none;
+            }
+
+            .nav-links a {
+                min-height: 36px;
+                padding: 0 0.65rem;
+                white-space: nowrap;
+                font-size: 0.88rem;
+            }
+
+            .hero {
+                min-height: min(660px, 74svh);
+            }
+
+            .hero::before {
+                background:
+                    linear-gradient(180deg, rgba(6, 11, 15, 0.86), rgba(6, 11, 15, 0.96) 68%),
+                    url("logo.png") center top 1.3rem / min(650px, 118vw) auto no-repeat;
+                opacity: 0.9;
+            }
+
+            .hero-inner {
+                display: flex;
+                flex-direction: column;
+                justify-content: flex-end;
+                min-height: min(660px, 74svh);
+                padding: clamp(13rem, 34svh, 17rem) 0 2.6rem;
+            }
+
+            .hero-actions {
+                margin-bottom: 1.2rem;
+            }
+
+            .button {
+                width: 100%;
+            }
+
+            .hero-stats,
+            .section-header,
+            .about-grid,
+            .contact-band,
+            .footer-inner {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-stats {
+                display: none;
+            }
+
+            .contact-links {
+                justify-content: stretch;
+            }
+
+            .footer-inner {
+                display: grid;
+                text-align: left;
+            }
+        }
+
+        @media (max-width: 560px) {
+            .cards,
+            .tech-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .card,
+            .tech-item,
+            .capability {
+                min-height: auto;
+            }
+
+            .card {
+                padding-bottom: 4rem;
+            }
+
+            .hero-stats {
+                grid-template-columns: 1fr;
+            }
+
+            h1 {
+                font-size: clamp(3rem, 16vw, 4.6rem);
+            }
         }
     </style>
 </head>
 <body>
-
-    <!-- Menu Górne -->
-    <header>
-        <nav>
-            <a href="#home" class="nav-logo">PJey<span>Labs</span></a>
+    <header class="site-header">
+        <nav class="nav" aria-label="Primary navigation">
+            <a class="brand" href="#hero" aria-label="PJey Labs home">
+                <img src="favicon.png" alt="" width="42" height="42">
+                <span>PJey Labs</span>
+            </a>
             <ul class="nav-links">
-                <li><a href="#home" class="active">Home</a></li>
                 <li><a href="#about">About</a></li>
-                <li><a href="#projects">Projects</a></li>
                 <li><a href="#apps">Apps</a></li>
+                <li><a href="#technologies">Technologies</a></li>
+                <li><a href="#contact">Contact</a></li>
             </ul>
         </nav>
     </header>
 
-    <!-- Główna zawartość strony -->
     <main>
-
-        <!-- Sekcja HOME -->
-        <section id="home">
-            <img src="logo.png" alt="PJeyLabs Logo" class="main-logo-img">
-        </section>
-
-        <!-- Sekcja ABOUT -->
-        <section id="about">
-            <h2>About Us</h2>
-            <p class="section-desc">We are an independent development studio and experimental laboratory focused on crafting high-performance desktop tools, utility ecosystems, and intelligent software automation.</p>
-            <div class="grid">
-                <div class="card">
-                    <h3>Clean Code Architecture</h3>
-                    <p>Building scalable, cross-platform systems with modular foundations and highly responsive interfaces designed for seamless performance.</p>
+        <section class="hero" id="hero" aria-labelledby="hero-title">
+            <div class="hero-inner">
+                <p class="eyebrow">Software studio and product lab</p>
+                <h1 id="hero-title">PJey Labs</h1>
+                <p class="hero-copy">Create Anywhere. Run Anywhere. We build focused software products, internal tools, automation systems, and AI-assisted workflows for fast-moving digital operations.</p>
+                <div class="hero-actions" aria-label="Primary actions">
+                    <a class="button primary" href="#apps">Explore apps</a>
+                    <a class="button secondary" href="#contact">Contact studio</a>
                 </div>
-                <div class="card">
-                    <h3>Automation & Logic</h3>
-                    <p>Developing custom math libraries, script modules, and algorithmic engines that turn complex user criteria into effortless automated processes.</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- Sekcja PROJECTS -->
-        <section id="projects">
-            <h2>Core Projects</h2>
-            <p class="section-desc">A look inside our development matrix. These foundational desktop systems and developer modules power our software suites.</p>
-            <div class="grid">
-                <div class="card">
-                    <h3>System Integrations & Core APIs</h3>
-                    <p>High-speed local database structures and network bridges designed to aggregate data securely and synchronize environment profiles seamlessly.</p>
-                    <span class="badge">Desktop / Core</span>
-                </div>
-                <div class="card">
-                    <h3>Algorithmic Engines</h3>
-                    <p>Dedicated processing tools designed for intense data manipulation, real-time feedback loops, and complex logic execution.</p>
-                    <span class="badge">Logic Module</span>
+                <div class="hero-stats" aria-label="Studio focus areas">
+                    <div class="stat">
+                        <strong>Static</strong>
+                        <span>Fast, portable web experiences ready for Vercel.</span>
+                    </div>
+                    <div class="stat">
+                        <strong>Studio</strong>
+                        <span>Commercial software design with practical delivery.</span>
+                    </div>
+                    <div class="stat">
+                        <strong>AI</strong>
+                        <span>Workflow intelligence built into everyday tools.</span>
+                    </div>
                 </div>
             </div>
         </section>
 
-        <!-- Sekcja APPS -->
-        <section id="apps">
-            <h2>Featured Applications</h2>
-            <p class="section-desc">Ready-to-deploy user software. Clean UX meets powerful backend performance to streamline complex workflows.</p>
-            <div class="grid">
-                <div class="card">
-                    <h3>Advanced Equation Lab</h3>
-                    <p>A precision math calculator designed with custom fraction parsing, real-time dynamic rendering, and interactive visual equation history logs.</p>
-                    <span class="badge">Production UI</span>
+        <section class="section" id="about" aria-labelledby="about-title">
+            <div class="container">
+                <div class="section-header">
+                    <div>
+                        <p class="section-kicker">About PJey Labs</p>
+                        <h2 id="about-title">Software made for portable work.</h2>
+                    </div>
+                    <p class="section-lead">PJey Labs is a modern software studio focused on utility apps, admin platforms, site management tools, and AI-powered product experiments.</p>
                 </div>
-                <div class="card">
-                    <h3>Task & Notification Ecosystem</h3>
-                    <p>A smart utility app featuring background audio dispatch, deep native scheduling, and real-time state alerts to keep your timeline on track.</p>
-                    <span class="badge">Mobile / Cross-Platform</span>
+                <div class="about-grid">
+                    <div class="statement">
+                        <p>We design products that feel clear, responsive, and dependable across desktop, browser, and cloud environments.</p>
+                        <p>From lightweight static websites to operational dashboards, the studio favors clean interfaces, strong automation, and practical systems that are easy to maintain.</p>
+                    </div>
+                    <div class="capability-list" aria-label="PJey Labs capabilities">
+                        <article class="capability">
+                            <h3>Product Interfaces</h3>
+                            <p>Professional UI systems for software tools, internal workflows, and customer-facing apps.</p>
+                        </article>
+                        <article class="capability">
+                            <h3>Automation</h3>
+                            <p>Purpose-built helpers that reduce manual process friction and keep teams moving.</p>
+                        </article>
+                        <article class="capability">
+                            <h3>Deployment Ready</h3>
+                            <p>Static-first delivery that remains simple to preview, approve, push, and host.</p>
+                        </article>
+                    </div>
                 </div>
             </div>
         </section>
 
+        <section class="section alt" id="apps" aria-labelledby="apps-title">
+            <div class="container">
+                <div class="section-header">
+                    <div>
+                        <p class="section-kicker">Apps</p>
+                        <h2 id="apps-title">A growing product suite.</h2>
+                    </div>
+                    <p class="section-lead">Placeholder product cards for active and upcoming PJey Labs software. Each product is designed around focused workflows and fast deployment.</p>
+                </div>
+                <div class="cards">
+                    <article class="card">
+                        <div class="app-icon" aria-hidden="true">PN</div>
+                        <h3>PJ Notes</h3>
+                        <p>A clean notes workspace for capturing ideas, project context, and everyday reference material.</p>
+                        <div class="status"><span>Placeholder</span></div>
+                    </article>
+                    <article class="card">
+                        <div class="app-icon" aria-hidden="true">PC</div>
+                        <h3>PJ Calculator</h3>
+                        <p>A practical calculation tool for quick math, utility workflows, and structured problem solving.</p>
+                        <div class="status"><span>Placeholder</span></div>
+                    </article>
+                    <article class="card">
+                        <div class="app-icon" aria-hidden="true">HA</div>
+                        <h3>PJeyLabs Hub Admin</h3>
+                        <p>An admin command center for managing PJey Labs products, content, and operational controls.</p>
+                        <div class="status"><span>Placeholder</span></div>
+                    </article>
+                    <article class="card">
+                        <div class="app-icon" aria-hidden="true">SM</div>
+                        <h3>PJeyLabs Site Manager</h3>
+                        <p>A website management workflow for editing, previewing, reviewing diffs, approving, and pushing changes.</p>
+                        <div class="status"><span>Placeholder</span></div>
+                    </article>
+                    <article class="card">
+                        <div class="app-icon" aria-hidden="true">AI</div>
+                        <h3>Forge AI by PJey Labs</h3>
+                        <p>An AI-assisted product layer for drafting, building, and accelerating software studio tasks.</p>
+                        <div class="status"><span>Placeholder</span></div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" id="technologies" aria-labelledby="technologies-title">
+            <div class="container">
+                <div class="section-header">
+                    <div>
+                        <p class="section-kicker">Technologies</p>
+                        <h2 id="technologies-title">Built on dependable foundations.</h2>
+                    </div>
+                    <p class="section-lead">PJey Labs keeps products lean and deployable while using the right layer of automation, cloud hosting, and AI support for each workflow.</p>
+                </div>
+                <div class="tech-grid">
+                    <article class="tech-item">
+                        <h3>Static Web</h3>
+                        <p>HTML, CSS, and lightweight browser behavior for fast loading and simple hosting.</p>
+                    </article>
+                    <article class="tech-item">
+                        <h3>Cloud Deployment</h3>
+                        <p>Vercel-friendly assets and direct preview flows for quick commercial iteration.</p>
+                    </article>
+                    <article class="tech-item">
+                        <h3>Admin Systems</h3>
+                        <p>Dashboards, content tools, and product controls designed for repeatable operations.</p>
+                    </article>
+                    <article class="tech-item">
+                        <h3>AI Workflows</h3>
+                        <p>Applied AI support for drafting, automation, validation, and faster build cycles.</p>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section class="section alt" id="contact" aria-labelledby="contact-title">
+            <div class="container">
+                <div class="contact-band">
+                    <div>
+                        <p class="section-kicker">Contact</p>
+                        <h2 id="contact-title">Create Anywhere. Run Anywhere.</h2>
+                        <p>Connect with PJey Labs for software studio work, product experiments, web tools, and AI-assisted systems.</p>
+                    </div>
+                    <div class="contact-links">
+                        <a class="button primary" href="https://www.pjeylabs.com">www.pjeylabs.com</a>
+                        <a class="button secondary" href="mailto:hello@pjeylabs.com">hello@pjeylabs.com</a>
+                    </div>
+                </div>
+            </div>
+        </section>
     </main>
 
-    <!-- Stopka -->
-    <footer>
-        <p>&copy; 2026 PJeyLabs. All rights reserved. Software Development & Experimental Lab.</p>
+    <footer class="site-footer">
+        <div class="footer-inner">
+            <div class="footer-brand">
+                <img src="favicon.png" alt="" width="34" height="34">
+                <span>PJey Labs</span>
+            </div>
+            <span>&copy; 2026 PJey Labs. All rights reserved.</span>
+            <a class="footer-domain" href="https://www.pjeylabs.com">www.pjeylabs.com</a>
+        </div>
     </footer>
-
-    <!-- Prosty skrypt do podświetlania aktywnej sekcji w menu podczas przewijania -->
-    <script>
-        const sections = document.querySelectorAll('section');
-        const navLi = document.querySelectorAll('.nav-links a');
-
-        window.addEventListener('scroll', () => {
-            let current = '';
-            sections.forEach(section => {
-                const sectionTop = section.offsetTop;
-                const sectionHeight = section.clientHeight;
-                if (pageYOffset >= (sectionTop - 200)) {
-                    current = section.getAttribute('id');
-                }
-            });
-
-            navLi.forEach(a => {
-                a.classList.remove('active');
-                if (a.getAttribute('href').includes(current)) {
-                    a.classList.add('active');
-                }
-            });
-        });
-    </script>
-
 </body>
 </html>
