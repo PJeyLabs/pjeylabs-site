@@ -340,13 +340,13 @@
 
         .cards {
             display: grid;
-            grid-template-columns: repeat(5, minmax(0, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
             gap: 1rem;
         }
 
         .card {
             position: relative;
-            min-height: 270px;
+            min-height: 332px;
             padding: 1.25rem;
             border: 1px solid var(--line);
             border-radius: var(--radius);
@@ -388,16 +388,135 @@
             font-weight: 900;
         }
 
+        .app-card {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .app-card-header {
+            display: flex;
+            align-items: center;
+            gap: 0.85rem;
+            margin-bottom: 1rem;
+        }
+
+        .app-card .app-icon {
+            flex: 0 0 auto;
+            margin-bottom: 0;
+            overflow: hidden;
+        }
+
+        .app-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .app-heading {
+            min-width: 0;
+        }
+
         .card h3 {
             margin-bottom: 0.65rem;
             font-size: 1.12rem;
             line-height: 1.18;
         }
 
+        .app-card h3 {
+            margin-bottom: 0.45rem;
+        }
+
         .card p {
             margin-bottom: 1rem;
             color: var(--muted);
             font-size: 0.96rem;
+        }
+
+        .app-tagline {
+            margin-bottom: 1rem;
+            color: #c6d5dc;
+            font-size: 0.92rem;
+            font-weight: 750;
+        }
+
+        .app-description {
+            flex: 1;
+        }
+
+        .category-badge {
+            display: inline-flex;
+            align-items: center;
+            min-height: 28px;
+            width: fit-content;
+            margin-bottom: 1rem;
+            padding: 0 0.65rem;
+            border: 1px solid rgba(37, 230, 154, 0.26);
+            border-radius: 8px;
+            background: rgba(37, 230, 154, 0.09);
+            color: var(--cyan);
+            font-size: 0.76rem;
+            font-weight: 850;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+        }
+
+        .app-heading .category-badge {
+            margin-bottom: 0;
+        }
+
+        .platform-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: auto;
+            padding-top: 0.25rem;
+        }
+
+        .platform-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 36px;
+            padding: 0 0.7rem;
+            border: 1px solid rgba(121, 242, 255, 0.2);
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.045);
+            color: var(--text);
+            font-size: 0.82rem;
+            font-weight: 800;
+            text-decoration: none;
+            transition: transform 180ms ease, border-color 180ms ease, background 180ms ease;
+        }
+
+        .platform-link:hover,
+        .platform-link:focus-visible {
+            transform: translateY(-1px);
+            border-color: rgba(37, 230, 154, 0.42);
+            background: rgba(37, 230, 154, 0.1);
+            outline: none;
+        }
+
+        .apps-state {
+            display: flex;
+            align-items: center;
+            min-height: 64px;
+            margin-bottom: 1rem;
+            padding: 1rem 1.1rem;
+            border: 1px solid var(--line);
+            border-radius: var(--radius);
+            background: rgba(9, 17, 23, 0.74);
+            color: #c6d5dc;
+            font-weight: 760;
+        }
+
+        .apps-state[hidden] {
+            display: none;
+        }
+
+        .apps-state.error {
+            border-color: rgba(255, 120, 120, 0.34);
+            background: rgba(255, 120, 120, 0.08);
+            color: #ffd0d0;
         }
 
         .status {
@@ -620,7 +739,7 @@
             }
 
             .card {
-                padding-bottom: 4rem;
+                padding-bottom: 1.25rem;
             }
 
             .hero-stats {
@@ -682,40 +801,10 @@
                         <p class="section-kicker">Apps</p>
                         <h2 id="apps-title">A growing product suite.</h2>
                     </div>
-                    <p class="section-lead">Placeholder product cards for active and upcoming PJey Labs software. Each product is designed around focused workflows and fast deployment.</p>
+                    <p class="section-lead">Live PJey Labs applications loaded from the public PJeyLabs-Hub catalog, designed around focused workflows and fast deployment.</p>
                 </div>
-                <div class="cards">
-                    <article class="card">
-                        <div class="app-icon" aria-hidden="true">PN</div>
-                        <h3>PJ Notes</h3>
-                        <p>A clean notes workspace for capturing ideas, project context, and everyday reference material.</p>
-                        <div class="status"><span>Placeholder</span></div>
-                    </article>
-                    <article class="card">
-                        <div class="app-icon" aria-hidden="true">PC</div>
-                        <h3>PJ Calculator</h3>
-                        <p>A practical calculation tool for quick math, utility workflows, and structured problem solving.</p>
-                        <div class="status"><span>Placeholder</span></div>
-                    </article>
-                    <article class="card">
-                        <div class="app-icon" aria-hidden="true">HA</div>
-                        <h3>PJeyLabs Hub Admin</h3>
-                        <p>An admin command center for managing PJey Labs products, content, and operational controls.</p>
-                        <div class="status"><span>Placeholder</span></div>
-                    </article>
-                    <article class="card">
-                        <div class="app-icon" aria-hidden="true">SM</div>
-                        <h3>PJeyLabs Site Manager</h3>
-                        <p>A website management workflow for editing, previewing, reviewing diffs, approving, and pushing changes.</p>
-                        <div class="status"><span>Placeholder</span></div>
-                    </article>
-                    <article class="card">
-                        <div class="app-icon" aria-hidden="true">AI</div>
-                        <h3>Forge AI by PJey Labs</h3>
-                        <p>An AI-assisted product layer for drafting, building, and accelerating software studio tasks.</p>
-                        <div class="status"><span>Placeholder</span></div>
-                    </article>
-                </div>
+                <div class="apps-state" id="apps-state" role="status" aria-live="polite">Loading PJey Labs apps...</div>
+                <div class="cards" id="apps-list" aria-label="PJey Labs applications"></div>
             </div>
         </section>
 
@@ -776,5 +865,201 @@
             <a class="footer-domain" href="https://www.pjeylabs.com">www.pjeylabs.com</a>
         </div>
     </footer>
+    <script type="module">
+        const appsList = document.querySelector("#apps-list");
+        const appsState = document.querySelector("#apps-state");
+        const firebaseAppSdkUrl = "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
+        const firebaseFirestoreSdkUrl = "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
+
+        const platformFields = [
+            { key: "androidUrl", label: "Android / Google Play" },
+            { key: "windowsUrl", label: "Windows / Microsoft Store" },
+            { key: "websiteUrl", label: "Website" },
+            { key: "webUrl", label: "Web" },
+            { key: "iosUrl", label: "iOS" },
+            { key: "macosUrl", label: "macOS" },
+            { key: "linuxUrl", label: "Linux" }
+        ];
+
+        // Fallback apps are used only when Firebase cannot be reached.
+        const fallbackApps = [
+            {
+                appId: "pj-notes-fallback",
+                name: "PJ Notes",
+                tagline: "Focused notes for everyday project context.",
+                description: "A clean workspace for capturing ideas, references, and practical notes across PJey Labs workflows.",
+                category: "Productivity",
+                websiteUrl: "https://www.pjeylabs.com"
+            },
+            {
+                appId: "forge-ai-fallback",
+                name: "Forge AI by PJey Labs",
+                tagline: "AI-assisted drafting and build support.",
+                description: "A product layer for accelerating software studio tasks, from planning through practical delivery.",
+                category: "AI Tools",
+                websiteUrl: "https://www.pjeylabs.com"
+            }
+        ];
+
+        // Update this object with the PJeyLabs-Hub web app config from Firebase Console.
+        // The projectId/authDomain point at PJeyLabs-Hub; add apiKey, appId,
+        // messagingSenderId, and storageBucket here if the Firebase Console provides them.
+        const firebaseConfig = {
+            projectId: "pjeylabs-hub",
+            authDomain: "pjeylabs-hub.firebaseapp.com"
+        };
+
+        function setAppsState(message, type = "default") {
+            appsState.textContent = message;
+            appsState.classList.toggle("error", type === "error");
+            appsState.hidden = !message;
+        }
+
+        function hasValue(value) {
+            return typeof value === "string" && value.trim() !== "" && value.trim().toLowerCase() !== "coming_soon";
+        }
+
+        function getSafeUrl(value) {
+            if (!hasValue(value)) {
+                return "";
+            }
+
+            try {
+                const trimmedValue = value.trim();
+                const urlValue = /^[a-z][a-z0-9+.-]*:/i.test(trimmedValue) ? trimmedValue : `https://${trimmedValue}`;
+                const url = new URL(urlValue);
+                return url.protocol === "http:" || url.protocol === "https:" ? url.href : "";
+            } catch {
+                return "";
+            }
+        }
+
+        function getInitials(name = "") {
+            const safeName = typeof name === "string" ? name : String(name ?? "");
+            const words = safeName.trim().split(/\s+/).filter(Boolean);
+            const initials = words.slice(0, 2).map((word) => word[0]).join("");
+            return initials.toUpperCase() || "PJ";
+        }
+
+        function getText(value, fallback) {
+            return typeof value === "string" && value.trim() !== "" ? value.trim() : fallback;
+        }
+
+        function createAppIcon(appData) {
+            const icon = document.createElement("div");
+            icon.className = "app-icon";
+
+            const iconUrl = getSafeUrl(appData.iconUrl);
+            if (iconUrl) {
+                const image = document.createElement("img");
+                image.src = iconUrl;
+                image.alt = "";
+                image.loading = "lazy";
+                image.width = 46;
+                image.height = 46;
+                icon.append(image);
+                return icon;
+            }
+
+            icon.setAttribute("aria-hidden", "true");
+            icon.textContent = getInitials(appData.name);
+            return icon;
+        }
+
+        function createPlatformLinks(appData) {
+            const links = document.createElement("div");
+            links.className = "platform-links";
+
+            platformFields.forEach(({ key, label }) => {
+                const url = getSafeUrl(appData[key]);
+                if (!url) {
+                    return;
+                }
+
+                const link = document.createElement("a");
+                link.className = "platform-link";
+                link.href = url;
+                link.target = "_blank";
+                link.rel = "noopener noreferrer";
+                link.textContent = label;
+                link.setAttribute("aria-label", `${getText(appData.name, "PJey Labs app")} on ${label}`);
+                links.append(link);
+            });
+
+            return links;
+        }
+
+        function renderApps(apps) {
+            appsList.replaceChildren();
+
+            apps.forEach((appData) => {
+                const card = document.createElement("article");
+                card.className = "card app-card";
+
+                const header = document.createElement("div");
+                header.className = "app-card-header";
+
+                const headingGroup = document.createElement("div");
+                headingGroup.className = "app-heading";
+
+                const title = document.createElement("h3");
+                title.textContent = getText(appData.name, "Untitled app");
+
+                const badge = document.createElement("span");
+                badge.className = "category-badge";
+                badge.textContent = getText(appData.category, "PJey Labs");
+
+                headingGroup.append(title, badge);
+                header.append(createAppIcon(appData), headingGroup);
+
+                const tagline = document.createElement("p");
+                tagline.className = "app-tagline";
+                tagline.textContent = getText(appData.tagline, "PJey Labs application.");
+
+                const description = document.createElement("p");
+                description.className = "app-description";
+                description.textContent = getText(appData.description, "More details will be available soon.");
+
+                card.append(header, tagline, description, createPlatformLinks(appData));
+                appsList.append(card);
+            });
+        }
+
+        async function loadApps() {
+            try {
+                setAppsState("Loading PJey Labs apps...");
+                const [
+                    { initializeApp },
+                    { getFirestore, collection, query, where, orderBy, getDocs }
+                ] = await Promise.all([
+                    import(firebaseAppSdkUrl),
+                    import(firebaseFirestoreSdkUrl)
+                ]);
+                const app = initializeApp(firebaseConfig);
+                const db = getFirestore(app);
+                const appsQuery = query(
+                    collection(db, "public_apps"),
+                    where("isActive", "==", true),
+                    orderBy("order", "asc")
+                );
+                const snapshot = await getDocs(appsQuery);
+                const apps = snapshot.docs.map((doc) => ({ appId: doc.id, ...doc.data() }));
+
+                if (apps.length === 0) {
+                    setAppsState("No apps available yet.");
+                    return;
+                }
+
+                renderApps(apps);
+                setAppsState("");
+            } catch (error) {
+                console.error("Could not load apps from PJeyLabs-Hub.", error);
+                setAppsState("Could not load apps from PJeyLabs-Hub.", "error");
+                renderApps(fallbackApps);
+            }
+        }
+
+        loadApps();
+    </script>
 </body>
 </html>
