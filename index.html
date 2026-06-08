@@ -338,58 +338,6 @@
             font-size: 1.02rem;
         }
 
-        .about-grid {
-            display: grid;
-            grid-template-columns: minmax(0, 1.2fr) minmax(280px, 0.8fr);
-            gap: 1rem;
-            align-items: stretch;
-        }
-
-        .statement {
-            padding: clamp(1.4rem, 3vw, 2.2rem);
-            border: 1px solid var(--line);
-            border-radius: var(--radius);
-            background:
-                linear-gradient(135deg, rgba(37, 230, 154, 0.08), transparent 42%),
-                rgba(16, 25, 34, 0.76);
-            box-shadow: var(--shadow);
-        }
-
-        .statement p {
-            max-width: 780px;
-            margin-bottom: 1.2rem;
-            color: #d7e4e9;
-            font-size: clamp(1.15rem, 2.4vw, 1.65rem);
-            line-height: 1.35;
-        }
-
-        .statement p:last-child {
-            margin-bottom: 0;
-        }
-
-        .capability-list {
-            display: grid;
-            gap: 1rem;
-        }
-
-        .capability {
-            min-height: 132px;
-            padding: 1.2rem;
-            border: 1px solid var(--line);
-            border-radius: var(--radius);
-            background: rgba(16, 25, 34, 0.82);
-        }
-
-        .capability h3 {
-            margin-bottom: 0.45rem;
-            font-size: 1.05rem;
-        }
-
-        .capability p {
-            margin-bottom: 0;
-            color: var(--muted);
-        }
-
         .cards {
             display: grid;
             grid-template-columns: repeat(5, minmax(0, 1fr));
@@ -641,7 +589,6 @@
 
             .hero-stats,
             .section-header,
-            .about-grid,
             .contact-band,
             .footer-inner {
                 grid-template-columns: 1fr;
@@ -668,8 +615,7 @@
             }
 
             .card,
-            .tech-item,
-            .capability {
+            .tech-item {
                 min-height: auto;
             }
 
@@ -695,7 +641,6 @@
                 <span>PJey Labs</span>
             </a>
             <ul class="nav-links">
-                <li><a href="#about">About</a></li>
                 <li><a href="#apps">Apps</a></li>
                 <li><a href="#technologies">Technologies</a></li>
                 <li><a href="#contact">Contact</a></li>
@@ -725,38 +670,6 @@
                     <div class="stat">
                         <strong>AI</strong>
                         <span>Workflow intelligence built into everyday tools.</span>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section class="section" id="about" aria-labelledby="about-title">
-            <div class="container">
-                <div class="section-header">
-                    <div>
-                        <p class="section-kicker">About PJey Labs</p>
-                        <h2 id="about-title">Software made for portable work.</h2>
-                    </div>
-                    <p class="section-lead">PJey Labs is a modern software studio focused on utility apps, admin platforms, site management tools, and AI-powered product experiments.</p>
-                </div>
-                <div class="about-grid">
-                    <div class="statement">
-                        <p>We design products that feel clear, responsive, and dependable across desktop, browser, and cloud environments.</p>
-                        <p>From lightweight static websites to operational dashboards, the studio favors clean interfaces, strong automation, and practical systems that are easy to maintain.</p>
-                    </div>
-                    <div class="capability-list" aria-label="PJey Labs capabilities">
-                        <article class="capability">
-                            <h3>Product Interfaces</h3>
-                            <p>Professional UI systems for software tools, internal workflows, and customer-facing apps.</p>
-                        </article>
-                        <article class="capability">
-                            <h3>Automation</h3>
-                            <p>Purpose-built helpers that reduce manual process friction and keep teams moving.</p>
-                        </article>
-                        <article class="capability">
-                            <h3>Deployment Ready</h3>
-                            <p>Static-first delivery that remains simple to preview, approve, push, and host.</p>
-                        </article>
                     </div>
                 </div>
             </div>
