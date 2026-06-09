@@ -1,1064 +1,1345 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="PJey Labs builds modern software tools, admin systems, automation workflows, and AI-assisted products for teams that need to create anywhere and run anywhere.">
-    <title>PJey Labs | Create Anywhere. Run Anywhere.</title>
-    <link rel="icon" type="image/png" href="favicon.png">
-    <link rel="apple-touch-icon" href="favicon.png">
-    <style>
-        :root {
-            --bg: #060b0f;
-            --bg-soft: #0b1218;
-            --surface: #101922;
-            --surface-strong: #14202a;
-            --line: rgba(179, 227, 239, 0.13);
-            --line-strong: rgba(36, 232, 159, 0.36);
-            --text: #eef8fb;
-            --muted: #9db0bd;
-            --dim: #667784;
-            --green: #25e69a;
-            --blue: #37b7ff;
-            --cyan: #79f2ff;
-            --shadow: 0 24px 70px rgba(0, 0, 0, 0.38);
-            --radius: 8px;
-            --max: 1180px;
-        }
-
-        * {
-            box-sizing: border-box;
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
-
-        body {
-            margin: 0;
-            min-height: 100vh;
-            background:
-                linear-gradient(180deg, rgba(9, 23, 32, 0.92) 0%, var(--bg) 46%, #05080b 100%),
-                linear-gradient(135deg, rgba(37, 230, 154, 0.09), transparent 38%, rgba(55, 183, 255, 0.08));
-            color: var(--text);
-            font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-            line-height: 1.5;
-            overflow-x: hidden;
-        }
-
-        body::before {
-            content: "";
-            position: fixed;
-            inset: 0;
-            z-index: -2;
-            background-image:
-                linear-gradient(rgba(255, 255, 255, 0.028) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255, 255, 255, 0.022) 1px, transparent 1px);
-            background-size: 72px 72px;
-            mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.9), transparent 82%);
-        }
-
-        a {
-            color: inherit;
-        }
-
-        img {
-            display: block;
-            max-width: 100%;
-        }
-
-        .site-header {
-            position: sticky;
-            top: 0;
-            z-index: 20;
-            border-bottom: 1px solid var(--line);
-            background: rgba(6, 11, 15, 0.78);
-            backdrop-filter: blur(18px);
-        }
-
-        .nav {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 1.5rem;
-            width: min(100% - 2rem, var(--max));
-            min-height: 72px;
-            margin: 0 auto;
-        }
-
-        .brand {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.7rem;
-            min-width: 0;
-            color: var(--text);
-            text-decoration: none;
-            font-weight: 800;
-            letter-spacing: 0;
-        }
-
-        .brand img {
-            width: 42px;
-            height: 42px;
-            object-fit: cover;
-            border: 1px solid rgba(37, 230, 154, 0.35);
-            border-radius: 8px;
-            box-shadow: 0 0 30px rgba(37, 230, 154, 0.18);
-        }
-
-        .brand span {
-            white-space: nowrap;
-        }
-
-        .nav-links {
-            display: flex;
-            align-items: center;
-            justify-content: flex-end;
-            gap: 0.35rem;
-            margin: 0;
-            padding: 0;
-            list-style: none;
-        }
-
-        .nav-links a {
-            display: inline-flex;
-            align-items: center;
-            min-height: 40px;
-            padding: 0 0.8rem;
-            border-radius: 8px;
-            color: var(--muted);
-            font-size: 0.93rem;
-            font-weight: 650;
-            text-decoration: none;
-            transition: color 180ms ease, background 180ms ease;
-        }
-
-        .nav-links a:hover,
-        .nav-links a:focus-visible {
-            background: rgba(255, 255, 255, 0.055);
-            color: var(--text);
-            outline: none;
-        }
-
-        .hero {
-            position: relative;
-            isolation: isolate;
-            min-height: clamp(560px, 82svh, 760px);
-            display: grid;
-            align-items: center;
-            overflow: hidden;
-            border-bottom: 1px solid var(--line);
-        }
-
-        .hero::before {
-            content: "";
-            position: absolute;
-            inset: 0;
-            z-index: -2;
-            background:
-                linear-gradient(90deg, rgba(6, 11, 15, 0.97) 0%, rgba(6, 11, 15, 0.82) 42%, rgba(6, 11, 15, 0.48) 100%),
-                url("logo.png") center right 8% / min(760px, 62vw) auto no-repeat;
-            opacity: 0.95;
-        }
-
-        .hero::after {
-            content: "";
-            position: absolute;
-            inset: auto 0 0;
-            z-index: -1;
-            height: 44%;
-            background: linear-gradient(180deg, transparent, rgba(6, 11, 15, 0.96));
-        }
-
-        .hero-inner {
-            width: min(100% - 2rem, var(--max));
-            margin: 0 auto;
-            padding: 5.5rem 0 4.5rem;
-        }
-
-        .eyebrow {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.55rem;
-            margin: 0 0 1.25rem;
-            color: var(--cyan);
-            font-size: 0.82rem;
-            font-weight: 800;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-        }
-
-        .eyebrow::before {
-            content: "";
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: var(--green);
-            box-shadow: 0 0 20px rgba(37, 230, 154, 0.8);
-        }
-
-        h1,
-        h2,
-        h3,
-        p {
-            margin-top: 0;
-        }
-
-        h1 {
-            max-width: 760px;
-            margin-bottom: 1rem;
-            font-size: clamp(3.25rem, 8vw, 7rem);
-            line-height: 0.92;
-            letter-spacing: 0;
-        }
-
-        .hero-copy {
-            max-width: 650px;
-            margin-bottom: 2rem;
-            color: #c6d5dc;
-            font-size: clamp(1.08rem, 2vw, 1.35rem);
-        }
-
-        .hero-actions {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.8rem;
-            margin-bottom: 3rem;
-        }
-
-        .button {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 46px;
-            padding: 0 1.05rem;
-            border: 1px solid transparent;
-            border-radius: 8px;
-            font-weight: 800;
-            text-decoration: none;
-            transition: transform 180ms ease, border-color 180ms ease, background 180ms ease;
-        }
-
-        .button:hover,
-        .button:focus-visible {
-            transform: translateY(-1px);
-            outline: none;
-        }
-
-        .button.primary {
-            background: linear-gradient(135deg, var(--green), var(--blue));
-            color: #031015;
-            box-shadow: 0 18px 42px rgba(37, 230, 154, 0.18);
-        }
-
-        .button.secondary {
-            border-color: var(--line);
-            background: rgba(255, 255, 255, 0.055);
-            color: var(--text);
-        }
-
-        .button.secondary:hover,
-        .button.secondary:focus-visible {
-            border-color: rgba(121, 242, 255, 0.42);
-            background: rgba(121, 242, 255, 0.09);
-        }
-
-        .hero-stats {
-            display: grid;
-            grid-template-columns: repeat(3, minmax(0, 1fr));
-            gap: 1px;
-            max-width: 760px;
-            border: 1px solid var(--line);
-            border-radius: var(--radius);
-            background: var(--line);
-            box-shadow: var(--shadow);
-            overflow: hidden;
-        }
-
-        .stat {
-            min-height: 112px;
-            padding: 1.1rem;
-            background: rgba(10, 18, 24, 0.82);
-        }
-
-        .stat strong {
-            display: block;
-            margin-bottom: 0.35rem;
-            color: var(--text);
-            font-size: 1.55rem;
-            line-height: 1.1;
-        }
-
-        .stat span {
-            color: var(--muted);
-            font-size: 0.92rem;
-        }
-
-        .section {
-            padding: clamp(4.5rem, 8vw, 7rem) 0;
-            border-bottom: 1px solid var(--line);
-        }
-
-        .section.alt {
-            background: rgba(255, 255, 255, 0.018);
-        }
-
-        .container {
-            width: min(100% - 2rem, var(--max));
-            margin: 0 auto;
-        }
-
-        .section-header {
-            display: grid;
-            grid-template-columns: minmax(0, 0.82fr) minmax(260px, 0.55fr);
-            gap: clamp(1.5rem, 4vw, 4rem);
-            align-items: end;
-            margin-bottom: 2.3rem;
-        }
-
-        .section-kicker {
-            margin-bottom: 0.8rem;
-            color: var(--green);
-            font-size: 0.76rem;
-            font-weight: 850;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-        }
-
-        h2 {
-            margin-bottom: 0;
-            font-size: clamp(2rem, 4vw, 3.6rem);
-            line-height: 1;
-            letter-spacing: 0;
-        }
-
-        .section-lead {
-            margin-bottom: 0;
-            color: var(--muted);
-            font-size: 1.02rem;
-        }
-
-        .cards {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
-            gap: 1rem;
-        }
-
-        .card {
-            position: relative;
-            min-height: 332px;
-            padding: 1.25rem;
-            border: 1px solid var(--line);
-            border-radius: var(--radius);
-            background:
-                linear-gradient(180deg, rgba(255, 255, 255, 0.055), rgba(255, 255, 255, 0.018)),
-                var(--surface);
-            overflow: hidden;
-            transition: transform 180ms ease, border-color 180ms ease, background 180ms ease;
-        }
-
-        .card::before {
-            content: "";
-            position: absolute;
-            inset: 0 0 auto;
-            height: 3px;
-            background: linear-gradient(90deg, var(--green), var(--blue));
-            opacity: 0.85;
-        }
-
-        .card:hover {
-            transform: translateY(-4px);
-            border-color: var(--line-strong);
-            background:
-                linear-gradient(180deg, rgba(37, 230, 154, 0.09), rgba(255, 255, 255, 0.018)),
-                var(--surface-strong);
-        }
-
-        .app-icon {
-            display: grid;
-            place-items: center;
-            width: 46px;
-            height: 46px;
-            margin-bottom: 1.2rem;
-            border: 1px solid rgba(121, 242, 255, 0.22);
-            border-radius: 8px;
-            background: rgba(121, 242, 255, 0.08);
-            color: var(--cyan);
-            font-size: 1.05rem;
-            font-weight: 900;
-        }
-
-        .app-card {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .app-card-header {
-            display: flex;
-            align-items: center;
-            gap: 0.85rem;
-            margin-bottom: 1rem;
-        }
-
-        .app-card .app-icon {
-            flex: 0 0 auto;
-            margin-bottom: 0;
-            overflow: hidden;
-        }
-
-        .app-icon img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .app-heading {
-            min-width: 0;
-        }
-
-        .card h3 {
-            margin-bottom: 0.65rem;
-            font-size: 1.12rem;
-            line-height: 1.18;
-        }
-
-        .app-card h3 {
-            margin-bottom: 0.45rem;
-        }
-
-        .card p {
-            margin-bottom: 1rem;
-            color: var(--muted);
-            font-size: 0.96rem;
-        }
-
-        .app-tagline {
-            margin-bottom: 1rem;
-            color: #c6d5dc;
-            font-size: 0.92rem;
-            font-weight: 750;
-        }
-
-        .app-description {
-            flex: 1;
-        }
-
-        .category-badge {
-            display: inline-flex;
-            align-items: center;
-            min-height: 28px;
-            width: fit-content;
-            margin-bottom: 1rem;
-            padding: 0 0.65rem;
-            border: 1px solid rgba(37, 230, 154, 0.26);
-            border-radius: 8px;
-            background: rgba(37, 230, 154, 0.09);
-            color: var(--cyan);
-            font-size: 0.76rem;
-            font-weight: 850;
-            letter-spacing: 0.04em;
-            text-transform: uppercase;
-        }
-
-        .app-heading .category-badge {
-            margin-bottom: 0;
-        }
-
-        .platform-links {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-            margin-top: auto;
-            padding-top: 0.25rem;
-        }
-
-        .platform-link {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 36px;
-            padding: 0 0.7rem;
-            border: 1px solid rgba(121, 242, 255, 0.2);
-            border-radius: 8px;
-            background: rgba(255, 255, 255, 0.045);
-            color: var(--text);
-            font-size: 0.82rem;
-            font-weight: 800;
-            text-decoration: none;
-            transition: transform 180ms ease, border-color 180ms ease, background 180ms ease;
-        }
-
-        .platform-link:hover,
-        .platform-link:focus-visible {
-            transform: translateY(-1px);
-            border-color: rgba(37, 230, 154, 0.42);
-            background: rgba(37, 230, 154, 0.1);
-            outline: none;
-        }
-
-        .apps-state {
-            display: flex;
-            align-items: center;
-            min-height: 64px;
-            margin-bottom: 1rem;
-            padding: 1rem 1.1rem;
-            border: 1px solid var(--line);
-            border-radius: var(--radius);
-            background: rgba(9, 17, 23, 0.74);
-            color: #c6d5dc;
-            font-weight: 760;
-        }
-
-        .apps-state[hidden] {
-            display: none;
-        }
-
-        .apps-state.error {
-            border-color: rgba(255, 120, 120, 0.34);
-            background: rgba(255, 120, 120, 0.08);
-            color: #ffd0d0;
-        }
-
-        .status {
-            position: absolute;
-            left: 1.25rem;
-            right: 1.25rem;
-            bottom: 1.15rem;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 0.7rem;
-            color: var(--dim);
-            font-size: 0.8rem;
-            font-weight: 800;
-            letter-spacing: 0.05em;
-            text-transform: uppercase;
-        }
-
-        .status::after {
-            content: "";
-            width: 34px;
-            height: 2px;
-            background: linear-gradient(90deg, var(--green), var(--blue));
-        }
-
-        .tech-grid {
-            display: grid;
-            grid-template-columns: repeat(4, minmax(0, 1fr));
-            gap: 1rem;
-        }
-
-        .tech-item {
-            min-height: 164px;
-            padding: 1.2rem;
-            border: 1px solid var(--line);
-            border-radius: var(--radius);
-            background: rgba(9, 17, 23, 0.74);
-        }
-
-        .tech-item h3 {
-            margin-bottom: 0.55rem;
-            font-size: 1.03rem;
-        }
-
-        .tech-item p {
-            margin-bottom: 0;
-            color: var(--muted);
-        }
-
-        .contact-band {
-            display: grid;
-            grid-template-columns: minmax(0, 1fr) auto;
-            gap: 2rem;
-            align-items: center;
-            padding: clamp(1.4rem, 4vw, 2.4rem);
-            border: 1px solid rgba(121, 242, 255, 0.22);
-            border-radius: var(--radius);
-            background:
-                linear-gradient(135deg, rgba(37, 230, 154, 0.11), rgba(55, 183, 255, 0.09) 48%, rgba(255, 255, 255, 0.035)),
-                rgba(10, 18, 24, 0.86);
-            box-shadow: var(--shadow);
-        }
-
-        .contact-band h2 {
-            margin-bottom: 0.8rem;
-        }
-
-        .contact-band p {
-            max-width: 720px;
-            margin-bottom: 0;
-            color: #c6d5dc;
-            font-size: 1.05rem;
-        }
-
-        .contact-links {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.8rem;
-            justify-content: flex-end;
-        }
-
-        .site-footer {
-            padding: 2rem 0;
-            color: var(--muted);
-            background: #04070a;
-        }
-
-        .footer-inner {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 1rem;
-            width: min(100% - 2rem, var(--max));
-            margin: 0 auto;
-        }
-
-        .footer-brand {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            color: var(--text);
-            font-weight: 800;
-        }
-
-        .footer-brand img {
-            width: 34px;
-            height: 34px;
-            border-radius: 8px;
-            object-fit: cover;
-        }
-
-        .footer-domain {
-            color: var(--muted);
-            text-decoration: none;
-        }
-
-        .footer-domain:hover,
-        .footer-domain:focus-visible {
-            color: var(--cyan);
-            outline: none;
-        }
-
-        @media (max-width: 1040px) {
-            .cards,
-            .tech-grid {
-                grid-template-columns: repeat(2, minmax(0, 1fr));
-            }
-
-            .hero::before {
-                background:
-                    linear-gradient(90deg, rgba(6, 11, 15, 0.96), rgba(6, 11, 15, 0.74)),
-                    url("logo.png") center right -140px / 760px auto no-repeat;
-            }
-        }
-
-        @media (max-width: 760px) {
-            .nav {
-                align-items: flex-start;
-                flex-direction: column;
-                gap: 0.85rem;
-                padding: 0.9rem 0;
-            }
-
-            .nav-links {
-                width: 100%;
-                justify-content: flex-start;
-                gap: 0.2rem;
-                overflow-x: auto;
-                scrollbar-width: none;
-            }
-
-            .nav-links::-webkit-scrollbar {
-                display: none;
-            }
-
-            .nav-links a {
-                min-height: 36px;
-                padding: 0 0.65rem;
-                white-space: nowrap;
-                font-size: 0.88rem;
-            }
-
-            .hero {
-                min-height: min(660px, 74svh);
-            }
-
-            .hero::before {
-                background:
-                    linear-gradient(180deg, rgba(6, 11, 15, 0.86), rgba(6, 11, 15, 0.96) 68%),
-                    url("logo.png") center top 1.3rem / min(650px, 118vw) auto no-repeat;
-                opacity: 0.9;
-            }
-
-            .hero-inner {
-                display: flex;
-                flex-direction: column;
-                justify-content: flex-end;
-                min-height: min(660px, 74svh);
-                padding: clamp(13rem, 34svh, 17rem) 0 2.6rem;
-            }
-
-            .hero-actions {
-                margin-bottom: 1.2rem;
-            }
-
-            .button {
-                width: 100%;
-            }
-
-            .hero-stats,
-            .section-header,
-            .contact-band,
-            .footer-inner {
-                grid-template-columns: 1fr;
-            }
-
-            .hero-stats {
-                display: none;
-            }
-
-            .contact-links {
-                justify-content: stretch;
-            }
-
-            .footer-inner {
-                display: grid;
-                text-align: left;
-            }
-        }
-
-        @media (max-width: 560px) {
-            .cards,
-            .tech-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .card,
-            .tech-item {
-                min-height: auto;
-            }
-
-            .card {
-                padding-bottom: 1.25rem;
-            }
-
-            .hero-stats {
-                grid-template-columns: 1fr;
-            }
-
-            h1 {
-                font-size: clamp(3rem, 16vw, 4.6rem);
-            }
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta
+    name="description"
+    content="PJey Labs creates practical cross-platform apps and AI-powered tools for productivity, development, and everyday work."
+  />
+  <title>PJey Labs</title>
+  <link rel="icon" type="image/png" href="favicon.png" />
+  <style>
+    :root {
+      --bg: #060d14;
+      --surface: #0f161f;
+      --surface-strong: #141d29;
+      --text: #eef6ff;
+      --muted: #9eb0bf;
+      --line: rgba(168, 255, 214, 0.15);
+      --line-soft: rgba(168, 255, 214, 0.08);
+      --accent: #20d68b;
+      --accent-soft: rgba(32, 214, 139, 0.16);
+      --shadow: 0 24px 54px rgba(0, 0, 0, 0.45);
+      --radius: 10px;
+      --max: 1120px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: "Inter", "Segoe UI", "Noto Sans", system-ui, -apple-system, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(120% 80% at 25% 0%, rgba(32, 214, 139, 0.15), transparent 58%),
+        radial-gradient(90% 80% at 90% 10%, rgba(32, 214, 139, 0.08), transparent 58%),
+        linear-gradient(180deg, #050910 0%, #060d14 44%, #04070c 100%);
+      line-height: 1.5;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      pointer-events: none;
+      background-image: linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+      background-size: 88px 88px;
+      opacity: 0.5;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .container {
+      width: min(100% - 2rem, var(--max));
+      margin: 0 auto;
+    }
+
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 30;
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--line-soft);
+      background: rgba(6, 13, 20, 0.9);
+    }
+
+    .header-inner {
+      min-height: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .brand img {
+      width: 40px;
+      height: 40px;
+      border-radius: 8px;
+      border: 1px solid rgba(32, 214, 139, 0.34);
+      object-fit: cover;
+      box-shadow: 0 0 22px rgba(32, 214, 139, 0.2);
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .tabs {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .tabs button {
+      appearance: none;
+      border: 1px solid transparent;
+      background: transparent;
+      color: var(--muted);
+      cursor: pointer;
+      font: inherit;
+      font-weight: 700;
+      font-size: 0.93rem;
+      padding: 0.42rem 0.86rem;
+      min-height: 38px;
+      border-radius: 8px;
+      transition: all 160ms ease;
+    }
+
+    .tabs button[aria-current="page"] {
+      color: var(--text);
+      border-color: var(--line);
+      background: rgba(32, 214, 139, 0.09);
+      box-shadow: inset 0 0 0 1px rgba(32, 214, 139, 0.16);
+    }
+
+    .tabs button:hover,
+    .tabs button:focus-visible {
+      outline: none;
+      color: var(--text);
+      border-color: var(--line);
+      background: rgba(255, 255, 255, 0.06);
+    }
+
+    .hero {
+      padding: clamp(2.3rem, 5vw, 3.6rem) 0 2.4rem;
+    }
+
+    .logo-block {
+      display: inline-flex;
+      align-items: center;
+      gap: 1.2rem;
+      margin-bottom: 1rem;
+    }
+
+    .logo-block img {
+      width: 78px;
+      height: 78px;
+      border-radius: 14px;
+      object-fit: cover;
+      border: 1px solid rgba(32, 214, 139, 0.4);
+      box-shadow: 0 18px 44px rgba(0, 0, 0, 0.22);
+    }
+
+    h1,
+    h2,
+    h3,
+    p {
+      margin: 0;
+    }
+
+    h1 {
+      margin-bottom: 0.7rem;
+      font-size: clamp(2.1rem, 5vw, 3rem);
+      line-height: 1.1;
+    }
+
+    .hero p {
+      color: var(--muted);
+      max-width: 74ch;
+      font-size: 1.05rem;
+    }
+
+    .hero-copy {
+      max-width: 78ch;
+      margin-bottom: 1.2rem;
+    }
+
+    .page {
+      padding: 1.8rem 0 2.2rem;
+    }
+
+    .section-title {
+      margin: 0 0 0.35rem;
+      font-size: clamp(1.45rem, 3vw, 2.15rem);
+    }
+
+    .section-subtitle {
+      color: var(--muted);
+      margin-bottom: 1.2rem;
+    }
+
+    .state-line {
+      margin: 0.8rem 0 0.9rem;
+      padding: 0.6rem 0.8rem;
+      border-radius: 8px;
+      border: 1px solid var(--line-soft);
+      background: rgba(32, 214, 139, 0.07);
+      color: #d8fce8;
+      font-size: 0.93rem;
+      display: none;
+    }
+
+    .state-line.visible {
+      display: block;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(225px, 1fr));
+      gap: 0.85rem;
+    }
+
+    .card {
+      border: 1px solid var(--line-soft);
+      border-radius: var(--radius);
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0.01));
+      padding: 1rem;
+      min-height: 250px;
+      display: flex;
+      flex-direction: column;
+      gap: 0.56rem;
+      transition: transform 160ms ease, border-color 160ms ease;
+    }
+
+    .card:hover {
+      transform: translateY(-2px);
+      border-color: rgba(32, 214, 139, 0.34);
+      box-shadow: var(--shadow);
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+    }
+
+    .product-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 9px;
+      border: 1px solid rgba(32, 214, 139, 0.35);
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+      flex: 0 0 auto;
+      font-size: 0.84rem;
+      font-weight: 800;
+      background: rgba(168, 255, 214, 0.08);
+      color: #0f2116;
+    }
+
+    .product-icon img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .card h3 {
+      font-size: 1.04rem;
+      line-height: 1.12;
+      margin-bottom: 0.1rem;
+    }
+
+    .meta {
+      color: #b5c9d5;
+      font-size: 0.84rem;
+      margin: 0;
+    }
+
+    .meta strong {
+      color: var(--text);
+    }
+
+    .description {
+      margin-top: 0.4rem;
+      color: var(--muted);
+      font-size: 0.92rem;
+      flex: 1;
+    }
+
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.45rem;
+      min-height: 28px;
+    }
+
+    .chip {
+      border: 1px solid rgba(32, 214, 139, 0.35);
+      background: rgba(32, 214, 139, 0.08);
+      color: #d9ffe6;
+      font-size: 0.74rem;
+      padding: 0.22rem 0.6rem;
+      border-radius: 999px;
+      line-height: 1.2;
+    }
+
+    .chip.plan-free {
+      background: rgba(64, 224, 142, 0.18);
+      border-color: rgba(64, 224, 142, 0.45);
+      color: #d1ffe5;
+    }
+
+    .chip.plan-pro {
+      background: rgba(255, 204, 102, 0.2);
+      border-color: rgba(255, 204, 102, 0.45);
+      color: #ffeac9;
+    }
+
+    .actions {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin-top: auto;
+    }
+
+    .button {
+      border: 1px solid rgba(32, 214, 139, 0.34);
+      color: #0b1411;
+      background: linear-gradient(130deg, var(--accent), #4ee0aa);
+      min-height: 36px;
+      padding: 0.4rem 0.85rem;
+      border-radius: 8px;
+      font-size: 0.82rem;
+      font-weight: 800;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 130ms ease;
+    }
+
+    .button.secondary {
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--text);
+    }
+
+    .button:hover,
+    .button:focus-visible {
+      transform: translateY(-1px);
+      outline: none;
+    }
+
+    .button[aria-disabled="true"] {
+      cursor: not-allowed;
+      pointer-events: none;
+      opacity: 0.58;
+      color: var(--muted);
+      background: transparent;
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .apps-scroll {
+      display: grid;
+      gap: 0.85rem;
+      max-height: calc(100vh - 350px);
+      overflow: auto;
+      padding-right: 0.2rem;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(168, 255, 214, 0.45) transparent;
+    }
+
+    .apps-scroll::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    .apps-scroll::-webkit-scrollbar-thumb {
+      background: rgba(168, 255, 214, 0.45);
+      border-radius: 8px;
+    }
+
+    .apps-preview-toolbar {
+      margin-top: 0.3rem;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+    }
+
+    .apps-preview-empty {
+      border: 1px dashed rgba(32, 214, 139, 0.32);
+      border-radius: var(--radius);
+      padding: 1rem;
+      color: #aec0d0;
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    .about-grid {
+      border: 1px solid var(--line-soft);
+      border-radius: var(--radius);
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.032), rgba(255, 255, 255, 0.012));
+      padding: 1.2rem;
+      display: grid;
+      gap: 0.8rem;
+      max-width: 70ch;
+    }
+
+    .contact-list {
+      display: grid;
+      gap: 0.4rem;
+    }
+
+    .contact-list a {
+      text-decoration: underline;
+      text-underline-offset: 2px;
+      width: fit-content;
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    .site-footer {
+      margin-top: 1.5rem;
+      border-top: 1px solid var(--line-soft);
+      padding: 1.1rem 0;
+      background: rgba(6, 13, 20, 0.9);
+      color: var(--muted);
+      font-size: 0.88rem;
+    }
+
+    .footer-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.8rem;
+      flex-wrap: wrap;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    @media (max-width: 860px) {
+      .header-inner {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 0.7rem 0 0.5rem;
+      }
+
+      .tabs {
+        width: 100%;
+        justify-content: flex-start;
+      }
+
+      .tabs button {
+        padding: 0.34rem 0.68rem;
+      }
+
+      .logo-block {
+        align-items: flex-start;
+      }
+
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      .footer-inner {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+
+    @media (max-width: 460px) {
+      .logo-block img {
+        width: 66px;
+        height: 66px;
+      }
+
+      .hero {
+        padding-top: 1.6rem;
+      }
+    }
+  </style>
 </head>
 <body>
-    <header class="site-header">
-        <nav class="nav" aria-label="Primary navigation">
-            <a class="brand" href="#hero" aria-label="PJey Labs home">
-                <img src="favicon.png" alt="" width="42" height="42">
-                <span>PJey Labs</span>
-            </a>
-            <ul class="nav-links">
-                <li><a href="#technologies">Technologies</a></li>
-                <li><a href="#contact">Contact</a></li>
-            </ul>
-        </nav>
-    </header>
+  <div id="app" aria-live="polite"></div>
 
-    <main>
-        <section class="hero" id="hero" aria-labelledby="hero-title">
-            <div class="hero-inner">
-                <p class="eyebrow">Software studio and product lab</p>
-                <h1 id="hero-title">PJey Labs</h1>
-                <p class="hero-copy">Create Anywhere. Run Anywhere. We build focused software products, internal tools, automation systems, and AI-assisted workflows for fast-moving digital operations.</p>
-                <div class="hero-actions" aria-label="Primary actions">
-                    <a class="button primary" href="#apps">Explore apps</a>
-                    <a class="button secondary" href="#contact">Contact studio</a>
-                </div>
-                <div class="hero-stats" aria-label="Studio focus areas">
-                    <div class="stat">
-                        <strong>Static</strong>
-                        <span>Fast, portable web experiences ready for Vercel.</span>
-                    </div>
-                    <div class="stat">
-                        <strong>Studio</strong>
-                        <span>Commercial software design with practical delivery.</span>
-                    </div>
-                    <div class="stat">
-                        <strong>AI</strong>
-                        <span>Workflow intelligence built into everyday tools.</span>
-                    </div>
-                </div>
-            </div>
-        </section>
+  <script type="module">
+    const navTabs = [
+      { id: "home", label: "Home" },
+      { id: "about", label: "About" },
+      { id: "products", label: "Products / Apps Hub" },
+      { id: "download", label: "Download" },
+    ];
 
-        <section class="section alt" id="apps" aria-labelledby="apps-title">
-            <div class="container">
-                <div class="section-header">
-                    <div>
-                        <p class="section-kicker">Apps</p>
-                        <h2 id="apps-title">A growing product suite.</h2>
-                    </div>
-                    <p class="section-lead">Live PJey Labs applications loaded from the public PJeyLabs-Hub catalog, designed around focused workflows and fast deployment.</p>
-                </div>
-                <div class="apps-state" id="apps-state" role="status" aria-live="polite">Loading PJey Labs apps...</div>
-                <div class="cards" id="apps-list" aria-label="PJey Labs applications"></div>
-            </div>
-        </section>
+    const FIREBASE_CONFIG = {
+      projectId: "pjeylabs-hub",
+      authDomain: "pjeylabs-hub.firebaseapp.com",
+      apiKey: "AIzaSyDT2hxZM8rTIUsdIAUfux-meM5fhbsUg40",
+      appId: "1:440485471383:web:7dfda16c52098a9bfbf5d2",
+      messagingSenderId: "440485471383",
+      storageBucket: "pjeylabs-hub.firebasestorage.app",
+    };
 
-        <section class="section" id="technologies" aria-labelledby="technologies-title">
-            <div class="container">
-                <div class="section-header">
-                    <div>
-                        <p class="section-kicker">Technologies</p>
-                        <h2 id="technologies-title">Built on dependable foundations.</h2>
-                    </div>
-                    <p class="section-lead">PJey Labs keeps products lean and deployable while using the right layer of automation, cloud hosting, and AI support for each workflow.</p>
-                </div>
-                <div class="tech-grid">
-                    <article class="tech-item">
-                        <h3>Static Web</h3>
-                        <p>HTML, CSS, and lightweight browser behavior for fast loading and simple hosting.</p>
-                    </article>
-                    <article class="tech-item">
-                        <h3>Cloud Deployment</h3>
-                        <p>Vercel-friendly assets and direct preview flows for quick commercial iteration.</p>
-                    </article>
-                    <article class="tech-item">
-                        <h3>Admin Systems</h3>
-                        <p>Dashboards, content tools, and product controls designed for repeatable operations.</p>
-                    </article>
-                    <article class="tech-item">
-                        <h3>AI Workflows</h3>
-                        <p>Applied AI support for drafting, automation, validation, and faster build cycles.</p>
-                    </article>
-                </div>
-            </div>
-        </section>
+    const APP_COLLECTION_NAME = "public_apps";
+    const APP_PREVIEW_LIMIT = 4;
 
-        <section class="section alt" id="contact" aria-labelledby="contact-title">
-            <div class="container">
-                <div class="contact-band">
-                    <div>
-                        <p class="section-kicker">Contact</p>
-                        <h2 id="contact-title">Create Anywhere. Run Anywhere.</h2>
-                        <p>Connect with PJey Labs for software studio work, product experiments, web tools, and AI-assisted systems.</p>
-                    </div>
-                    <div class="contact-links">
-                        <a class="button primary" href="https://www.pjeylabs.com">www.pjeylabs.com</a>
-                        <a class="button secondary" href="mailto:hello@pjeylabs.com">hello@pjeylabs.com</a>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </main>
+    const PLATFORM_LINK_MAP = [
+      { key: "androidUrl", label: "Android", platform: "Android" },
+      { key: "windowsUrl", label: "Windows", platform: "Windows" },
+      { key: "linuxUrl", label: "Linux", platform: "Linux" },
+      { key: "macosUrl", label: "macOS", platform: "macOS" },
+      { key: "iosUrl", label: "iOS", platform: "iOS" },
+    ];
 
-    <footer class="site-footer">
-        <div class="footer-inner">
-            <div class="footer-brand">
-                <img src="favicon.png" alt="" width="34" height="34">
-                <span>PJey Labs</span>
-            </div>
-            <span>&copy; 2026 PJey Labs. All rights reserved.</span>
-            <a class="footer-domain" href="https://www.pjeylabs.com">www.pjeylabs.com</a>
-        </div>
-    </footer>
-    <script type="module">
-        const appsList = document.querySelector("#apps-list");
-        const appsState = document.querySelector("#apps-state");
-        const firebaseAppSdkUrl = "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
-        const firebaseFirestoreSdkUrl = "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
+    const GENERAL_LINK_MAP = [
+      { key: "downloadUrl", label: "Download", type: "download" },
+      { key: "webUrl", label: "Website", type: "website" },
+      { key: "websiteUrl", label: "Website", type: "website" },
+      { key: "moreInfoUrl", label: "Details", type: "details" },
+    ];
 
-        const platformFields = [
-            { key: "androidUrl", label: "Android / Google Play" },
-            { key: "windowsUrl", label: "Windows / Microsoft Store" },
-            { key: "websiteUrl", label: "Website" },
-            { key: "webUrl", label: "Web" },
-            { key: "iosUrl", label: "iOS" },
-            { key: "macosUrl", label: "macOS" },
-            { key: "linuxUrl", label: "Linux" }
-        ];
+    const STORE_LINK_LABELS = {
+      android: "Android",
+      windows: "Windows",
+      linux: "Linux",
+      macos: "macOS",
+      ios: "iOS",
+      web: "Website",
+      website: "Website",
+      download: "Download",
+    };
 
-        // Fallback apps are used only when Firebase cannot be reached.
-        const fallbackApps = [
-            {
-                appId: "pj-notes-fallback",
-                name: "PJ Notes",
-                tagline: "Focused notes for everyday project context.",
-                description: "A clean workspace for capturing ideas, references, and practical notes across PJey Labs workflows.",
-                category: "Productivity",
-                websiteUrl: "https://www.pjeylabs.com"
-            },
-            {
-                appId: "forge-ai-fallback",
-                name: "Forge AI by PJey Labs",
-                tagline: "AI-assisted drafting and build support.",
-                description: "A product layer for accelerating software studio tasks, from planning through practical delivery.",
-                category: "AI Tools",
-                websiteUrl: "https://www.pjeylabs.com"
-            }
-        ];
+    const APP_STATUS_PRIORITY = ["isFeatured", "featured", "pinned", "isActive", "active"];
+    const PLATFORM_SORT_ORDER = ["Windows", "Android", "Linux", "macOS", "iOS", "Web", "Other"];
 
-        // Update this object with the PJeyLabs-Hub web app config from Firebase Console.
-        // The projectId/authDomain point at PJeyLabs-Hub; add apiKey, appId,
-        // messagingSenderId, and storageBucket here if the Firebase Console provides them.
-        const firebaseConfig = {
-            projectId: "pjeylabs-hub",
-            authDomain: "pjeylabs-hub.firebaseapp.com"
-        };
+    const state = {
+      activePage: "home",
+      apps: [],
+      status: "loading",
+      error: "",
+      sourceCollection: null,
+    };
 
-        function setAppsState(message, type = "default") {
-            appsState.textContent = message;
-            appsState.classList.toggle("error", type === "error");
-            appsState.hidden = !message;
+    const appRoot = document.getElementById("app");
+
+    const hasValue = (value) =>
+      typeof value === "string" && value.trim() !== "" && value.trim().toLowerCase() !== "coming_soon";
+
+    const getSafeText = (value, fallback = "") => {
+      if (hasValue(value)) {
+        return value.trim();
+      }
+
+      return fallback;
+    };
+
+    const toNumber = (value) => {
+      if (typeof value === "number" && Number.isFinite(value)) {
+        return value;
+      }
+
+      const parsed = Number(value);
+      return Number.isFinite(parsed) ? parsed : null;
+    };
+
+    const toEpoch = (value) => {
+      if (value == null) {
+        return 0;
+      }
+
+      if (typeof value === "number" && Number.isFinite(value)) {
+        return value;
+      }
+
+      if (value instanceof Date) {
+        return value.getTime();
+      }
+
+      if (typeof value?.toDate === "function") {
+        const date = value.toDate();
+        return date instanceof Date ? date.getTime() : 0;
+      }
+
+      const parsed = Date.parse(String(value));
+      return Number.isFinite(parsed) ? parsed : 0;
+    };
+
+    const normalizeId = (value) => {
+      if (hasValue(value)) {
+        return value.trim();
+      }
+
+      if (typeof crypto !== "undefined" && typeof crypto.randomUUID === "function") {
+        return crypto.randomUUID();
+      }
+
+      return `app-${Date.now()}-${Math.random().toString(16).slice(2)}`;
+    };
+
+    function normalizeUrl(value) {
+      if (!hasValue(value)) {
+        return "";
+      }
+
+      try {
+        const trimmed = value.trim();
+        const candidate = /^[a-z][a-z0-9+.-]*:/i.test(trimmed) ? trimmed : `https://${trimmed}`;
+        const parsed = new URL(candidate);
+        return parsed.protocol === "http:" || parsed.protocol === "https:" ? parsed.href : "";
+      } catch {
+        return "";
+      }
+    }
+
+    function normalizePlatformName(value) {
+      const text = getSafeText(value, "").toLowerCase();
+      if (text.includes("windows") || text === "win" || text === "win32") {
+        return "Windows";
+      }
+
+      if (text.includes("mac")) {
+        return "macOS";
+      }
+
+      if (text.includes("ios")) {
+        return "iOS";
+      }
+
+      if (text.includes("android")) {
+        return "Android";
+      }
+
+      if (text.includes("linux")) {
+        return "Linux";
+      }
+
+      if (text.includes("web")) {
+        return "Web";
+      }
+
+      return getSafeText(value, "General");
+    }
+
+    function normalizePlan(product) {
+      if (typeof product.isPro === "boolean") {
+        return product.isPro ? "Pro" : "Free";
+      }
+
+      if (typeof product.isFree === "boolean") {
+        return product.isFree ? "Free" : null;
+      }
+
+      const price = toNumber(product.price);
+      if (price != null) {
+        return price > 0 ? "Pro" : "Free";
+      }
+
+      const plan = getSafeText(product.plan || product.tier || product.pricing || product.license || product.accessMode).toLowerCase();
+      if (!plan) {
+        return null;
+      }
+
+      if (plan.includes("free")) {
+        return "Free";
+      }
+
+      if (plan.includes("pro") || plan.includes("premium") || plan.includes("paid")) {
+        return "Pro";
+      }
+
+      return getSafeText(product.plan || product.tier || product.pricing || product.license || product.accessMode, "Free");
+    }
+
+    function normalizeLinks(product) {
+      const entries = [];
+      const seen = new Set();
+      const push = (url, label, type) => {
+        const href = normalizeUrl(url);
+        if (!href) {
+          return;
         }
 
-        function hasValue(value) {
-            return typeof value === "string" && value.trim() !== "" && value.trim().toLowerCase() !== "coming_soon";
+        const key = `${type}::${href}`;
+        if (seen.has(key)) {
+          return;
         }
 
-        function getSafeUrl(value) {
-            if (!hasValue(value)) {
-                return "";
-            }
+        seen.add(key);
+        entries.push({
+          href,
+          label,
+          type,
+        });
+      };
 
-            try {
-                const trimmedValue = value.trim();
-                const urlValue = /^[a-z][a-z0-9+.-]*:/i.test(trimmedValue) ? trimmedValue : `https://${trimmedValue}`;
-                const url = new URL(urlValue);
-                return url.protocol === "http:" || url.protocol === "https:" ? url.href : "";
-            } catch {
-                return "";
-            }
+      PLATFORM_LINK_MAP.forEach(({ key, label }) => {
+        push(product[key], label, "download");
+      });
+
+      GENERAL_LINK_MAP.forEach(({ key, label, type }) => {
+        push(product[key], label, type);
+      });
+
+      if (product.storeLinks && typeof product.storeLinks === "object" && !Array.isArray(product.storeLinks)) {
+        Object.entries(product.storeLinks).forEach(([rawKey, rawUrl]) => {
+          const key = String(rawKey).trim().toLowerCase();
+          const label = STORE_LINK_LABELS[key] || normalizePlatformName(key);
+          const type = label === "Website" ? "website" : "download";
+          push(rawUrl, label, type);
+        });
+      }
+
+      if (Array.isArray(product.links)) {
+        product.links.forEach((entry) => {
+          if (!entry || typeof entry !== "object") {
+            return;
+          }
+
+          const href = normalizeUrl(entry.url || entry.href);
+          if (!href) {
+            return;
+          }
+
+          const label = getSafeText(entry.label, "Details");
+          const type = getSafeText(entry.type, "details").toLowerCase();
+          const key = `${type}::${href}`;
+          if (!seen.has(key)) {
+            seen.add(key);
+            entries.push({ href, label, type });
+          }
+        });
+      }
+
+      return entries;
+    }
+
+    function normalizePlatforms(product, links = []) {
+      const platforms = new Set();
+
+      if (Array.isArray(product.platforms)) {
+        product.platforms.forEach((platform) => {
+          const normalized = normalizePlatformName(platform);
+          if (normalized !== "General") {
+            platforms.add(normalized);
+          }
+        });
+      }
+
+      links.forEach((link) => {
+        if (link.type === "download") {
+          const platform = PLATFORM_LINK_MAP.find((entry) => entry.label === link.label);
+          if (platform) {
+            platforms.add(platform.platform);
+          } else if (link.label && link.label.toLowerCase() !== "download") {
+            platforms.add(normalizePlatformName(link.label));
+          }
+        }
+      });
+
+      if (!platforms.size && hasValue(product.platform)) {
+        const normalized = normalizePlatformName(product.platform);
+        if (normalized) {
+          platforms.add(normalized);
+        }
+      }
+
+      const ordered = PLATFORM_SORT_ORDER.filter((value) => platforms.has(value));
+      const remainder = [...platforms].filter((value) => !PLATFORM_SORT_ORDER.includes(value)).sort();
+
+      return [...ordered, ...remainder];
+    }
+
+    function isLikelyAppDocument(document) {
+      const checks = [document.name, document.title, document.appName, document.productName, document.shortDescription];
+      return checks.some((entry) => hasValue(entry));
+    }
+
+    function normalizeAppData(source = {}) {
+      const appData = source || {};
+      const links = normalizeLinks(appData);
+      const platforms = normalizePlatforms(appData, links);
+      const plan = normalizePlan(appData);
+      const createdAt = toEpoch(
+        appData.createdAt || appData.created_at || appData.updatedAt || appData.updated_at || appData.publishedAt
+      );
+      const order = toNumber(appData.order || appData.sortOrder || appData.rank || appData.displayOrder);
+      const featured = APP_STATUS_PRIORITY.some((key) => {
+        const candidate = appData[key];
+        return candidate === true || candidate === "true";
+      });
+
+      return {
+        id: normalizeId(appData.appId || appData.id),
+        name: getSafeText(appData.name || appData.title || appData.appName || appData.productName, "Unnamed app"),
+        shortDescription: getSafeText(
+          appData.shortDescription || appData.tagline || appData.summary,
+          "A PJey Labs application."
+        ),
+        description: getSafeText(appData.description || appData.body || appData.details, ""),
+        version: getSafeText(appData.version || appData.appVersion || appData.currentVersion, "Not specified"),
+        iconUrl: normalizeUrl(appData.iconUrl || appData.imageUrl || appData.thumbnailUrl),
+        platforms,
+        plan: plan || "Free",
+        links,
+        featured,
+        order: order == null ? Number.MAX_SAFE_INTEGER : order,
+        updatedAt: createdAt,
+        isActive: appData.isActive !== false && appData.active !== false,
+      };
+    }
+
+    class FirebaseAppsService {
+      constructor(config) {
+        this.config = config;
+      }
+
+      isConfigured() {
+        return ["projectId", "authDomain", "apiKey", "appId", "messagingSenderId", "storageBucket"].every((field) => {
+          const value = this.config[field];
+          return typeof value === "string" && value.trim() !== "";
+        });
+      }
+
+      async loadApps() {
+        if (!this.isConfigured()) {
+          return {
+            apps: [],
+            sourceCollection: null,
+            status: "empty",
+            error: "PJey Labs Hub configuration is incomplete.",
+          };
         }
 
-        function getInitials(name = "") {
-            const safeName = typeof name === "string" ? name : String(name ?? "");
-            const words = safeName.trim().split(/\s+/).filter(Boolean);
-            const initials = words.slice(0, 2).map((word) => word[0]).join("");
-            return initials.toUpperCase() || "PJ";
+        const [{ initializeApp, getApps }, { getFirestore, collection, getDocs }] = await Promise.all([
+          import("https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js"),
+          import("https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js"),
+        ]);
+
+        const app = getApps().length > 0 ? getApps()[0] : initializeApp(this.config);
+        const db = getFirestore(app);
+
+        try {
+          const docs = await getDocs(collection(db, APP_COLLECTION_NAME));
+          const mapped = docs.docs
+            .map((doc) => ({ appId: doc.id, ...(doc.data() || {}) }))
+            .filter(isLikelyAppDocument)
+            .map(normalizeAppData)
+            .filter((item) => hasValue(item.name) && item.isActive);
+
+          return {
+            apps: mapped.sort(compareAppSort),
+            sourceCollection: APP_COLLECTION_NAME,
+            status: mapped.length === 0 ? "empty" : "loaded",
+            error: mapped.length === 0 ? "No active apps are available yet." : "",
+          };
+        } catch (error) {
+          return {
+            apps: [],
+            sourceCollection: APP_COLLECTION_NAME,
+            status: "error",
+            error: error?.message || `Unable to read collection "${APP_COLLECTION_NAME}".`,
+          };
         }
+      }
+    }
 
-        function getText(value, fallback) {
-            return typeof value === "string" && value.trim() !== "" ? value.trim() : fallback;
-        }
+    function compareAppSort(a, b) {
+      if (a.featured !== b.featured) {
+        return b.featured ? 1 : -1;
+      }
 
-        function createAppIcon(appData) {
-            const icon = document.createElement("div");
-            icon.className = "app-icon";
+      if (a.order !== b.order) {
+        return a.order - b.order;
+      }
 
-            const iconUrl = getSafeUrl(appData.iconUrl);
-            if (iconUrl) {
-                const image = document.createElement("img");
-                image.src = iconUrl;
-                image.alt = "";
-                image.loading = "lazy";
-                image.width = 46;
-                image.height = 46;
-                icon.append(image);
-                return icon;
-            }
+      if (a.updatedAt !== b.updatedAt) {
+        return b.updatedAt - a.updatedAt;
+      }
 
-            icon.setAttribute("aria-hidden", "true");
-            icon.textContent = getInitials(appData.name);
-            return icon;
-        }
+      return a.name.localeCompare(b.name);
+    }
 
-        function createPlatformLinks(appData) {
-            const links = document.createElement("div");
-            links.className = "platform-links";
+    function makeTabs(activePageId, onChange) {
+      const nav = document.createElement("nav");
+      nav.className = "tabs";
+      nav.setAttribute("aria-label", "Primary");
 
-            platformFields.forEach(({ key, label }) => {
-                const url = getSafeUrl(appData[key]);
-                if (!url) {
-                    return;
-                }
+      navTabs.forEach((tab) => {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.textContent = tab.label;
+        button.setAttribute("data-page", tab.id);
+        button.setAttribute("aria-current", String(tab.id === activePageId));
+        button.addEventListener("click", () => onChange(tab.id));
+        nav.append(button);
+      });
 
-                const link = document.createElement("a");
-                link.className = "platform-link";
-                link.href = url;
-                link.target = "_blank";
-                link.rel = "noopener noreferrer";
-                link.textContent = label;
-                link.setAttribute("aria-label", `${getText(appData.name, "PJey Labs app")} on ${label}`);
-                links.append(link);
-            });
+      return nav;
+    }
 
-            return links;
-        }
+    function makeHeader() {
+      const header = document.createElement("header");
+      header.className = "site-header";
+      const inner = document.createElement("div");
+      inner.className = "container header-inner";
 
-        function renderApps(apps) {
-            appsList.replaceChildren();
+      const brand = document.createElement("a");
+      brand.href = "#";
+      brand.className = "brand";
+      brand.setAttribute("aria-label", "PJey Labs home");
+      brand.addEventListener("click", (event) => {
+        event.preventDefault();
+        setPage("home");
+      });
 
-            apps.forEach((appData) => {
-                const card = document.createElement("article");
-                card.className = "card app-card";
+      const logo = document.createElement("img");
+      logo.src = "pjey-labs-logo.png";
+      logo.width = 40;
+      logo.height = 40;
+      logo.alt = "PJey Labs logo";
+      const name = document.createElement("span");
+      name.textContent = "PJey Labs";
+      brand.append(logo, name);
 
-                const header = document.createElement("div");
-                header.className = "app-card-header";
+      inner.append(brand, makeTabs(state.activePage, setPage));
+      header.append(inner);
+      return header;
+    }
 
-                const headingGroup = document.createElement("div");
-                headingGroup.className = "app-heading";
+    function AppCard(app, options = {}) {
+      const compact = options.compact === true;
+      const card = document.createElement("article");
+      card.className = "card app-card";
 
-                const title = document.createElement("h3");
-                title.textContent = getText(appData.name, "Untitled app");
+      const head = document.createElement("div");
+      head.className = "card-header";
 
-                const badge = document.createElement("span");
-                badge.className = "category-badge";
-                badge.textContent = getText(appData.category, "PJey Labs");
+      const iconWrap = document.createElement("div");
+      iconWrap.className = "product-icon";
+      if (app.iconUrl) {
+        const iconImage = document.createElement("img");
+        iconImage.src = app.iconUrl;
+        iconImage.alt = "";
+        iconImage.loading = "lazy";
+        iconWrap.append(iconImage);
+      } else {
+        iconWrap.textContent = app.name
+          .split(" ")
+          .slice(0, 2)
+          .map((word) => word[0])
+          .join("")
+          .toUpperCase() || "PJ";
+      }
 
-                headingGroup.append(title, badge);
-                header.append(createAppIcon(appData), headingGroup);
+      const heading = document.createElement("div");
+      const title = document.createElement("h3");
+      title.textContent = app.name;
+      const metadata = document.createElement("p");
+      metadata.className = "meta";
+      metadata.textContent = `Version: ${app.version}`;
 
-                const tagline = document.createElement("p");
-                tagline.className = "app-tagline";
-                tagline.textContent = getText(appData.tagline, "PJey Labs application.");
+      heading.append(title, metadata);
+      head.append(iconWrap, heading);
 
-                const description = document.createElement("p");
-                description.className = "app-description";
-                description.textContent = getText(appData.description, "More details will be available soon.");
+      const description = document.createElement("p");
+      description.className = "description";
+      description.textContent = compact ? app.shortDescription : app.description || app.shortDescription;
 
-                card.append(header, tagline, description, createPlatformLinks(appData));
-                appsList.append(card);
-            });
-        }
+      const chips = document.createElement("div");
+      chips.className = "chips";
 
-        async function loadApps() {
-            try {
-                setAppsState("Loading PJey Labs apps...");
-                const [
-                    { initializeApp },
-                    { getFirestore, collection, query, where, orderBy, getDocs }
-                ] = await Promise.all([
-                    import(firebaseAppSdkUrl),
-                    import(firebaseFirestoreSdkUrl)
-                ]);
-                const app = initializeApp(firebaseConfig);
-                const db = getFirestore(app);
-                const appsQuery = query(
-                    collection(db, "public_apps"),
-                    where("isActive", "==", true),
-                    orderBy("order", "asc")
-                );
-                const snapshot = await getDocs(appsQuery);
-                const apps = snapshot.docs.map((doc) => ({ appId: doc.id, ...doc.data() }));
+      if (app.platforms.length > 0) {
+        app.platforms.forEach((platform) => {
+          const chip = document.createElement("span");
+          chip.className = "chip";
+          chip.textContent = platform;
+          chips.append(chip);
+        });
+      } else {
+        const chip = document.createElement("span");
+        chip.className = "chip";
+        chip.textContent = "General";
+        chips.append(chip);
+      }
 
-                if (apps.length === 0) {
-                    setAppsState("No apps available yet.");
-                    return;
-                }
+      if (app.plan) {
+        const planChip = document.createElement("span");
+        planChip.className = `chip ${app.plan.toLowerCase() === "free" ? "plan-free" : "plan-pro"}`;
+        planChip.textContent = app.plan;
+        chips.append(planChip);
+      }
 
-                renderApps(apps);
-                setAppsState("");
-            } catch (error) {
-                console.error("Could not load apps from PJeyLabs-Hub.", error);
-                setAppsState("Could not load apps from PJeyLabs-Hub.", "error");
-                renderApps(fallbackApps);
-            }
-        }
+      const actions = document.createElement("div");
+      actions.className = "actions";
 
-        loadApps();
-    </script>
+      const downloadLinks = app.links.filter((link) => link.type === "download");
+      const primary = downloadLinks[0];
+      const website = app.links.find((link) => link.type === "website");
+      const details = app.links.find((link) => link.type === "details") || app.links.find(
+        (link) => link.label.toLowerCase() === "details" || link.label.toLowerCase() === "more info"
+      );
+
+      const addButton = (link, label, secondary = false) => {
+        const button = document.createElement("a");
+        button.className = `button${secondary ? " secondary" : ""}`;
+        button.href = link.href;
+        button.target = "_blank";
+        button.rel = "noopener noreferrer";
+        button.textContent = label;
+        actions.append(button);
+      };
+
+      downloadLinks.forEach((link, index) => {
+        addButton(link, link.label || "Download", index > 0);
+      });
+      if (website && !downloadLinks.some((link) => link.href === website.href)) {
+        addButton(website, "Website", true);
+      }
+      if (details && !downloadLinks.some((link) => link.href === details.href) && details.href !== website?.href) {
+        addButton(details, details.label || "Details", true);
+      }
+
+      if (!primary && !website && !details) {
+        const placeholder = document.createElement("span");
+        placeholder.className = "button secondary";
+        placeholder.setAttribute("aria-disabled", "true");
+        placeholder.textContent = "Not available yet";
+        actions.append(placeholder);
+      }
+
+      card.append(head, description, chips, actions);
+      return card;
+    }
+
+    function makeHomeSection() {
+      const section = document.createElement("section");
+      section.id = "page-home";
+      section.className = "container page";
+
+      const hero = document.createElement("div");
+      hero.className = "hero";
+
+      const logoBlock = document.createElement("div");
+      logoBlock.className = "logo-block";
+      const logo = document.createElement("img");
+      logo.src = "pjey-labs-logo.png";
+      logo.width = 78;
+      logo.height = 78;
+      logo.alt = "PJey Labs logo";
+      const heading = document.createElement("div");
+      const title = document.createElement("h1");
+      title.textContent = "PJey Labs";
+      const lead = document.createElement("p");
+      lead.className = "hero-copy";
+      lead.textContent =
+        "PJey Labs creates practical cross-platform apps and AI-powered tools for productivity, development, and everyday work.";
+      heading.append(title, lead);
+      logoBlock.append(logo, heading);
+
+      const featuredWrap = document.createElement("div");
+      const featuredTitle = document.createElement("h2");
+      featuredTitle.className = "section-title";
+      featuredTitle.textContent = "PJey Labs Apps";
+      const featuredSub = document.createElement("p");
+      featuredSub.className = "section-subtitle";
+      featuredSub.textContent = "Download and explore all PJey Labs applications in one place.";
+      const featuredToolbar = document.createElement("div");
+      featuredToolbar.className = "apps-preview-toolbar";
+
+      const viewAllButton = document.createElement("a");
+      viewAllButton.href = "#";
+      viewAllButton.className = "button secondary";
+      viewAllButton.textContent = "View All Apps";
+      viewAllButton.addEventListener("click", (event) => {
+        event.preventDefault();
+        setPage("products");
+      });
+      featuredToolbar.append(viewAllButton);
+
+      const featuredGrid = document.createElement("div");
+      featuredGrid.className = "grid";
+      featuredGrid.id = "apps-preview-grid";
+
+      section.append(hero, featuredTitle, featuredSub, featuredToolbar, featuredGrid);
+      hero.append(logoBlock);
+      return section;
+    }
+
+    function makeAboutSection() {
+      const section = document.createElement("section");
+      section.id = "page-about";
+      section.className = "container page hidden";
+
+      const heading = document.createElement("h2");
+      heading.className = "section-title";
+      heading.textContent = "About";
+
+      const card = document.createElement("div");
+      card.className = "about-grid";
+
+      const identity = document.createElement("div");
+      const logo = document.createElement("img");
+      logo.src = "pjey-labs-logo.png";
+      logo.width = 56;
+      logo.height = 56;
+      logo.alt = "PJey Labs logo";
+      logo.style.borderRadius = "12px";
+      logo.style.border = "1px solid rgba(32, 214, 139, 0.4)";
+      logo.style.objectFit = "cover";
+
+      const name = document.createElement("h3");
+      name.style.marginBottom = "0.2rem";
+      name.textContent = "PJey Labs";
+      const description = document.createElement("p");
+      description.textContent =
+        "PJey Labs is a small software studio focused on building useful apps, developer tools, and AI-assisted workflows across Windows, Android, and other platforms.";
+      identity.append(name, description);
+
+      const contactWrap = document.createElement("div");
+      contactWrap.className = "contact-list";
+      contactWrap.innerHTML =
+        '<a href="mailto:contact@pjeylabs.com">contact@pjeylabs.com</a><a href="https://www.pjeylabs.com" target="_blank" rel="noopener noreferrer">www.pjeylabs.com</a>';
+
+      card.append(logo, identity, contactWrap);
+      section.append(heading, card);
+      return section;
+    }
+
+    function AppHubSection() {
+      const section = document.createElement("section");
+      section.id = "page-products";
+      section.className = "container page hidden";
+
+      const heading = document.createElement("h2");
+      heading.className = "section-title";
+      heading.textContent = "All PJey Labs Apps";
+
+      const subtitle = document.createElement("p");
+      subtitle.className = "section-subtitle";
+      subtitle.textContent = "Browse every PJey Labs application and get the latest downloads in one place.";
+
+      const status = document.createElement("p");
+      status.id = "apps-state";
+      status.className = "state-line";
+
+      const listWrapper = document.createElement("div");
+      listWrapper.className = "apps-scroll";
+
+      const grid = document.createElement("div");
+      grid.className = "grid";
+      grid.id = "apps-grid";
+
+      listWrapper.append(grid);
+      section.append(heading, subtitle, status, listWrapper);
+      return section;
+    }
+
+    function makeDownloadSection() {
+      const section = document.createElement("section");
+      section.id = "page-download";
+      section.className = "container page hidden";
+      return section;
+    }
+
+    function makeFooter() {
+      const footer = document.createElement("footer");
+      footer.className = "site-footer";
+      const inner = document.createElement("div");
+      inner.className = "container footer-inner";
+
+      const brand = document.createElement("div");
+      brand.className = "brand";
+      brand.style.gap = "0.55rem";
+      const logo = document.createElement("img");
+      logo.src = "pjey-labs-logo.png";
+      logo.width = 28;
+      logo.height = 28;
+      logo.alt = "";
+      const text = document.createElement("span");
+      text.textContent = "PJey Labs";
+      brand.append(logo, text);
+
+      const email = document.createElement("a");
+      email.href = "mailto:contact@pjeylabs.com";
+      email.textContent = "contact@pjeylabs.com";
+
+      const website = document.createElement("a");
+      website.href = "https://www.pjeylabs.com";
+      website.target = "_blank";
+      website.rel = "noopener noreferrer";
+      website.textContent = "www.pjeylabs.com";
+
+      const copyright = document.createElement("span");
+      copyright.textContent = "© 2026 PJey Labs. All rights reserved.";
+
+      inner.append(brand, email, website, copyright);
+      footer.append(inner);
+      return footer;
+    }
+
+    function setPage(pageId) {
+      state.activePage = pageId;
+      const home = document.getElementById("page-home");
+      const about = document.getElementById("page-about");
+      const products = document.getElementById("page-products");
+      const download = document.getElementById("page-download");
+
+      if (home) home.classList.toggle("hidden", pageId !== "home");
+      if (about) about.classList.toggle("hidden", pageId !== "about");
+      if (products) products.classList.toggle("hidden", pageId !== "products");
+      if (download) download.classList.toggle("hidden", pageId !== "download");
+
+      document.querySelectorAll(".tabs button").forEach((button) => {
+        const isActive = button.dataset.page === pageId;
+        button.setAttribute("aria-current", String(isActive));
+      });
+
+      if (pageId === "products") {
+        renderAppsHub();
+      }
+    }
+
+    function getVisibleApps() {
+      return [...state.apps].sort(compareAppSort);
+    }
+
+    function getStateMessage() {
+      if (state.status === "loading") {
+        return "Loading PJey Labs apps from Hub...";
+      }
+
+      if (state.status === "error") {
+        return state.error || "Unable to load apps.";
+      }
+
+      if (state.status === "empty") {
+        return state.error || "No active Hub apps were returned.";
+      }
+
+      return "";
+    }
+
+    function setLoadingState(message) {
+      state.status = "loading";
+      state.error = message || "";
+      renderAppSections();
+    }
+
+    function renderAppsHub() {
+      const status = document.getElementById("apps-state");
+      const grid = document.getElementById("apps-grid");
+      if (!grid || !status) {
+        return;
+      }
+
+      const message = getStateMessage();
+      status.className = `state-line${message ? " visible" : ""}`;
+      status.textContent = message;
+
+      const apps = getVisibleApps();
+      if (apps.length === 0 && state.status === "loading") {
+        const placeholder = document.createElement("p");
+        placeholder.className = "apps-preview-empty";
+        placeholder.textContent = "Loading apps from Hub...";
+        grid.replaceChildren(placeholder);
+        return;
+      }
+
+      if (apps.length === 0) {
+        const placeholder = document.createElement("p");
+        placeholder.className = "apps-preview-empty";
+        placeholder.textContent = "No active Hub apps were returned from public_apps.";
+        grid.replaceChildren(placeholder);
+        return;
+      }
+
+      grid.replaceChildren(...apps.map((app) => AppCard(app)));
+    }
+
+    function renderHomeFeatured() {
+      const featured = document.getElementById("apps-preview-grid");
+      if (!featured) {
+        return;
+      }
+
+      if (state.status === "loading") {
+        const placeholder = document.createElement("p");
+        placeholder.className = "apps-preview-empty";
+        placeholder.textContent = "Loading featured apps...";
+        featured.replaceChildren(placeholder);
+        return;
+      }
+
+      const featuredProducts = getVisibleApps().slice(0, APP_PREVIEW_LIMIT);
+      if (featuredProducts.length === 0) {
+        const placeholder = document.createElement("p");
+        placeholder.className = "apps-preview-empty";
+        placeholder.textContent = "No preview apps available yet.";
+        featured.replaceChildren(placeholder);
+        return;
+      }
+
+      featured.replaceChildren(...featuredProducts.map((app) => AppCard(app, { compact: true })));
+    }
+
+    function renderAppSections() {
+      renderHomeFeatured();
+      renderAppsHub();
+    }
+
+    async function hydrateApps() {
+      setLoadingState("Loading PJey Labs apps from Hub...");
+      const service = new FirebaseAppsService(FIREBASE_CONFIG);
+      try {
+        const result = await service.loadApps();
+        state.apps = result.apps || [];
+        state.status = result.status || "loaded";
+        state.error = result.error || "";
+        state.sourceCollection = result.sourceCollection || null;
+      } catch (error) {
+        console.error("Could not load PJey Labs apps from Hub", error);
+        state.apps = [];
+        state.status = "error";
+        state.error = error?.message || "Unable to load apps from Firebase.";
+      }
+
+      renderAppSections();
+    }
+
+    function buildPage() {
+      const shell = document.createDocumentFragment();
+      shell.append(
+        makeHeader(),
+        makeHomeSection(),
+        makeAboutSection(),
+        AppHubSection(),
+        makeDownloadSection(),
+        makeFooter()
+      );
+      appRoot.append(shell);
+      setPage("home");
+    }
+
+    buildPage();
+    hydrateApps();
+  </script>
 </body>
 </html>
