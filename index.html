@@ -145,15 +145,19 @@
     }
 
     .logo-block {
-      display: inline-flex;
+      display: flex;
       align-items: center;
       gap: 1.2rem;
       margin-bottom: 1rem;
     }
 
+    .logo-copy {
+      min-width: 0;
+    }
+
     .logo-block img {
-      width: 78px;
-      height: 78px;
+      width: 132px;
+      height: 132px;
       border-radius: 14px;
       object-fit: cover;
       border: 1px solid rgba(32, 214, 139, 0.4);
@@ -338,6 +342,10 @@
       transition: transform 130ms ease;
     }
 
+    .button[type="button"] {
+      cursor: pointer;
+    }
+
     .button.secondary {
       background: rgba(255, 255, 255, 0.06);
       color: var(--text);
@@ -349,13 +357,29 @@
       outline: none;
     }
 
-    .button[aria-disabled="true"] {
+    .button[aria-disabled="true"],
+    .button:disabled {
       cursor: not-allowed;
-      pointer-events: none;
       opacity: 0.58;
       color: var(--muted);
       background: transparent;
       border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .button-tooltip {
+      display: inline-flex;
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
     }
 
     .apps-scroll {
@@ -375,13 +399,6 @@
     .apps-scroll::-webkit-scrollbar-thumb {
       background: rgba(168, 255, 214, 0.45);
       border-radius: 8px;
-    }
-
-    .apps-preview-toolbar {
-      margin-top: 0.3rem;
-      display: flex;
-      align-items: center;
-      justify-content: flex-end;
     }
 
     .apps-preview-empty {
@@ -468,8 +485,12 @@
 
     @media (max-width: 460px) {
       .logo-block img {
-        width: 66px;
-        height: 66px;
+        width: 94px;
+        height: 94px;
+      }
+
+      .logo-block {
+        flex-direction: column;
       }
 
       .hero {
@@ -484,9 +505,8 @@
   <script type="module">
     const navTabs = [
       { id: "home", label: "Home" },
-      { id: "about", label: "About" },
       { id: "products", label: "Products / Apps Hub" },
-      { id: "download", label: "Download" },
+      { id: "about", label: "About" },
     ];
 
     const FIREBASE_CONFIG = {
@@ -499,15 +519,14 @@
     };
 
     const APP_COLLECTION_NAME = "public_apps";
-    const APP_PREVIEW_LIMIT = 4;
-
     const PLATFORM_LINK_MAP = [
-      { key: "androidUrl", label: "Android", platform: "Android" },
-      { key: "windowsUrl", label: "Windows", platform: "Windows" },
-      { key: "linuxUrl", label: "Linux", platform: "Linux" },
-      { key: "macosUrl", label: "macOS", platform: "macOS" },
-      { key: "iosUrl", label: "iOS", platform: "iOS" },
+      { key: "windowsUrl", platformKey: "windows", label: "Windows", platform: "Windows" },
+      { key: "androidUrl", platformKey: "android", label: "Android", platform: "Android" },
+      { key: "iosUrl", platformKey: "ios", label: "iOS", platform: "iOS" },
+      { key: "macosUrl", platformKey: "macos", label: "macOS", platform: "macOS" },
+      { key: "linuxUrl", platformKey: "linux", label: "Linux", platform: "Linux" },
     ];
+    const DOWNLOAD_UNAVAILABLE_MESSAGE = "Download link not available";
 
     const GENERAL_LINK_MAP = [
       { key: "downloadUrl", label: "Download", type: "download" },
@@ -609,6 +628,111 @@
       }
     }
 
+    function normalizeHttpsUrl(value) {
+      if (!hasValue(value)) {
+        return "";
+      }
+
+      const trimmed = value.trim();
+      if (!trimmed.toLowerCase().startsWith("https://")) {
+        return "";
+      }
+
+      try {
+        const parsed = new URL(trimmed);
+        return parsed.protocol === "https:" ? parsed.href : "";
+      } catch {
+        return "";
+      }
+    }
+
+    function readRecordValue(record, keys) {
+      if (!record || typeof record !== "object" || Array.isArray(record)) {
+        return "";
+      }
+
+      for (const key of keys) {
+        if (hasValue(record[key])) {
+          return record[key];
+        }
+      }
+
+      const normalizedKeys = keys.map((key) => String(key).toLowerCase());
+      const match = Object.entries(record).find(([key]) => normalizedKeys.includes(String(key).toLowerCase()));
+      return match && hasValue(match[1]) ? match[1] : "";
+    }
+
+    function readArrayLinkValue(links, linkConfig) {
+      if (!Array.isArray(links)) {
+        return "";
+      }
+
+      const expected = [linkConfig.platformKey, linkConfig.label, linkConfig.platform]
+        .map((value) => String(value).toLowerCase());
+      const match = links.find((entry) => {
+        if (!entry || typeof entry !== "object") {
+          return false;
+        }
+
+        const labels = [entry.platform, entry.label, entry.type, entry.key]
+          .filter(hasValue)
+          .map((value) => String(value).toLowerCase());
+        return labels.some((label) => expected.includes(label) || normalizePlatformName(label) === linkConfig.platform);
+      });
+
+      return match ? match.url || match.href || "" : "";
+    }
+
+    function getPlatformRawUrls(product, linkConfig) {
+      const nestedKeys = [linkConfig.platformKey, linkConfig.label, linkConfig.key];
+      return [
+        product[linkConfig.key],
+        readRecordValue(product.platformLinks, nestedKeys),
+        readRecordValue(product.storeLinks, nestedKeys),
+        readArrayLinkValue(product.links, linkConfig),
+      ].filter(hasValue);
+    }
+
+    function normalizePlatformDownloads(product) {
+      const explicitPlatforms = new Set();
+
+      if (Array.isArray(product.platforms)) {
+        product.platforms.forEach((platform) => {
+          const normalized = normalizePlatformName(platform);
+          if (normalized !== "General") {
+            explicitPlatforms.add(normalized);
+          }
+        });
+      }
+
+      if (hasValue(product.platform)) {
+        const normalized = normalizePlatformName(product.platform);
+        if (normalized !== "General") {
+          explicitPlatforms.add(normalized);
+        }
+      }
+
+      return PLATFORM_LINK_MAP.map((linkConfig) => {
+        const rawUrls = getPlatformRawUrls(product, linkConfig);
+        const href = rawUrls.map(normalizeHttpsUrl).find(Boolean) || "";
+        const shouldRender = explicitPlatforms.has(linkConfig.platform) || rawUrls.length > 0 || Boolean(href);
+
+        if (!shouldRender) {
+          return null;
+        }
+
+        if (!href) {
+          console.debug(`${linkConfig.label} download URL missing or invalid`);
+        }
+
+        return {
+          href,
+          label: linkConfig.label,
+          platform: linkConfig.platform,
+        };
+      }).filter(Boolean);
+    }
+
     function normalizePlatformName(value) {
       const text = getSafeText(value, "").toLowerCase();
       if (text.includes("windows") || text === "win" || text === "win32") {
@@ -671,6 +795,9 @@
     function normalizeLinks(product) {
       const entries = [];
       const seen = new Set();
+      const platformStoreKeys = new Set(
+        PLATFORM_LINK_MAP.flatMap((entry) => [entry.platformKey, entry.label.toLowerCase(), entry.key.toLowerCase()])
+      );
       const push = (url, label, type) => {
         const href = normalizeUrl(url);
         if (!href) {
@@ -690,10 +817,6 @@
         });
       };
 
-      PLATFORM_LINK_MAP.forEach(({ key, label }) => {
-        push(product[key], label, "download");
-      });
-
       GENERAL_LINK_MAP.forEach(({ key, label, type }) => {
         push(product[key], label, type);
       });
@@ -701,6 +824,10 @@
       if (product.storeLinks && typeof product.storeLinks === "object" && !Array.isArray(product.storeLinks)) {
         Object.entries(product.storeLinks).forEach(([rawKey, rawUrl]) => {
           const key = String(rawKey).trim().toLowerCase();
+          if (platformStoreKeys.has(key)) {
+            return;
+          }
+
           const label = STORE_LINK_LABELS[key] || normalizePlatformName(key);
           const type = label === "Website" ? "website" : "download";
           push(rawUrl, label, type);
@@ -720,6 +847,11 @@
 
           const label = getSafeText(entry.label, "Details");
           const type = getSafeText(entry.type, "details").toLowerCase();
+          const normalizedLabel = normalizePlatformName(label);
+          if (PLATFORM_LINK_MAP.some((platform) => platform.platform === normalizedLabel)) {
+            return;
+          }
+
           const key = `${type}::${href}`;
           if (!seen.has(key)) {
             seen.add(key);
@@ -731,7 +863,7 @@
       return entries;
     }
 
-    function normalizePlatforms(product, links = []) {
+    function normalizePlatforms(product, platformDownloads = []) {
       const platforms = new Set();
 
       if (Array.isArray(product.platforms)) {
@@ -743,14 +875,9 @@
         });
       }
 
-      links.forEach((link) => {
-        if (link.type === "download") {
-          const platform = PLATFORM_LINK_MAP.find((entry) => entry.label === link.label);
-          if (platform) {
-            platforms.add(platform.platform);
-          } else if (link.label && link.label.toLowerCase() !== "download") {
-            platforms.add(normalizePlatformName(link.label));
-          }
+      platformDownloads.forEach((download) => {
+        if (download?.platform) {
+          platforms.add(download.platform);
         }
       });
 
@@ -775,7 +902,8 @@
     function normalizeAppData(source = {}) {
       const appData = source || {};
       const links = normalizeLinks(appData);
-      const platforms = normalizePlatforms(appData, links);
+      const platformDownloads = normalizePlatformDownloads(appData);
+      const platforms = normalizePlatforms(appData, platformDownloads);
       const plan = normalizePlan(appData);
       const createdAt = toEpoch(
         appData.createdAt || appData.created_at || appData.updatedAt || appData.updated_at || appData.publishedAt
@@ -797,6 +925,7 @@
         version: getSafeText(appData.version || appData.appVersion || appData.currentVersion, "Not specified"),
         iconUrl: normalizeUrl(appData.iconUrl || appData.imageUrl || appData.thumbnailUrl),
         platforms,
+        platformDownloads,
         plan: plan || "Free",
         links,
         featured,
@@ -875,6 +1004,19 @@
       }
 
       return a.name.localeCompare(b.name);
+    }
+
+    function openPlatformDownload(download) {
+      if (!download?.href) {
+        console.debug(`${download?.label || "Platform"} download URL missing or invalid`);
+        return;
+      }
+
+      console.debug(`Opening ${download.label} download URL: ${download.href}`);
+      const openedWindow = window.open(download.href, "_blank");
+      if (openedWindow) {
+        openedWindow.opener = null;
+      }
     }
 
     function makeTabs(activePageId, onChange) {
@@ -990,12 +1132,47 @@
       const actions = document.createElement("div");
       actions.className = "actions";
 
+      const platformDownloads = Array.isArray(app.platformDownloads) ? app.platformDownloads : [];
       const downloadLinks = app.links.filter((link) => link.type === "download");
-      const primary = downloadLinks[0];
+      const primary = platformDownloads.find((download) => download.href) || downloadLinks[0];
       const website = app.links.find((link) => link.type === "website");
       const details = app.links.find((link) => link.type === "details") || app.links.find(
         (link) => link.label.toLowerCase() === "details" || link.label.toLowerCase() === "more info"
       );
+
+      let hasPrimaryDownloadButton = false;
+      const addPlatformButton = (download) => {
+        const isAvailable = Boolean(download.href);
+        const isSecondary = hasPrimaryDownloadButton || !isAvailable;
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = `button${isSecondary ? " secondary" : ""}`;
+        button.textContent = download.label;
+
+        if (isAvailable) {
+          button.addEventListener("click", (event) => {
+            event.preventDefault();
+            event.stopPropagation();
+            openPlatformDownload(download);
+          });
+          hasPrimaryDownloadButton = true;
+          actions.append(button);
+          return;
+        }
+
+        button.disabled = true;
+        button.setAttribute("aria-disabled", "true");
+        button.setAttribute("aria-label", `${download.label}: ${DOWNLOAD_UNAVAILABLE_MESSAGE}`);
+
+        const tooltip = document.createElement("span");
+        tooltip.className = "button-tooltip";
+        tooltip.title = DOWNLOAD_UNAVAILABLE_MESSAGE;
+        const helper = document.createElement("span");
+        helper.className = "sr-only";
+        helper.textContent = DOWNLOAD_UNAVAILABLE_MESSAGE;
+        tooltip.append(button, helper);
+        actions.append(tooltip);
+      };
 
       const addButton = (link, label, secondary = false) => {
         const button = document.createElement("a");
@@ -1007,8 +1184,11 @@
         actions.append(button);
       };
 
+      platformDownloads.forEach((download) => {
+        addPlatformButton(download);
+      });
       downloadLinks.forEach((link, index) => {
-        addButton(link, link.label || "Download", index > 0);
+        addButton(link, link.label || "Download", platformDownloads.length > 0 || index > 0);
       });
       if (website && !downloadLinks.some((link) => link.href === website.href)) {
         addButton(website, "Website", true);
@@ -1017,11 +1197,12 @@
         addButton(details, details.label || "Details", true);
       }
 
-      if (!primary && !website && !details) {
+      if (actions.childElementCount === 0 && !primary && !website && !details) {
         const placeholder = document.createElement("span");
         placeholder.className = "button secondary";
         placeholder.setAttribute("aria-disabled", "true");
-        placeholder.textContent = "Not available yet";
+        placeholder.title = DOWNLOAD_UNAVAILABLE_MESSAGE;
+        placeholder.textContent = DOWNLOAD_UNAVAILABLE_MESSAGE;
         actions.append(placeholder);
       }
 
@@ -1041,44 +1222,21 @@
       logoBlock.className = "logo-block";
       const logo = document.createElement("img");
       logo.src = "pjey-labs-logo.png";
-      logo.width = 78;
-      logo.height = 78;
+      logo.width = 132;
+      logo.height = 132;
       logo.alt = "PJey Labs logo";
       const heading = document.createElement("div");
+      heading.className = "logo-copy";
       const title = document.createElement("h1");
       title.textContent = "PJey Labs";
       const lead = document.createElement("p");
       lead.className = "hero-copy";
       lead.textContent =
-        "PJey Labs creates practical cross-platform apps and AI-powered tools for productivity, development, and everyday work.";
+        "PJey Labs is an independent software studio building practical cross-platform apps, AI-powered tools, and developer workflows that help people move faster in everyday work. We focus on useful products that are simple to access, reliable across devices, and shaped around real productivity, from lightweight utilities to smarter automation for Windows, Android, web, and emerging platforms.";
       heading.append(title, lead);
       logoBlock.append(logo, heading);
 
-      const featuredWrap = document.createElement("div");
-      const featuredTitle = document.createElement("h2");
-      featuredTitle.className = "section-title";
-      featuredTitle.textContent = "PJey Labs Apps";
-      const featuredSub = document.createElement("p");
-      featuredSub.className = "section-subtitle";
-      featuredSub.textContent = "Download and explore all PJey Labs applications in one place.";
-      const featuredToolbar = document.createElement("div");
-      featuredToolbar.className = "apps-preview-toolbar";
-
-      const viewAllButton = document.createElement("a");
-      viewAllButton.href = "#";
-      viewAllButton.className = "button secondary";
-      viewAllButton.textContent = "View All Apps";
-      viewAllButton.addEventListener("click", (event) => {
-        event.preventDefault();
-        setPage("products");
-      });
-      featuredToolbar.append(viewAllButton);
-
-      const featuredGrid = document.createElement("div");
-      featuredGrid.className = "grid";
-      featuredGrid.id = "apps-preview-grid";
-
-      section.append(hero, featuredTitle, featuredSub, featuredToolbar, featuredGrid);
+      section.append(hero);
       hero.append(logoBlock);
       return section;
     }
@@ -1274,34 +1432,7 @@
       grid.replaceChildren(...apps.map((app) => AppCard(app)));
     }
 
-    function renderHomeFeatured() {
-      const featured = document.getElementById("apps-preview-grid");
-      if (!featured) {
-        return;
-      }
-
-      if (state.status === "loading") {
-        const placeholder = document.createElement("p");
-        placeholder.className = "apps-preview-empty";
-        placeholder.textContent = "Loading featured apps...";
-        featured.replaceChildren(placeholder);
-        return;
-      }
-
-      const featuredProducts = getVisibleApps().slice(0, APP_PREVIEW_LIMIT);
-      if (featuredProducts.length === 0) {
-        const placeholder = document.createElement("p");
-        placeholder.className = "apps-preview-empty";
-        placeholder.textContent = "No preview apps available yet.";
-        featured.replaceChildren(placeholder);
-        return;
-      }
-
-      featured.replaceChildren(...featuredProducts.map((app) => AppCard(app, { compact: true })));
-    }
-
     function renderAppSections() {
-      renderHomeFeatured();
       renderAppsHub();
     }
 
