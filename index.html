@@ -8,7 +8,9 @@
     content="PJey Labs creates practical cross-platform apps and AI-powered tools for productivity, development, and everyday work."
   />
   <title>PJey Labs</title>
-  <link rel="icon" type="image/png" href="favicon.png" />
+  <link rel="icon" type="image/png" href="pjey-labs-logo.png" />
+  <link rel="shortcut icon" type="image/png" href="pjey-labs-logo.png" />
+  <link rel="apple-touch-icon" href="pjey-labs-logo.png" />
   <style>
     :root {
       --bg: #060d14;
@@ -202,6 +204,13 @@
       margin-bottom: 1.2rem;
     }
 
+    .section-helper {
+      color: #cfe2d8;
+      margin: -0.55rem 0 1.2rem;
+      max-width: 68ch;
+      font-size: 0.94rem;
+    }
+
     .state-line {
       margin: 0.8rem 0 0.9rem;
       padding: 0.6rem 0.8rem;
@@ -239,6 +248,251 @@
       transform: translateY(-2px);
       border-color: rgba(32, 214, 139, 0.34);
       box-shadow: var(--shadow);
+    }
+
+    .product-list {
+      display: grid;
+      gap: 0.85rem;
+      max-width: 960px;
+    }
+
+    .product-list-item {
+      width: 100%;
+      border: 1px solid var(--line-soft);
+      border-radius: var(--radius);
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.014));
+      color: var(--text);
+      display: grid;
+      gap: 1rem;
+      min-height: 188px;
+      padding: 0.9rem;
+      text-align: left;
+      transition: transform 160ms ease, border-color 160ms ease, background 160ms ease;
+    }
+
+    .product-list-item:hover,
+    .product-list-item:focus-within {
+      outline: none;
+      transform: translateY(-1px);
+      border-color: rgba(32, 214, 139, 0.34);
+      background: rgba(32, 214, 139, 0.08);
+    }
+
+    .product-list-open {
+      appearance: none;
+      border: 0;
+      border-radius: 8px;
+      background: transparent;
+      color: inherit;
+      cursor: pointer;
+      font: inherit;
+      padding: 0;
+      text-align: left;
+      width: 100%;
+    }
+
+    .product-list-open:focus-visible {
+      outline: 2px solid rgba(32, 214, 139, 0.7);
+      outline-offset: 4px;
+    }
+
+    .product-list-open:hover .product-list-action,
+    .product-list-open:focus-visible .product-list-action {
+      color: var(--accent);
+    }
+
+    .product-list-content {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      min-width: 0;
+    }
+
+    .product-list-main {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+      min-width: 0;
+    }
+
+    .product-list-name {
+      font: inherit;
+      font-weight: 800;
+      font-size: 1rem;
+      line-height: 1.2;
+      overflow-wrap: anywhere;
+    }
+
+    .product-list-action {
+      color: var(--muted);
+      flex: 0 0 auto;
+      font-size: 0.84rem;
+      font-weight: 800;
+    }
+
+    .product-screenshots {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 0.65rem;
+      width: 100%;
+    }
+
+    .product-screenshot-slot {
+      appearance: none;
+      position: relative;
+      display: block;
+      min-height: 84px;
+      aspect-ratio: 16 / 9;
+      overflow: hidden;
+      padding: 0;
+      border: 1px solid rgba(168, 255, 214, 0.14);
+      border-radius: 8px;
+      background:
+        linear-gradient(135deg, rgba(32, 214, 139, 0.12), transparent 36%),
+        linear-gradient(180deg, rgba(255, 255, 255, 0.055), rgba(255, 255, 255, 0.018));
+      cursor: zoom-in;
+      transition: border-color 160ms ease, transform 160ms ease;
+    }
+
+    .product-screenshot-slot:not(.empty):hover,
+    .product-screenshot-slot:not(.empty):focus-visible {
+      outline: none;
+      border-color: rgba(32, 214, 139, 0.55);
+      transform: translateY(-1px);
+    }
+
+    .product-screenshot-slot.empty {
+      background:
+        repeating-linear-gradient(
+          -45deg,
+          rgba(168, 255, 214, 0.055) 0,
+          rgba(168, 255, 214, 0.055) 8px,
+          transparent 8px,
+          transparent 16px
+        ),
+        linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.014));
+      cursor: default;
+    }
+
+    .product-screenshot-slot img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+      background: #09111c;
+    }
+
+    body.gallery-open {
+      overflow: hidden;
+    }
+
+    .gallery-lightbox {
+      position: fixed;
+      inset: 0;
+      z-index: 90;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: clamp(1rem, 4vw, 2rem);
+      background: rgba(2, 7, 12, 0.88);
+      backdrop-filter: blur(12px);
+    }
+
+    .gallery-lightbox.open {
+      display: flex;
+    }
+
+    .gallery-lightbox-panel {
+      width: min(100%, 1120px);
+      max-height: min(90vh, 820px);
+      display: grid;
+      grid-template-rows: auto minmax(0, 1fr) auto;
+      gap: 0.75rem;
+    }
+
+    .gallery-lightbox-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .gallery-lightbox-title {
+      color: var(--text);
+      font-weight: 800;
+      overflow-wrap: anywhere;
+    }
+
+    .gallery-close,
+    .gallery-nav-button {
+      appearance: none;
+      border: 1px solid rgba(168, 255, 214, 0.2);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--text);
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+      font: inherit;
+      font-weight: 800;
+      transition: background 160ms ease, border-color 160ms ease, transform 160ms ease;
+    }
+
+    .gallery-close {
+      width: 42px;
+      height: 42px;
+      font-size: 1.35rem;
+      line-height: 1;
+    }
+
+    .gallery-close:hover,
+    .gallery-close:focus-visible,
+    .gallery-nav-button:hover,
+    .gallery-nav-button:focus-visible {
+      outline: none;
+      border-color: rgba(32, 214, 139, 0.55);
+      background: rgba(32, 214, 139, 0.16);
+      transform: translateY(-1px);
+    }
+
+    .gallery-image-frame {
+      position: relative;
+      min-height: 220px;
+      display: grid;
+      grid-template-columns: 48px minmax(0, 1fr) 48px;
+      align-items: center;
+      gap: 0.8rem;
+    }
+
+    .gallery-nav-button {
+      width: 48px;
+      height: 56px;
+      font-size: 2rem;
+      line-height: 1;
+    }
+
+    .gallery-nav-button:disabled {
+      cursor: not-allowed;
+      opacity: 0.42;
+      transform: none;
+    }
+
+    .gallery-image {
+      width: 100%;
+      height: min(72vh, 680px);
+      object-fit: contain;
+      display: block;
+      border: 1px solid rgba(168, 255, 214, 0.18);
+      border-radius: 8px;
+      background: #09111c;
+      box-shadow: var(--shadow);
+    }
+
+    .gallery-caption {
+      color: var(--muted);
+      font-size: 0.9rem;
+      text-align: center;
     }
 
     .card-header {
@@ -432,6 +686,25 @@
       font-weight: 700;
     }
 
+    .footer-links {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      flex-wrap: wrap;
+    }
+
+    .footer-links a {
+      color: var(--muted);
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+
+    .footer-links a:hover,
+    .footer-links a:focus-visible {
+      color: var(--text);
+      outline: none;
+    }
+
     .site-footer {
       margin-top: 1.5rem;
       border-top: 1px solid var(--line-soft);
@@ -477,6 +750,14 @@
         grid-template-columns: 1fr;
       }
 
+      .product-list {
+        max-width: none;
+      }
+
+      .product-list-item {
+        min-height: 170px;
+      }
+
       .footer-inner {
         flex-direction: column;
         align-items: flex-start;
@@ -496,6 +777,25 @@
       .hero {
         padding-top: 1.6rem;
       }
+
+      .product-list-content {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .product-screenshots {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .gallery-image-frame {
+        grid-template-columns: 40px minmax(0, 1fr) 40px;
+        gap: 0.45rem;
+      }
+
+      .gallery-nav-button {
+        width: 40px;
+        height: 48px;
+      }
     }
   </style>
 </head>
@@ -505,9 +805,22 @@
   <script type="module">
     const navTabs = [
       { id: "home", label: "Home" },
-      { id: "products", label: "Products / Apps Hub" },
+      { id: "products", label: "Products" },
+      { id: "app-hub", label: "App Hub" },
       { id: "about", label: "About" },
     ];
+    const PAGE_ROUTES = {
+      home: "/",
+      products: "/products",
+      "app-hub": "/app-hub",
+      about: "/about",
+    };
+    const HASH_ROUTES = {
+      home: "",
+      products: "#/products",
+      "app-hub": "#/app-hub",
+      about: "#/about",
+    };
 
     const FIREBASE_CONFIG = {
       projectId: "pjeylabs-hub",
@@ -527,6 +840,15 @@
       { key: "linuxUrl", platformKey: "linux", label: "Linux", platform: "Linux" },
     ];
     const DOWNLOAD_UNAVAILABLE_MESSAGE = "Download link not available";
+    const LOCAL_PRODUCT_SCREENSHOTS = {
+      "pj-notes": [
+        "assets/pj-notes/desktop-overview.png",
+        "assets/pj-notes/mobile-landscape-tabs.jpg",
+        "assets/pj-notes/mobile-portrait-editor.jpg",
+        "assets/pj-notes/settings-download.jpg",
+        "assets/pj-notes/mobile-editing-cursor.jpg",
+      ],
+    };
 
     const GENERAL_LINK_MAP = [
       { key: "downloadUrl", label: "Download", type: "download" },
@@ -548,7 +870,6 @@
 
     const APP_STATUS_PRIORITY = ["isFeatured", "featured", "pinned", "isActive", "active"];
     const PLATFORM_SORT_ORDER = ["Windows", "Android", "Linux", "macOS", "iOS", "Web", "Other"];
-
     const state = {
       activePage: "home",
       apps: [],
@@ -556,8 +877,192 @@
       error: "",
       sourceCollection: null,
     };
+    const galleryState = {
+      images: [],
+      title: "",
+      currentIndex: 0,
+      lastFocused: null,
+    };
 
     const appRoot = document.getElementById("app");
+
+    function getGalleryElements() {
+      return {
+        lightbox: document.getElementById("gallery-lightbox"),
+        title: document.getElementById("gallery-lightbox-title"),
+        image: document.getElementById("gallery-lightbox-image"),
+        caption: document.getElementById("gallery-lightbox-caption"),
+        previous: document.getElementById("gallery-lightbox-previous"),
+        next: document.getElementById("gallery-lightbox-next"),
+        close: document.getElementById("gallery-lightbox-close"),
+      };
+    }
+
+    function updateGalleryImage() {
+      const { title, image, caption, previous, next } = getGalleryElements();
+      const src = galleryState.images[galleryState.currentIndex];
+      if (!src || !image || !caption || !previous || !next || !title) {
+        return;
+      }
+
+      title.textContent = galleryState.title;
+      image.src = src;
+      image.alt = `${galleryState.title} screenshot ${galleryState.currentIndex + 1}`;
+      caption.textContent = `Screenshot ${galleryState.currentIndex + 1} of ${galleryState.images.length}`;
+      previous.disabled = galleryState.images.length <= 1;
+      next.disabled = galleryState.images.length <= 1;
+    }
+
+    function openScreenshotGallery(app, images, index, trigger) {
+      const { lightbox, close } = getGalleryElements();
+      if (!lightbox || images.length === 0) {
+        return;
+      }
+
+      galleryState.images = images;
+      galleryState.title = `${app.name} gallery`;
+      galleryState.currentIndex = index;
+      galleryState.lastFocused = trigger || document.activeElement;
+      updateGalleryImage();
+      lightbox.classList.add("open");
+      lightbox.setAttribute("aria-hidden", "false");
+      document.body.classList.add("gallery-open");
+      close?.focus();
+    }
+
+    function closeScreenshotGallery() {
+      const { lightbox, image } = getGalleryElements();
+      if (!lightbox) {
+        return;
+      }
+
+      lightbox.classList.remove("open");
+      lightbox.setAttribute("aria-hidden", "true");
+      document.body.classList.remove("gallery-open");
+      if (image) {
+        image.removeAttribute("src");
+      }
+      galleryState.lastFocused?.focus?.();
+      galleryState.lastFocused = null;
+    }
+
+    function showGalleryOffset(offset) {
+      if (galleryState.images.length <= 1) {
+        return;
+      }
+
+      galleryState.currentIndex =
+        (galleryState.currentIndex + offset + galleryState.images.length) % galleryState.images.length;
+      updateGalleryImage();
+    }
+
+    function makeGalleryLightbox() {
+      const lightbox = document.createElement("div");
+      lightbox.id = "gallery-lightbox";
+      lightbox.className = "gallery-lightbox";
+      lightbox.setAttribute("role", "dialog");
+      lightbox.setAttribute("aria-modal", "true");
+      lightbox.setAttribute("aria-hidden", "true");
+      lightbox.setAttribute("aria-labelledby", "gallery-lightbox-title");
+      lightbox.addEventListener("click", (event) => {
+        if (event.target === lightbox) {
+          closeScreenshotGallery();
+        }
+      });
+
+      const panel = document.createElement("div");
+      panel.className = "gallery-lightbox-panel";
+
+      const top = document.createElement("div");
+      top.className = "gallery-lightbox-top";
+
+      const title = document.createElement("p");
+      title.id = "gallery-lightbox-title";
+      title.className = "gallery-lightbox-title";
+
+      const close = document.createElement("button");
+      close.id = "gallery-lightbox-close";
+      close.type = "button";
+      close.className = "gallery-close";
+      close.setAttribute("aria-label", "Close gallery");
+      close.textContent = "×";
+      close.addEventListener("click", closeScreenshotGallery);
+
+      const frame = document.createElement("div");
+      frame.className = "gallery-image-frame";
+
+      const previous = document.createElement("button");
+      previous.id = "gallery-lightbox-previous";
+      previous.type = "button";
+      previous.className = "gallery-nav-button";
+      previous.setAttribute("aria-label", "Previous screenshot");
+      previous.textContent = "‹";
+      previous.addEventListener("click", () => showGalleryOffset(-1));
+
+      const image = document.createElement("img");
+      image.id = "gallery-lightbox-image";
+      image.className = "gallery-image";
+      image.alt = "";
+
+      const next = document.createElement("button");
+      next.id = "gallery-lightbox-next";
+      next.type = "button";
+      next.className = "gallery-nav-button";
+      next.setAttribute("aria-label", "Next screenshot");
+      next.textContent = "›";
+      next.addEventListener("click", () => showGalleryOffset(1));
+
+      const caption = document.createElement("p");
+      caption.id = "gallery-lightbox-caption";
+      caption.className = "gallery-caption";
+
+      top.append(title, close);
+      frame.append(previous, image, next);
+      panel.append(top, frame, caption);
+      lightbox.append(panel);
+      return lightbox;
+    }
+
+    function getHashRouteForPage(pageId) {
+      return HASH_ROUTES[pageId] || HASH_ROUTES.home;
+    }
+
+    function getPageFromLocation() {
+      const hashPage = window.location.hash.replace(/^#\/?/, "");
+      if (PAGE_ROUTES[hashPage]) {
+        return hashPage;
+      }
+
+      const normalizedPath = window.location.pathname.replace(/\/+$/, "") || "/";
+      const routeMatch = Object.entries(PAGE_ROUTES).find(([, route]) => {
+        const normalizedRoute = route.replace(/\/+$/, "") || "/";
+        return normalizedPath === normalizedRoute;
+      });
+
+      if (routeMatch) {
+        return routeMatch[0];
+      }
+
+      return "home";
+    }
+
+    function navigateToPage(pageId) {
+      if (!PAGE_ROUTES[pageId]) {
+        return;
+      }
+
+      setPage(pageId);
+
+      if (window.location.protocol === "file:") {
+        window.location.hash = pageId === "home" ? "" : pageId;
+        return;
+      }
+
+      const nextRoute = `/${getHashRouteForPage(pageId)}`;
+      if (`${window.location.pathname}${window.location.hash}` !== nextRoute) {
+        window.history.pushState({ pageId }, "", nextRoute);
+      }
+    }
 
     const hasValue = (value) =>
       typeof value === "string" && value.trim() !== "" && value.trim().toLowerCase() !== "coming_soon";
@@ -569,6 +1074,32 @@
 
       return fallback;
     };
+
+    function normalizeProductAssetKey(value) {
+      return getSafeText(value, "")
+        .toLowerCase()
+        .replace(/'/g, "")
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/^-+|-+$/g, "");
+    }
+
+    function getProductPageScreenshots(app) {
+      const screenshots = Array.isArray(app.screenshots) ? app.screenshots : [];
+      const localScreenshots =
+        LOCAL_PRODUCT_SCREENSHOTS[normalizeProductAssetKey(app.name)] ||
+        LOCAL_PRODUCT_SCREENSHOTS[normalizeProductAssetKey(app.id)] ||
+        [];
+      const seen = new Set();
+
+      return [...screenshots, ...localScreenshots].filter((src) => {
+        if (!hasValue(src) || seen.has(src)) {
+          return false;
+        }
+
+        seen.add(src);
+        return true;
+      });
+    }
 
     const toNumber = (value) => {
       if (typeof value === "number" && Number.isFinite(value)) {
@@ -863,6 +1394,43 @@
       return entries;
     }
 
+    function normalizeScreenshotUrls(product) {
+      const screenshots = [];
+      const seen = new Set();
+      const addScreenshot = (value) => {
+        if (Array.isArray(value)) {
+          value.forEach(addScreenshot);
+          return;
+        }
+
+        if (value && typeof value === "object") {
+          addScreenshot(value.url || value.href || value.src || value.imageUrl || value.thumbnailUrl);
+          return;
+        }
+
+        const href = normalizeUrl(value);
+        if (!href || seen.has(href)) {
+          return;
+        }
+
+        seen.add(href);
+        screenshots.push(href);
+      };
+
+      [
+        product.screenshotUrl,
+        product.screenshots,
+        product.screenshotUrls,
+        product.screenShots,
+        product.gallery,
+        product.galleryImages,
+        product.images,
+        product.media?.screenshots,
+      ].forEach(addScreenshot);
+
+      return screenshots.slice(0, 6);
+    }
+
     function normalizePlatforms(product, platformDownloads = []) {
       const platforms = new Set();
 
@@ -905,6 +1473,7 @@
       const platformDownloads = normalizePlatformDownloads(appData);
       const platforms = normalizePlatforms(appData, platformDownloads);
       const plan = normalizePlan(appData);
+      const screenshots = normalizeScreenshotUrls(appData);
       const createdAt = toEpoch(
         appData.createdAt || appData.created_at || appData.updatedAt || appData.updated_at || appData.publishedAt
       );
@@ -924,6 +1493,7 @@
         description: getSafeText(appData.description || appData.body || appData.details, ""),
         version: getSafeText(appData.version || appData.appVersion || appData.currentVersion, "Not specified"),
         iconUrl: normalizeUrl(appData.iconUrl || appData.imageUrl || appData.thumbnailUrl),
+        screenshots,
         platforms,
         platformDownloads,
         plan: plan || "Free",
@@ -1029,7 +1599,7 @@
         button.type = "button";
         button.textContent = tab.label;
         button.setAttribute("data-page", tab.id);
-        button.setAttribute("aria-current", String(tab.id === activePageId));
+        button.setAttribute("aria-current", tab.id === activePageId ? "page" : "false");
         button.addEventListener("click", () => onChange(tab.id));
         nav.append(button);
       });
@@ -1049,7 +1619,7 @@
       brand.setAttribute("aria-label", "PJey Labs home");
       brand.addEventListener("click", (event) => {
         event.preventDefault();
-        setPage("home");
+        navigateToPage("home");
       });
 
       const logo = document.createElement("img");
@@ -1061,13 +1631,14 @@
       name.textContent = "PJey Labs";
       brand.append(logo, name);
 
-      inner.append(brand, makeTabs(state.activePage, setPage));
+      inner.append(brand, makeTabs(state.activePage, navigateToPage));
       header.append(inner);
       return header;
     }
 
     function AppCard(app, options = {}) {
       const compact = options.compact === true;
+      const showActions = options.showActions !== false;
       const card = document.createElement("article");
       card.className = "card app-card";
 
@@ -1129,85 +1700,171 @@
         chips.append(planChip);
       }
 
-      const actions = document.createElement("div");
-      actions.className = "actions";
+      card.append(head, description, chips);
 
-      const platformDownloads = Array.isArray(app.platformDownloads) ? app.platformDownloads : [];
-      const downloadLinks = app.links.filter((link) => link.type === "download");
-      const primary = platformDownloads.find((download) => download.href) || downloadLinks[0];
-      const website = app.links.find((link) => link.type === "website");
-      const details = app.links.find((link) => link.type === "details") || app.links.find(
-        (link) => link.label.toLowerCase() === "details" || link.label.toLowerCase() === "more info"
-      );
+      if (showActions) {
+        const actions = document.createElement("div");
+        actions.className = "actions";
 
-      let hasPrimaryDownloadButton = false;
-      const addPlatformButton = (download) => {
-        const isAvailable = Boolean(download.href);
-        const isSecondary = hasPrimaryDownloadButton || !isAvailable;
-        const button = document.createElement("button");
-        button.type = "button";
-        button.className = `button${isSecondary ? " secondary" : ""}`;
-        button.textContent = download.label;
+        const platformDownloads = Array.isArray(app.platformDownloads) ? app.platformDownloads : [];
+        const downloadLinks = app.links.filter((link) => link.type === "download");
+        const primary = platformDownloads.find((download) => download.href) || downloadLinks[0];
+        const website = app.links.find((link) => link.type === "website");
+        const details = app.links.find((link) => link.type === "details") || app.links.find(
+          (link) => link.label.toLowerCase() === "details" || link.label.toLowerCase() === "more info"
+        );
 
-        if (isAvailable) {
-          button.addEventListener("click", (event) => {
-            event.preventDefault();
-            event.stopPropagation();
-            openPlatformDownload(download);
-          });
-          hasPrimaryDownloadButton = true;
+        let hasPrimaryDownloadButton = false;
+        const addPlatformButton = (download) => {
+          const isAvailable = Boolean(download.href);
+          const isSecondary = hasPrimaryDownloadButton || !isAvailable;
+          const button = document.createElement("button");
+          button.type = "button";
+          button.className = `button${isSecondary ? " secondary" : ""}`;
+          button.textContent = download.label;
+
+          if (isAvailable) {
+            button.addEventListener("click", (event) => {
+              event.preventDefault();
+              event.stopPropagation();
+              openPlatformDownload(download);
+            });
+            hasPrimaryDownloadButton = true;
+            actions.append(button);
+            return;
+          }
+
+          button.disabled = true;
+          button.setAttribute("aria-disabled", "true");
+          button.setAttribute("aria-label", `${download.label}: ${DOWNLOAD_UNAVAILABLE_MESSAGE}`);
+
+          const tooltip = document.createElement("span");
+          tooltip.className = "button-tooltip";
+          tooltip.title = DOWNLOAD_UNAVAILABLE_MESSAGE;
+          const helper = document.createElement("span");
+          helper.className = "sr-only";
+          helper.textContent = DOWNLOAD_UNAVAILABLE_MESSAGE;
+          tooltip.append(button, helper);
+          actions.append(tooltip);
+        };
+
+        const addButton = (link, label, secondary = false) => {
+          const button = document.createElement("a");
+          button.className = `button${secondary ? " secondary" : ""}`;
+          button.href = link.href;
+          button.target = "_blank";
+          button.rel = "noopener noreferrer";
+          button.textContent = label;
           actions.append(button);
-          return;
+        };
+
+        platformDownloads.forEach((download) => {
+          addPlatformButton(download);
+        });
+        downloadLinks.forEach((link, index) => {
+          addButton(link, link.label || "Download", platformDownloads.length > 0 || index > 0);
+        });
+        if (website && !downloadLinks.some((link) => link.href === website.href)) {
+          addButton(website, "Website", true);
+        }
+        if (details && !downloadLinks.some((link) => link.href === details.href) && details.href !== website?.href) {
+          addButton(details, details.label || "Details", true);
         }
 
-        button.disabled = true;
-        button.setAttribute("aria-disabled", "true");
-        button.setAttribute("aria-label", `${download.label}: ${DOWNLOAD_UNAVAILABLE_MESSAGE}`);
+        if (actions.childElementCount === 0 && !primary && !website && !details) {
+          const placeholder = document.createElement("span");
+          placeholder.className = "button secondary";
+          placeholder.setAttribute("aria-disabled", "true");
+          placeholder.title = DOWNLOAD_UNAVAILABLE_MESSAGE;
+          placeholder.textContent = DOWNLOAD_UNAVAILABLE_MESSAGE;
+          actions.append(placeholder);
+        }
 
-        const tooltip = document.createElement("span");
-        tooltip.className = "button-tooltip";
-        tooltip.title = DOWNLOAD_UNAVAILABLE_MESSAGE;
-        const helper = document.createElement("span");
-        helper.className = "sr-only";
-        helper.textContent = DOWNLOAD_UNAVAILABLE_MESSAGE;
-        tooltip.append(button, helper);
-        actions.append(tooltip);
-      };
-
-      const addButton = (link, label, secondary = false) => {
-        const button = document.createElement("a");
-        button.className = `button${secondary ? " secondary" : ""}`;
-        button.href = link.href;
-        button.target = "_blank";
-        button.rel = "noopener noreferrer";
-        button.textContent = label;
-        actions.append(button);
-      };
-
-      platformDownloads.forEach((download) => {
-        addPlatformButton(download);
-      });
-      downloadLinks.forEach((link, index) => {
-        addButton(link, link.label || "Download", platformDownloads.length > 0 || index > 0);
-      });
-      if (website && !downloadLinks.some((link) => link.href === website.href)) {
-        addButton(website, "Website", true);
-      }
-      if (details && !downloadLinks.some((link) => link.href === details.href) && details.href !== website?.href) {
-        addButton(details, details.label || "Details", true);
+        card.append(actions);
       }
 
-      if (actions.childElementCount === 0 && !primary && !website && !details) {
-        const placeholder = document.createElement("span");
-        placeholder.className = "button secondary";
-        placeholder.setAttribute("aria-disabled", "true");
-        placeholder.title = DOWNLOAD_UNAVAILABLE_MESSAGE;
-        placeholder.textContent = DOWNLOAD_UNAVAILABLE_MESSAGE;
-        actions.append(placeholder);
-      }
-
-      card.append(head, description, chips, actions);
       return card;
+    }
+
+    function ProductScreenshotStrip(app) {
+      const strip = document.createElement("span");
+      strip.className = "product-screenshots";
+      strip.setAttribute("aria-label", `${app.name} screenshots`);
+
+      const screenshots = getProductPageScreenshots(app).slice(0, 5);
+      const slotCount = Math.max(3, screenshots.length);
+      for (let index = 0; index < slotCount; index += 1) {
+        const hasScreenshot = Boolean(screenshots[index]);
+        const slot = document.createElement(hasScreenshot ? "button" : "span");
+        slot.className = "product-screenshot-slot";
+
+        if (hasScreenshot) {
+          slot.type = "button";
+          slot.setAttribute("aria-label", `Open ${app.name} screenshot ${index + 1}`);
+          slot.addEventListener("click", (event) => {
+            event.stopPropagation();
+            openScreenshotGallery(app, screenshots, index, slot);
+          });
+
+          const image = document.createElement("img");
+          image.src = screenshots[index];
+          image.alt = `${app.name} screenshot ${index + 1}`;
+          image.loading = "lazy";
+          slot.append(image);
+        } else {
+          slot.classList.add("empty");
+          slot.setAttribute("aria-hidden", "true");
+        }
+
+        strip.append(slot);
+      }
+
+      return strip;
+    }
+
+    function ProductListItem(app) {
+      const item = document.createElement("div");
+      item.className = "product-list-item";
+
+      const content = document.createElement("button");
+      content.type = "button";
+      content.className = "product-list-content product-list-open";
+      content.setAttribute("aria-label", `Open ${app.name} in App Hub`);
+      content.addEventListener("click", () => navigateToPage("app-hub"));
+
+      const main = document.createElement("span");
+      main.className = "product-list-main";
+
+      const iconWrap = document.createElement("span");
+      iconWrap.className = "product-icon";
+      if (app.iconUrl) {
+        const iconImage = document.createElement("img");
+        iconImage.src = app.iconUrl;
+        iconImage.alt = "";
+        iconImage.loading = "lazy";
+        iconWrap.append(iconImage);
+      } else {
+        iconWrap.textContent = app.name
+          .split(" ")
+          .slice(0, 2)
+          .map((word) => word[0])
+          .join("")
+          .toUpperCase() || "PJ";
+      }
+
+      const name = document.createElement("span");
+      name.className = "product-list-name";
+      name.textContent = app.name;
+
+      const action = document.createElement("span");
+      action.className = "product-list-action";
+      action.setAttribute("aria-hidden", "true");
+      action.textContent = "App Hub";
+
+      main.append(iconWrap, name);
+      content.append(main, action);
+      item.append(content, ProductScreenshotStrip(app));
+      return item;
     }
 
     function makeHomeSection() {
@@ -1274,25 +1931,55 @@
       const contactWrap = document.createElement("div");
       contactWrap.className = "contact-list";
       contactWrap.innerHTML =
-        '<a href="mailto:contact@pjeylabs.com">contact@pjeylabs.com</a><a href="https://www.pjeylabs.com" target="_blank" rel="noopener noreferrer">www.pjeylabs.com</a>';
+        '<a href="mailto:contact@pjeylabs.com">contact@pjeylabs.com</a><a href="https://www.pjeylabs.com" target="_blank" rel="noopener noreferrer">www.pjeylabs.com</a><a href="/privacy-policy/">Privacy Policy</a>';
 
       card.append(logo, identity, contactWrap);
       section.append(heading, card);
       return section;
     }
 
-    function AppHubSection() {
+    function ProductsSection() {
       const section = document.createElement("section");
       section.id = "page-products";
       section.className = "container page hidden";
 
       const heading = document.createElement("h2");
       heading.className = "section-title";
-      heading.textContent = "All PJey Labs Apps";
+      heading.textContent = "Products";
+
+      const subtitle = document.createElement("p");
+      subtitle.className = "section-subtitle";
+      subtitle.textContent = "Explore PJey Labs products, tools, and app experiences.";
+
+      const status = document.createElement("p");
+      status.id = "products-state";
+      status.className = "state-line";
+
+      const grid = document.createElement("div");
+      grid.className = "product-list";
+      grid.id = "products-grid";
+
+      section.append(heading, subtitle, status, grid);
+      return section;
+    }
+
+    function AppHubSection() {
+      const section = document.createElement("section");
+      section.id = "page-app-hub";
+      section.className = "container page hidden";
+
+      const heading = document.createElement("h2");
+      heading.className = "section-title";
+      heading.textContent = "App Hub";
 
       const subtitle = document.createElement("p");
       subtitle.className = "section-subtitle";
       subtitle.textContent = "Browse every PJey Labs application and get the latest downloads in one place.";
+
+      const helper = document.createElement("p");
+      helper.className = "section-helper";
+      helper.textContent =
+        "Click a platform link to download directly, or open the shop listing where the app is available.";
 
       const status = document.createElement("p");
       status.id = "apps-state";
@@ -1306,14 +1993,7 @@
       grid.id = "apps-grid";
 
       listWrapper.append(grid);
-      section.append(heading, subtitle, status, listWrapper);
-      return section;
-    }
-
-    function makeDownloadSection() {
-      const section = document.createElement("section");
-      section.id = "page-download";
-      section.className = "container page hidden";
+      section.append(heading, subtitle, helper, status, listWrapper);
       return section;
     }
 
@@ -1345,10 +2025,18 @@
       website.rel = "noopener noreferrer";
       website.textContent = "www.pjeylabs.com";
 
+      const privacy = document.createElement("a");
+      privacy.href = "/privacy-policy/";
+      privacy.textContent = "Privacy Policy";
+
+      const links = document.createElement("div");
+      links.className = "footer-links";
+      links.append(email, website, privacy);
+
       const copyright = document.createElement("span");
       copyright.textContent = "© 2026 PJey Labs. All rights reserved.";
 
-      inner.append(brand, email, website, copyright);
+      inner.append(brand, links, copyright);
       footer.append(inner);
       return footer;
     }
@@ -1358,19 +2046,23 @@
       const home = document.getElementById("page-home");
       const about = document.getElementById("page-about");
       const products = document.getElementById("page-products");
-      const download = document.getElementById("page-download");
+      const appHub = document.getElementById("page-app-hub");
 
       if (home) home.classList.toggle("hidden", pageId !== "home");
       if (about) about.classList.toggle("hidden", pageId !== "about");
       if (products) products.classList.toggle("hidden", pageId !== "products");
-      if (download) download.classList.toggle("hidden", pageId !== "download");
+      if (appHub) appHub.classList.toggle("hidden", pageId !== "app-hub");
 
       document.querySelectorAll(".tabs button").forEach((button) => {
         const isActive = button.dataset.page === pageId;
-        button.setAttribute("aria-current", String(isActive));
+        button.setAttribute("aria-current", isActive ? "page" : "false");
       });
 
       if (pageId === "products") {
+        renderProducts();
+      }
+
+      if (pageId === "app-hub") {
         renderAppsHub();
       }
     }
@@ -1399,6 +2091,37 @@
       state.status = "loading";
       state.error = message || "";
       renderAppSections();
+    }
+
+    function renderProducts() {
+      const status = document.getElementById("products-state");
+      const grid = document.getElementById("products-grid");
+      if (!grid || !status) {
+        return;
+      }
+
+      const message = getStateMessage();
+      status.className = `state-line${message ? " visible" : ""}`;
+      status.textContent = message;
+
+      const apps = getVisibleApps();
+      if (apps.length === 0 && state.status === "loading") {
+        const placeholder = document.createElement("p");
+        placeholder.className = "apps-preview-empty";
+        placeholder.textContent = "Loading products...";
+        grid.replaceChildren(placeholder);
+        return;
+      }
+
+      if (apps.length === 0) {
+        const placeholder = document.createElement("p");
+        placeholder.className = "apps-preview-empty";
+        placeholder.textContent = "No active products were returned from public_apps.";
+        grid.replaceChildren(placeholder);
+        return;
+      }
+
+      grid.replaceChildren(...apps.map((app) => ProductListItem(app)));
     }
 
     function renderAppsHub() {
@@ -1433,6 +2156,7 @@
     }
 
     function renderAppSections() {
+      renderProducts();
       renderAppsHub();
     }
 
@@ -1461,15 +2185,39 @@
         makeHeader(),
         makeHomeSection(),
         makeAboutSection(),
+        ProductsSection(),
         AppHubSection(),
-        makeDownloadSection(),
-        makeFooter()
+        makeFooter(),
+        makeGalleryLightbox()
       );
       appRoot.append(shell);
-      setPage("home");
+      setPage(getPageFromLocation());
     }
 
     buildPage();
+    window.addEventListener("popstate", () => setPage(getPageFromLocation()));
+    window.addEventListener("hashchange", () => setPage(getPageFromLocation()));
+    window.addEventListener("keydown", (event) => {
+      const { lightbox } = getGalleryElements();
+      if (!lightbox?.classList.contains("open")) {
+        return;
+      }
+
+      if (event.key === "Escape") {
+        event.preventDefault();
+        closeScreenshotGallery();
+      }
+
+      if (event.key === "ArrowLeft") {
+        event.preventDefault();
+        showGalleryOffset(-1);
+      }
+
+      if (event.key === "ArrowRight") {
+        event.preventDefault();
+        showGalleryOffset(1);
+      }
+    });
     hydrateApps();
   </script>
 </body>
