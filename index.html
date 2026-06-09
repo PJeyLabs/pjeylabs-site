@@ -311,8 +311,14 @@
 
     .product-list-main {
       display: flex;
-      align-items: center;
+      align-items: flex-start;
       gap: 0.85rem;
+      min-width: 0;
+    }
+
+    .product-list-copy {
+      display: grid;
+      gap: 0.28rem;
       min-width: 0;
     }
 
@@ -321,6 +327,15 @@
       font-weight: 800;
       font-size: 1rem;
       line-height: 1.2;
+      overflow-wrap: anywhere;
+    }
+
+    .product-list-description {
+      color: var(--muted);
+      display: block;
+      font-size: 0.9rem;
+      line-height: 1.45;
+      max-width: 70ch;
       overflow-wrap: anywhere;
     }
 
@@ -1856,12 +1871,20 @@
       name.className = "product-list-name";
       name.textContent = app.name;
 
+      const description = document.createElement("span");
+      description.className = "product-list-description";
+      description.textContent = app.description || app.shortDescription;
+
+      const copy = document.createElement("span");
+      copy.className = "product-list-copy";
+      copy.append(name, description);
+
       const action = document.createElement("span");
       action.className = "product-list-action";
       action.setAttribute("aria-hidden", "true");
       action.textContent = "App Hub";
 
-      main.append(iconWrap, name);
+      main.append(iconWrap, copy);
       content.append(main, action);
       item.append(content, ProductScreenshotStrip(app));
       return item;
