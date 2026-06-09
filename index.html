@@ -848,13 +848,18 @@
 
     const APP_COLLECTION_NAME = "public_apps";
     const PLATFORM_LINK_MAP = [
-      { key: "windowsUrl", platformKey: "windows", label: "Windows", platform: "Windows" },
-      { key: "androidUrl", platformKey: "android", label: "Android", platform: "Android" },
-      { key: "iosUrl", platformKey: "ios", label: "iOS", platform: "iOS" },
-      { key: "macosUrl", platformKey: "macos", label: "macOS", platform: "macOS" },
-      { key: "linuxUrl", platformKey: "linux", label: "Linux", platform: "Linux" },
+      { key: "windows", label: "Windows", platform: "Windows" },
+      { key: "android", label: "Android", platform: "Android" },
+      { key: "ios", label: "iOS", platform: "iOS" },
+      { key: "macos", label: "macOS", platform: "macOS" },
+      { key: "linux", label: "Linux", platform: "Linux" },
     ];
-    const DOWNLOAD_UNAVAILABLE_MESSAGE = "Download link not available";
+    const APP_TYPE_LABELS = {
+      free: "Free",
+      free_onetime: "Free + One-time PRO",
+      free_subscription: "Free + Subscription PRO",
+      free_both: "Free + One-time or Subscription PRO",
+    };
     const LOCAL_PRODUCT_SCREENSHOTS = {
       "pj-notes": [
         "assets/pj-notes/desktop-overview.png",
@@ -865,25 +870,6 @@
       ],
     };
 
-    const GENERAL_LINK_MAP = [
-      { key: "downloadUrl", label: "Download", type: "download" },
-      { key: "webUrl", label: "Website", type: "website" },
-      { key: "websiteUrl", label: "Website", type: "website" },
-      { key: "moreInfoUrl", label: "Details", type: "details" },
-    ];
-
-    const STORE_LINK_LABELS = {
-      android: "Android",
-      windows: "Windows",
-      linux: "Linux",
-      macos: "macOS",
-      ios: "iOS",
-      web: "Website",
-      website: "Website",
-      download: "Download",
-    };
-
-    const APP_STATUS_PRIORITY = ["isFeatured", "featured", "pinned", "isActive", "active"];
     const PLATFORM_SORT_ORDER = ["Windows", "Android", "Linux", "macOS", "iOS", "Web", "Other"];
     const state = {
       activePage: "home",
@@ -1174,101 +1160,14 @@
       }
     }
 
-    function normalizeHttpsUrl(value) {
-      if (!hasValue(value)) {
-        return "";
-      }
-
-      const trimmed = value.trim();
-      if (!trimmed.toLowerCase().startsWith("https://")) {
-        return "";
-      }
-
-      try {
-        const parsed = new URL(trimmed);
-        return parsed.protocol === "https:" ? parsed.href : "";
-      } catch {
-        return "";
-      }
-    }
-
-    function readRecordValue(record, keys) {
-      if (!record || typeof record !== "object" || Array.isArray(record)) {
-        return "";
-      }
-
-      for (const key of keys) {
-        if (hasValue(record[key])) {
-          return record[key];
-        }
-      }
-
-      const normalizedKeys = keys.map((key) => String(key).toLowerCase());
-      const match = Object.entries(record).find(([key]) => normalizedKeys.includes(String(key).toLowerCase()));
-      return match && hasValue(match[1]) ? match[1] : "";
-    }
-
-    function readArrayLinkValue(links, linkConfig) {
-      if (!Array.isArray(links)) {
-        return "";
-      }
-
-      const expected = [linkConfig.platformKey, linkConfig.label, linkConfig.platform]
-        .map((value) => String(value).toLowerCase());
-      const match = links.find((entry) => {
-        if (!entry || typeof entry !== "object") {
-          return false;
-        }
-
-        const labels = [entry.platform, entry.label, entry.type, entry.key]
-          .filter(hasValue)
-          .map((value) => String(value).toLowerCase());
-        return labels.some((label) => expected.includes(label) || normalizePlatformName(label) === linkConfig.platform);
-      });
-
-      return match ? match.url || match.href || "" : "";
-    }
-
-    function getPlatformRawUrls(product, linkConfig) {
-      const nestedKeys = [linkConfig.platformKey, linkConfig.label, linkConfig.key];
-      return [
-        product[linkConfig.key],
-        readRecordValue(product.platformLinks, nestedKeys),
-        readRecordValue(product.storeLinks, nestedKeys),
-        readArrayLinkValue(product.links, linkConfig),
-      ].filter(hasValue);
-    }
-
     function normalizePlatformDownloads(product) {
-      const explicitPlatforms = new Set();
-
-      if (Array.isArray(product.platforms)) {
-        product.platforms.forEach((platform) => {
-          const normalized = normalizePlatformName(platform);
-          if (normalized !== "General") {
-            explicitPlatforms.add(normalized);
-          }
-        });
-      }
-
-      if (hasValue(product.platform)) {
-        const normalized = normalizePlatformName(product.platform);
-        if (normalized !== "General") {
-          explicitPlatforms.add(normalized);
-        }
-      }
-
+      const linkRecord = product.links && typeof product.links === "object" && !Array.isArray(product.links)
+        ? product.links
+        : {};
       return PLATFORM_LINK_MAP.map((linkConfig) => {
-        const rawUrls = getPlatformRawUrls(product, linkConfig);
-        const href = rawUrls.map(normalizeHttpsUrl).find(Boolean) || "";
-        const shouldRender = explicitPlatforms.has(linkConfig.platform) || rawUrls.length > 0 || Boolean(href);
-
-        if (!shouldRender) {
-          return null;
-        }
-
+        const href = normalizeUrl(linkRecord[linkConfig.key]);
         if (!href) {
-          console.debug(`${linkConfig.label} download URL missing or invalid`);
+          return null;
         }
 
         return {
@@ -1279,134 +1178,14 @@
       }).filter(Boolean);
     }
 
-    function normalizePlatformName(value) {
-      const text = getSafeText(value, "").toLowerCase();
-      if (text.includes("windows") || text === "win" || text === "win32") {
-        return "Windows";
-      }
-
-      if (text.includes("mac")) {
-        return "macOS";
-      }
-
-      if (text.includes("ios")) {
-        return "iOS";
-      }
-
-      if (text.includes("android")) {
-        return "Android";
-      }
-
-      if (text.includes("linux")) {
-        return "Linux";
-      }
-
-      if (text.includes("web")) {
-        return "Web";
-      }
-
-      return getSafeText(value, "General");
-    }
-
-    function normalizePlan(product) {
-      if (typeof product.isPro === "boolean") {
-        return product.isPro ? "Pro" : "Free";
-      }
-
-      if (typeof product.isFree === "boolean") {
-        return product.isFree ? "Free" : null;
-      }
-
-      const price = toNumber(product.price);
-      if (price != null) {
-        return price > 0 ? "Pro" : "Free";
-      }
-
-      const plan = getSafeText(product.plan || product.tier || product.pricing || product.license || product.accessMode).toLowerCase();
-      if (!plan) {
-        return null;
-      }
-
-      if (plan.includes("free")) {
-        return "Free";
-      }
-
-      if (plan.includes("pro") || plan.includes("premium") || plan.includes("paid")) {
-        return "Pro";
-      }
-
-      return getSafeText(product.plan || product.tier || product.pricing || product.license || product.accessMode, "Free");
+    function normalizeAppTypeLabel(value) {
+      const type = getSafeText(value, "").toLowerCase();
+      return APP_TYPE_LABELS[type] || getSafeText(value, "");
     }
 
     function normalizeLinks(product) {
-      const entries = [];
-      const seen = new Set();
-      const platformStoreKeys = new Set(
-        PLATFORM_LINK_MAP.flatMap((entry) => [entry.platformKey, entry.label.toLowerCase(), entry.key.toLowerCase()])
-      );
-      const push = (url, label, type) => {
-        const href = normalizeUrl(url);
-        if (!href) {
-          return;
-        }
-
-        const key = `${type}::${href}`;
-        if (seen.has(key)) {
-          return;
-        }
-
-        seen.add(key);
-        entries.push({
-          href,
-          label,
-          type,
-        });
-      };
-
-      GENERAL_LINK_MAP.forEach(({ key, label, type }) => {
-        push(product[key], label, type);
-      });
-
-      if (product.storeLinks && typeof product.storeLinks === "object" && !Array.isArray(product.storeLinks)) {
-        Object.entries(product.storeLinks).forEach(([rawKey, rawUrl]) => {
-          const key = String(rawKey).trim().toLowerCase();
-          if (platformStoreKeys.has(key)) {
-            return;
-          }
-
-          const label = STORE_LINK_LABELS[key] || normalizePlatformName(key);
-          const type = label === "Website" ? "website" : "download";
-          push(rawUrl, label, type);
-        });
-      }
-
-      if (Array.isArray(product.links)) {
-        product.links.forEach((entry) => {
-          if (!entry || typeof entry !== "object") {
-            return;
-          }
-
-          const href = normalizeUrl(entry.url || entry.href);
-          if (!href) {
-            return;
-          }
-
-          const label = getSafeText(entry.label, "Details");
-          const type = getSafeText(entry.type, "details").toLowerCase();
-          const normalizedLabel = normalizePlatformName(label);
-          if (PLATFORM_LINK_MAP.some((platform) => platform.platform === normalizedLabel)) {
-            return;
-          }
-
-          const key = `${type}::${href}`;
-          if (!seen.has(key)) {
-            seen.add(key);
-            entries.push({ href, label, type });
-          }
-        });
-      }
-
-      return entries;
+      const website = normalizeUrl(product.website);
+      return website ? [{ href: website, label: "Website", type: "website" }] : [];
     }
 
     function normalizeScreenshotUrls(product) {
@@ -1449,27 +1228,11 @@
     function normalizePlatforms(product, platformDownloads = []) {
       const platforms = new Set();
 
-      if (Array.isArray(product.platforms)) {
-        product.platforms.forEach((platform) => {
-          const normalized = normalizePlatformName(platform);
-          if (normalized !== "General") {
-            platforms.add(normalized);
-          }
-        });
-      }
-
       platformDownloads.forEach((download) => {
         if (download?.platform) {
           platforms.add(download.platform);
         }
       });
-
-      if (!platforms.size && hasValue(product.platform)) {
-        const normalized = normalizePlatformName(product.platform);
-        if (normalized) {
-          platforms.add(normalized);
-        }
-      }
 
       const ordered = PLATFORM_SORT_ORDER.filter((value) => platforms.has(value));
       const remainder = [...platforms].filter((value) => !PLATFORM_SORT_ORDER.includes(value)).sort();
@@ -1478,8 +1241,7 @@
     }
 
     function isLikelyAppDocument(document) {
-      const checks = [document.name, document.title, document.appName, document.productName, document.shortDescription];
-      return checks.some((entry) => hasValue(entry));
+      return hasValue(document.appId) && hasValue(document.name);
     }
 
     function normalizeAppData(source = {}) {
@@ -1487,36 +1249,26 @@
       const links = normalizeLinks(appData);
       const platformDownloads = normalizePlatformDownloads(appData);
       const platforms = normalizePlatforms(appData, platformDownloads);
-      const plan = normalizePlan(appData);
+      const typeLabel = normalizeAppTypeLabel(appData.type);
       const screenshots = normalizeScreenshotUrls(appData);
-      const createdAt = toEpoch(
-        appData.createdAt || appData.created_at || appData.updatedAt || appData.updated_at || appData.publishedAt
-      );
-      const order = toNumber(appData.order || appData.sortOrder || appData.rank || appData.displayOrder);
-      const featured = APP_STATUS_PRIORITY.some((key) => {
-        const candidate = appData[key];
-        return candidate === true || candidate === "true";
-      });
+      const sortOrder = toNumber(appData.sortOrder);
 
       return {
-        id: normalizeId(appData.appId || appData.id),
-        name: getSafeText(appData.name || appData.title || appData.appName || appData.productName, "Unnamed app"),
-        shortDescription: getSafeText(
-          appData.shortDescription || appData.tagline || appData.summary,
-          "A PJey Labs application."
-        ),
-        description: getSafeText(appData.description || appData.body || appData.details, ""),
-        version: getSafeText(appData.version || appData.appVersion || appData.currentVersion, "Not specified"),
-        iconUrl: normalizeUrl(appData.iconUrl || appData.imageUrl || appData.thumbnailUrl),
+        id: normalizeId(appData.appId),
+        name: getSafeText(appData.name, "Unnamed app"),
+        shortDescription: getSafeText(appData.description, "A PJey Labs application."),
+        description: getSafeText(appData.description, ""),
+        category: getSafeText(appData.category, ""),
+        version: getSafeText(appData.version, ""),
+        iconUrl: normalizeUrl(appData.iconUrl),
         screenshots,
         platforms,
         platformDownloads,
-        plan: plan || "Free",
+        typeLabel,
         links,
-        featured,
-        order: order == null ? Number.MAX_SAFE_INTEGER : order,
-        updatedAt: createdAt,
-        isActive: appData.isActive !== false && appData.active !== false,
+        sortOrder: sortOrder == null ? Number.MAX_SAFE_INTEGER : sortOrder,
+        updatedAt: toEpoch(appData.updatedAt),
+        isActive: appData.isActive === true,
       };
     }
 
@@ -1553,7 +1305,7 @@
         try {
           const docs = await getDocs(collection(db, APP_COLLECTION_NAME));
           const mapped = docs.docs
-            .map((doc) => ({ appId: doc.id, ...(doc.data() || {}) }))
+            .map((doc) => doc.data() || {})
             .filter(isLikelyAppDocument)
             .map(normalizeAppData)
             .filter((item) => hasValue(item.name) && item.isActive);
@@ -1576,12 +1328,8 @@
     }
 
     function compareAppSort(a, b) {
-      if (a.featured !== b.featured) {
-        return b.featured ? 1 : -1;
-      }
-
-      if (a.order !== b.order) {
-        return a.order - b.order;
+      if (a.sortOrder !== b.sortOrder) {
+        return a.sortOrder - b.sortOrder;
       }
 
       if (a.updatedAt !== b.updatedAt) {
@@ -1680,11 +1428,21 @@
       const heading = document.createElement("div");
       const title = document.createElement("h3");
       title.textContent = app.name;
-      const metadata = document.createElement("p");
-      metadata.className = "meta";
-      metadata.textContent = `Version: ${app.version}`;
+      const metadataParts = [];
+      if (app.category) {
+        metadataParts.push(app.category);
+      }
+      if (app.version) {
+        metadataParts.push(`Version ${app.version}`);
+      }
 
-      heading.append(title, metadata);
+      heading.append(title);
+      if (metadataParts.length > 0) {
+        const metadata = document.createElement("p");
+        metadata.className = "meta";
+        metadata.textContent = metadataParts.join(" | ");
+        heading.append(metadata);
+      }
       head.append(iconWrap, heading);
 
       const description = document.createElement("p");
@@ -1708,10 +1466,10 @@
         chips.append(chip);
       }
 
-      if (app.plan) {
+      if (app.typeLabel) {
         const planChip = document.createElement("span");
-        planChip.className = `chip ${app.plan.toLowerCase() === "free" ? "plan-free" : "plan-pro"}`;
-        planChip.textContent = app.plan;
+        planChip.className = `chip ${app.typeLabel === "Free" ? "plan-free" : "plan-pro"}`;
+        planChip.textContent = app.typeLabel;
         chips.append(planChip);
       }
 
@@ -1722,45 +1480,27 @@
         actions.className = "actions";
 
         const platformDownloads = Array.isArray(app.platformDownloads) ? app.platformDownloads : [];
-        const downloadLinks = app.links.filter((link) => link.type === "download");
-        const primary = platformDownloads.find((download) => download.href) || downloadLinks[0];
         const website = app.links.find((link) => link.type === "website");
-        const details = app.links.find((link) => link.type === "details") || app.links.find(
-          (link) => link.label.toLowerCase() === "details" || link.label.toLowerCase() === "more info"
-        );
 
         let hasPrimaryDownloadButton = false;
         const addPlatformButton = (download) => {
-          const isAvailable = Boolean(download.href);
-          const isSecondary = hasPrimaryDownloadButton || !isAvailable;
+          if (!download.href) {
+            return;
+          }
+
+          const isSecondary = hasPrimaryDownloadButton;
           const button = document.createElement("button");
           button.type = "button";
           button.className = `button${isSecondary ? " secondary" : ""}`;
           button.textContent = download.label;
 
-          if (isAvailable) {
-            button.addEventListener("click", (event) => {
-              event.preventDefault();
-              event.stopPropagation();
-              openPlatformDownload(download);
-            });
-            hasPrimaryDownloadButton = true;
-            actions.append(button);
-            return;
-          }
-
-          button.disabled = true;
-          button.setAttribute("aria-disabled", "true");
-          button.setAttribute("aria-label", `${download.label}: ${DOWNLOAD_UNAVAILABLE_MESSAGE}`);
-
-          const tooltip = document.createElement("span");
-          tooltip.className = "button-tooltip";
-          tooltip.title = DOWNLOAD_UNAVAILABLE_MESSAGE;
-          const helper = document.createElement("span");
-          helper.className = "sr-only";
-          helper.textContent = DOWNLOAD_UNAVAILABLE_MESSAGE;
-          tooltip.append(button, helper);
-          actions.append(tooltip);
+          button.addEventListener("click", (event) => {
+            event.preventDefault();
+            event.stopPropagation();
+            openPlatformDownload(download);
+          });
+          hasPrimaryDownloadButton = true;
+          actions.append(button);
         };
 
         const addButton = (link, label, secondary = false) => {
@@ -1776,26 +1516,13 @@
         platformDownloads.forEach((download) => {
           addPlatformButton(download);
         });
-        downloadLinks.forEach((link, index) => {
-          addButton(link, link.label || "Download", platformDownloads.length > 0 || index > 0);
-        });
-        if (website && !downloadLinks.some((link) => link.href === website.href)) {
+        if (website) {
           addButton(website, "Website", true);
         }
-        if (details && !downloadLinks.some((link) => link.href === details.href) && details.href !== website?.href) {
-          addButton(details, details.label || "Details", true);
-        }
 
-        if (actions.childElementCount === 0 && !primary && !website && !details) {
-          const placeholder = document.createElement("span");
-          placeholder.className = "button secondary";
-          placeholder.setAttribute("aria-disabled", "true");
-          placeholder.title = DOWNLOAD_UNAVAILABLE_MESSAGE;
-          placeholder.textContent = DOWNLOAD_UNAVAILABLE_MESSAGE;
-          actions.append(placeholder);
+        if (actions.childElementCount > 0) {
+          card.append(actions);
         }
-
-        card.append(actions);
       }
 
       return card;
