@@ -1681,7 +1681,7 @@
       const contactWrap = document.createElement("div");
       contactWrap.className = "contact-list";
       contactWrap.innerHTML =
-        '<a href="mailto:contact@pjeylabs.com">contact@pjeylabs.com</a><a href="https://www.pjeylabs.com" target="_blank" rel="noopener noreferrer">www.pjeylabs.com</a><a href="/privacy-policy/">Privacy Policy</a>';
+        '<a href="mailto:contact@pjeylabs.com">contact@pjeylabs.com</a><a href="https://www.pjeylabs.com" target="_blank" rel="noopener noreferrer">www.pjeylabs.com</a><a href="/privacy-policy/">Privacy Policy</a><a href="/delete-account/">Delete Account/Data</a>';
 
       card.append(logo, identity, contactWrap);
       section.append(heading, card);
@@ -1779,9 +1779,13 @@
       privacy.href = "/privacy-policy/";
       privacy.textContent = "Privacy Policy";
 
+      const deleteAccount = document.createElement("a");
+      deleteAccount.href = "/delete-account/";
+      deleteAccount.textContent = "Delete Account/Data";
+
       const links = document.createElement("div");
       links.className = "footer-links";
-      links.append(email, website, privacy);
+      links.append(email, website, privacy, deleteAccount);
 
       const copyright = document.createElement("span");
       copyright.textContent = "© 2026 PJey Labs. All rights reserved.";

@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta
+    name="description"
+    content="Request deletion of your account and associated data for a selected PJeyLabs app."
+  />
+  <title>Delete Account and Data</title>
+  <link rel="icon" type="image/png" href="../pjey-labs-logo.png" />
+  <link rel="shortcut icon" type="image/png" href="../pjey-labs-logo.png" />
+  <link rel="apple-touch-icon" href="../pjey-labs-logo.png" />
+  <style>
+    :root {
+      --bg: #060d14;
+      --surface: #0f161f;
+      --surface-strong: #141d29;
+      --text: #eef6ff;
+      --muted: #9eb0bf;
+      --line: rgba(168, 255, 214, 0.15);
+      --line-soft: rgba(168, 255, 214, 0.08);
+      --accent: #20d68b;
+      --accent-soft: rgba(32, 214, 139, 0.16);
+      --radius: 10px;
+      --max: 980px;
+      --shadow: 0 24px 54px rgba(0, 0, 0, 0.45);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: "Inter", "Segoe UI", "Noto Sans", system-ui, -apple-system, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(120% 80% at 25% 0%, rgba(32, 214, 139, 0.15), transparent 58%),
+        radial-gradient(90% 80% at 90% 10%, rgba(32, 214, 139, 0.08), transparent 58%),
+        linear-gradient(180deg, #050910 0%, #060d14 44%, #04070c 100%);
+      line-height: 1.6;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      pointer-events: none;
+      background-image: linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+      background-size: 88px 88px;
+      opacity: 0.5;
+    }
+
+    a {
+      color: var(--accent);
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+
+    .container {
+      width: min(100% - 2rem, var(--max));
+      margin: 0 auto;
+    }
+
+    .site-header {
+      border-bottom: 1px solid var(--line-soft);
+      background: rgba(6, 13, 20, 0.9);
+      backdrop-filter: blur(14px);
+    }
+
+    .header-inner {
+      min-height: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      color: var(--text);
+      font-weight: 800;
+      text-decoration: none;
+    }
+
+    .brand img {
+      width: 40px;
+      height: 40px;
+      border-radius: 8px;
+      border: 1px solid rgba(32, 214, 139, 0.34);
+      object-fit: cover;
+      box-shadow: 0 0 22px rgba(32, 214, 139, 0.2);
+    }
+
+    .header-links,
+    .footer-links {
+      display: flex;
+      align-items: center;
+      gap: 0.9rem;
+      flex-wrap: wrap;
+    }
+
+    .header-links a,
+    .footer-links a {
+      color: var(--muted);
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    .header-links a:hover,
+    .header-links a:focus-visible,
+    .footer-links a:hover,
+    .footer-links a:focus-visible {
+      color: var(--text);
+      outline: none;
+    }
+
+    main {
+      padding: clamp(2rem, 5vw, 3.6rem) 0;
+    }
+
+    .deletion-page {
+      display: grid;
+      gap: 1.2rem;
+    }
+
+    .hero-panel,
+    .selector-panel,
+    .instructions-panel {
+      border: 1px solid var(--line-soft);
+      border-radius: var(--radius);
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.032), rgba(255, 255, 255, 0.012));
+      padding: clamp(1rem, 3vw, 1.6rem);
+    }
+
+    h1,
+    h2,
+    h3,
+    p,
+    ul {
+      margin-top: 0;
+    }
+
+    h1 {
+      margin-bottom: 0.45rem;
+      font-size: clamp(2rem, 5vw, 3rem);
+      line-height: 1.1;
+    }
+
+    h2 {
+      margin: 0 0 0.45rem;
+      font-size: 1.2rem;
+      line-height: 1.25;
+    }
+
+    h3 {
+      margin-bottom: 0.25rem;
+      font-size: 1.02rem;
+      line-height: 1.2;
+    }
+
+    p,
+    li {
+      color: #c9d7e2;
+    }
+
+    ul {
+      padding-left: 1.2rem;
+      margin-bottom: 0;
+    }
+
+    .summary {
+      color: var(--muted);
+      margin-bottom: 0;
+      max-width: 76ch;
+      font-weight: 700;
+    }
+
+    .selector-top {
+      display: grid;
+      gap: 0.8rem;
+      margin-bottom: 1rem;
+    }
+
+    .field-label {
+      color: var(--text);
+      display: block;
+      font-size: 0.9rem;
+      font-weight: 800;
+      margin-bottom: 0.35rem;
+    }
+
+    select {
+      width: min(100%, 460px);
+      min-height: 44px;
+      appearance: none;
+      border: 1px solid rgba(168, 255, 214, 0.2);
+      border-radius: 8px;
+      background:
+        linear-gradient(45deg, transparent 50%, #c9d7e2 50%) calc(100% - 20px) 19px / 6px 6px no-repeat,
+        linear-gradient(135deg, #c9d7e2 50%, transparent 50%) calc(100% - 14px) 19px / 6px 6px no-repeat,
+        rgba(255, 255, 255, 0.06);
+      color: var(--text);
+      font: inherit;
+      font-weight: 700;
+      padding: 0.55rem 2.4rem 0.55rem 0.75rem;
+    }
+
+    select:focus-visible {
+      outline: 2px solid rgba(32, 214, 139, 0.7);
+      outline-offset: 2px;
+    }
+
+    option {
+      color: #09111c;
+    }
+
+    select:disabled {
+      cursor: not-allowed;
+      opacity: 0.72;
+    }
+
+    .state-line {
+      margin: 0;
+      padding: 0.65rem 0.8rem;
+      border-radius: 8px;
+      border: 1px solid var(--line-soft);
+      background: rgba(32, 214, 139, 0.07);
+      color: #d8fce8;
+      font-size: 0.93rem;
+    }
+
+    .apps-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 0.85rem;
+    }
+
+    .apps-empty {
+      margin: 0;
+      padding: 0.85rem;
+      border: 1px solid var(--line-soft);
+      border-radius: 8px;
+      color: var(--muted);
+      background: rgba(255, 255, 255, 0.035);
+    }
+
+    .app-card {
+      appearance: none;
+      width: 100%;
+      min-height: 126px;
+      border: 1px solid var(--line-soft);
+      border-radius: var(--radius);
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0.01));
+      color: inherit;
+      cursor: pointer;
+      display: grid;
+      gap: 0.5rem;
+      padding: 0.95rem;
+      text-align: left;
+      transition: transform 160ms ease, border-color 160ms ease, background 160ms ease, box-shadow 160ms ease;
+    }
+
+    .app-card:hover,
+    .app-card:focus-visible {
+      outline: none;
+      transform: translateY(-1px);
+      border-color: rgba(32, 214, 139, 0.34);
+      background: rgba(32, 214, 139, 0.08);
+      box-shadow: var(--shadow);
+    }
+
+    .app-card[aria-pressed="true"] {
+      border-color: rgba(32, 214, 139, 0.55);
+      background: var(--accent-soft);
+      box-shadow: inset 0 0 0 1px rgba(32, 214, 139, 0.18);
+    }
+
+    .app-card-header {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      min-width: 0;
+    }
+
+    .app-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 9px;
+      border: 1px solid rgba(32, 214, 139, 0.35);
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+      flex: 0 0 auto;
+      font-size: 0.84rem;
+      font-weight: 800;
+      background: rgba(168, 255, 214, 0.08);
+      color: #d9ffe6;
+    }
+
+    .app-icon img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .app-name {
+      color: var(--text);
+      font-weight: 800;
+      overflow-wrap: anywhere;
+    }
+
+    .app-description {
+      color: var(--muted);
+      display: block;
+      font-size: 0.9rem;
+      line-height: 1.45;
+      overflow-wrap: anywhere;
+    }
+
+    .instructions-panel {
+      display: none;
+    }
+
+    .instructions-panel.visible {
+      display: block;
+    }
+
+    .details {
+      display: grid;
+      gap: 0.45rem;
+      margin: 1rem 0 1.1rem;
+      padding: 0.9rem;
+      border: 1px solid var(--line-soft);
+      border-radius: 8px;
+      background: rgba(32, 214, 139, 0.07);
+    }
+
+    .details p {
+      margin-bottom: 0;
+    }
+
+    .details strong {
+      color: var(--text);
+    }
+
+    .button-row {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+      margin: 1.1rem 0 0.4rem;
+    }
+
+    .button {
+      min-height: 42px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid rgba(32, 214, 139, 0.34);
+      border-radius: 8px;
+      background: linear-gradient(130deg, var(--accent), #4ee0aa);
+      color: #07120f;
+      font-weight: 800;
+      padding: 0.55rem 0.95rem;
+      text-decoration: none;
+      transition: transform 130ms ease, border-color 130ms ease;
+    }
+
+    .button:hover,
+    .button:focus-visible {
+      outline: none;
+      transform: translateY(-1px);
+      border-color: rgba(168, 255, 214, 0.68);
+    }
+
+    .privacy-note {
+      margin-bottom: 0;
+    }
+
+    .site-footer {
+      border-top: 1px solid var(--line-soft);
+      padding: 1.1rem 0;
+      background: rgba(6, 13, 20, 0.9);
+      color: var(--muted);
+      font-size: 0.88rem;
+    }
+
+    .footer-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.8rem;
+      flex-wrap: wrap;
+    }
+
+    @media (max-width: 560px) {
+      .header-inner,
+      .footer-inner {
+        align-items: flex-start;
+        flex-direction: column;
+        padding: 0.7rem 0;
+      }
+
+      .button {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="/">
+        <img src="../pjey-labs-logo.png" width="40" height="40" alt="PJey Labs logo" />
+        <span>PJey Labs</span>
+      </a>
+      <nav class="header-links" aria-label="Page links">
+        <a href="/">Home</a>
+        <a href="/privacy-policy/">Privacy Policy</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <article class="deletion-page">
+      <section class="hero-panel" aria-labelledby="page-title">
+        <h1 id="page-title">Delete Account and Data</h1>
+        <p class="summary">
+          PJeyLabs users can request deletion of their account and associated data for any selected PJeyLabs app.
+          Choose the app below, then send a deletion request by email. This public page does not require login and can
+          be opened directly from app store listings.
+        </p>
+      </section>
+
+      <section class="selector-panel" aria-labelledby="selector-title">
+        <div class="selector-top">
+          <div>
+            <h2 id="selector-title">Choose a PJeyLabs App</h2>
+            <p id="catalog-state" class="state-line">Loading apps from the PJeyLabs Hub catalog...</p>
+          </div>
+          <label>
+            <span class="field-label">Selected app</span>
+            <select id="app-select" aria-describedby="catalog-state" disabled>
+              <option value="">Select an app</option>
+            </select>
+          </label>
+        </div>
+
+        <div id="apps-grid" class="apps-grid" aria-label="PJeyLabs apps"></div>
+      </section>
+
+      <section id="instructions-panel" class="instructions-panel" aria-labelledby="instructions-title" aria-live="polite">
+        <h2 id="instructions-title">Deletion Instructions</h2>
+        <p id="instructions-intro"></p>
+
+        <div class="details" aria-label="Email details to include">
+          <p><strong>To:</strong> contact@pjeylabs.com</p>
+          <p><strong>Subject:</strong> <span id="email-subject"></span></p>
+          <p><strong>Body:</strong></p>
+          <p id="email-body"></p>
+        </div>
+
+        <div class="button-row">
+          <a id="mailto-button" class="button" href="mailto:contact@pjeylabs.com">Email Deletion Request</a>
+        </div>
+
+        <h2>Data Deleted</h2>
+        <p id="data-deleted-copy"></p>
+        <ul>
+          <li>Account and profile data associated with the selected app.</li>
+          <li>Cloud data associated with the account.</li>
+          <li>App-specific saved data such as notes, settings, tab order, and usage metadata where applicable.</li>
+        </ul>
+
+        <h2>Data That May Be Retained</h2>
+        <p>Some payment or transaction records may be retained where required for tax, legal, fraud prevention, or accounting obligations.</p>
+
+        <h2>Deletion Timeframe</h2>
+        <p>Requests are normally processed within 30 days.</p>
+
+        <h2>Privacy Policy</h2>
+        <p class="privacy-note">For more information about how PJeyLabs handles data, see the <a href="https://pjeylabs.com/privacy-policy/">Privacy Policy</a>.</p>
+      </section>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <span>© 2026 PJey Labs. All rights reserved.</span>
+      <nav class="footer-links" aria-label="Footer links">
+        <a href="/privacy-policy/">Privacy Policy</a>
+        <a href="/delete-account/">Delete Account/Data</a>
+      </nav>
+    </div>
+  </footer>
+
+  <script type="module">
+    const FIREBASE_CONFIG = {
+      projectId: "pjeylabs-hub",
+      authDomain: "pjeylabs-hub.firebaseapp.com",
+      apiKey: "AIzaSyDT2hxZM8rTIUsdIAUfux-meM5fhbsUg40",
+      appId: "1:440485471383:web:7dfda16c52098a9bfbf5d2",
+      messagingSenderId: "440485471383",
+      storageBucket: "pjeylabs-hub.firebasestorage.app",
+    };
+
+    const APP_COLLECTION_NAME = "public_apps";
+    const NO_PUBLIC_APPS_MESSAGE =
+      "No public apps are currently available for deletion requests. Please contact contact@pjeylabs.com.";
+
+    const state = {
+      apps: [],
+      selectedAppId: "",
+    };
+
+    const appSelect = document.getElementById("app-select");
+    const appsGrid = document.getElementById("apps-grid");
+    const catalogState = document.getElementById("catalog-state");
+    const instructionsPanel = document.getElementById("instructions-panel");
+    const instructionsTitle = document.getElementById("instructions-title");
+    const instructionsIntro = document.getElementById("instructions-intro");
+    const emailSubject = document.getElementById("email-subject");
+    const emailBody = document.getElementById("email-body");
+    const mailtoButton = document.getElementById("mailto-button");
+    const dataDeletedCopy = document.getElementById("data-deleted-copy");
+
+    const hasValue = (value) =>
+      typeof value === "string" && value.trim() !== "" && value.trim().toLowerCase() !== "coming_soon";
+
+    const getSafeText = (value, defaultText = "") => (hasValue(value) ? value.trim() : defaultText);
+
+    const toNumber = (value) => {
+      if (typeof value === "number" && Number.isFinite(value)) {
+        return value;
+      }
+
+      const parsed = Number(value);
+      return Number.isFinite(parsed) ? parsed : null;
+    };
+
+    const toEpoch = (value) => {
+      if (value == null) {
+        return 0;
+      }
+
+      if (typeof value === "number" && Number.isFinite(value)) {
+        return value;
+      }
+
+      if (value instanceof Date) {
+        return value.getTime();
+      }
+
+      if (typeof value?.toDate === "function") {
+        const date = value.toDate();
+        return date instanceof Date ? date.getTime() : 0;
+      }
+
+      const parsed = Date.parse(String(value));
+      return Number.isFinite(parsed) ? parsed : 0;
+    };
+
+    function normalizeSlug(value) {
+      return getSafeText(value, "app")
+        .toLowerCase()
+        .replace(/'/g, "")
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/^-+|-+$/g, "");
+    }
+
+    function normalizeUrl(value) {
+      if (!hasValue(value)) {
+        return "";
+      }
+
+      try {
+        const trimmed = value.trim();
+        const candidate = /^[a-z][a-z0-9+.-]*:/i.test(trimmed) ? trimmed : `https://${trimmed}`;
+        const parsed = new URL(candidate);
+        return parsed.protocol === "http:" || parsed.protocol === "https:" ? parsed.href : "";
+      } catch {
+        return "";
+      }
+    }
+
+    function normalizeAppData(source = {}) {
+      const appData = source || {};
+      const normalizedId = normalizeSlug(appData.appId || appData.name);
+      const sortOrder = toNumber(appData.sortOrder);
+
+      return {
+        id: normalizedId,
+        name: getSafeText(appData.name, "Unnamed app"),
+        description: getSafeText(appData.description, "PJeyLabs app account and associated data."),
+        iconUrl: normalizeUrl(appData.iconUrl),
+        sortOrder: sortOrder == null ? Number.MAX_SAFE_INTEGER : sortOrder,
+        updatedAt: toEpoch(appData.updatedAt),
+        isActive: appData.isActive === true,
+      };
+    }
+
+    function normalizeCatalogLabel(value) {
+      return getSafeText(value, "")
+        .toLowerCase()
+        .replace(/[\s-]+/g, "_");
+    }
+
+    function isPublicHubAppDocument(item = {}) {
+      if (!hasValue(item.appId) || !hasValue(item.name) || item.isActive !== true) {
+        return false;
+      }
+
+      if ("isPublic" in item && item.isPublic !== true) {
+        return false;
+      }
+
+      if ("isAvailable" in item && item.isAvailable !== true) {
+        return false;
+      }
+
+      if ("available" in item && item.available !== true) {
+        return false;
+      }
+
+      const visibility = normalizeCatalogLabel(item.visibility);
+      if (visibility && visibility !== "public") {
+        return false;
+      }
+
+      const unavailableStatuses = new Set([
+        "coming_soon",
+        "development",
+        "dev",
+        "disabled",
+        "draft",
+        "future",
+        "hidden",
+        "inactive",
+        "internal",
+        "planned",
+        "prelaunch",
+        "private",
+        "unavailable",
+        "unfinished",
+        "unpublished",
+      ]);
+      const status = normalizeCatalogLabel(item.status);
+      const availability = normalizeCatalogLabel(item.availability);
+      const releaseStatus = normalizeCatalogLabel(item.releaseStatus);
+
+      return ![status, availability, releaseStatus].some((value) => unavailableStatuses.has(value));
+    }
+
+    function compareApps(a, b) {
+      if (a.sortOrder !== b.sortOrder) {
+        return a.sortOrder - b.sortOrder;
+      }
+
+      if (a.updatedAt !== b.updatedAt) {
+        return b.updatedAt - a.updatedAt;
+      }
+
+      return a.name.localeCompare(b.name);
+    }
+
+    function dedupeApps(hubApps) {
+      const merged = new Map();
+      hubApps.forEach((app) => {
+        const key = normalizeSlug(app.name || app.id);
+        if (!merged.has(key)) {
+          merged.set(key, app);
+        }
+      });
+
+      return [...merged.values()].sort(compareApps);
+    }
+
+    function createEmptyState() {
+      const message = document.createElement("p");
+      message.className = "apps-empty";
+      message.textContent = NO_PUBLIC_APPS_MESSAGE;
+      return message;
+    }
+
+    function getSelectedApp() {
+      return state.apps.find((app) => app.id === state.selectedAppId) || null;
+    }
+
+    function getInitials(name) {
+      return name
+        .split(" ")
+        .slice(0, 2)
+        .map((word) => word[0])
+        .join("")
+        .toUpperCase() || "PJ";
+    }
+
+    function createAppCard(app) {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "app-card";
+      button.setAttribute("aria-pressed", app.id === state.selectedAppId ? "true" : "false");
+      button.setAttribute("data-app-id", app.id);
+
+      const header = document.createElement("span");
+      header.className = "app-card-header";
+
+      const icon = document.createElement("span");
+      icon.className = "app-icon";
+      if (app.iconUrl) {
+        const image = document.createElement("img");
+        image.src = app.iconUrl;
+        image.alt = "";
+        image.loading = "lazy";
+        icon.append(image);
+      } else {
+        icon.textContent = getInitials(app.name);
+      }
+
+      const name = document.createElement("span");
+      name.className = "app-name";
+      name.textContent = app.name;
+
+      const description = document.createElement("span");
+      description.className = "app-description";
+      description.textContent = app.description;
+
+      header.append(icon, name);
+      button.append(header, description);
+      button.addEventListener("click", () => selectApp(app.id));
+      return button;
+    }
+
+    function renderAppChoices() {
+      const currentValue = appSelect.value;
+      const selectedAppExists = state.apps.some((app) => app.id === state.selectedAppId);
+
+      if (!selectedAppExists) {
+        state.selectedAppId = "";
+      }
+
+      appSelect.replaceChildren(new Option("Select an app", ""));
+      appSelect.disabled = state.apps.length === 0;
+
+      state.apps.forEach((app) => {
+        appSelect.append(new Option(app.name, app.id));
+      });
+
+      if (state.apps.some((app) => app.id === currentValue)) {
+        appSelect.value = currentValue;
+      } else {
+        appSelect.value = state.selectedAppId;
+      }
+
+      if (state.apps.length > 0) {
+        appsGrid.replaceChildren(...state.apps.map(createAppCard));
+      } else {
+        appsGrid.replaceChildren(createEmptyState());
+      }
+
+      updateInstructions();
+    }
+
+    function formatEmailBody(appName) {
+      return [
+        `App name: ${appName}`,
+        "Account email used in the app:",
+        "Request: Please delete my account and associated data for this app.",
+      ].join("\n");
+    }
+
+    function buildMailto(appName) {
+      const subject = `Account Deletion Request - ${appName}`;
+      const body = formatEmailBody(appName);
+      return `mailto:contact@pjeylabs.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    }
+
+    function updateInstructions() {
+      const app = getSelectedApp();
+      document.querySelectorAll(".app-card").forEach((card) => {
+        card.setAttribute("aria-pressed", card.dataset.appId === state.selectedAppId ? "true" : "false");
+      });
+
+      if (!app) {
+        instructionsPanel.classList.remove("visible");
+        return;
+      }
+
+      const subject = `Account Deletion Request - ${app.name}`;
+      const body = formatEmailBody(app.name);
+
+      instructionsTitle.textContent = `${app.name} Deletion Instructions`;
+      instructionsIntro.textContent =
+        `To request deletion for ${app.name}, email PJeyLabs from the same email address used in the app, if possible. This helps us verify and process the request.`;
+      emailSubject.textContent = subject;
+      emailBody.textContent = body;
+      mailtoButton.href = buildMailto(app.name);
+      dataDeletedCopy.textContent =
+        `After verifying the request, PJeyLabs will delete ${app.name} account data associated with the account where applicable, including:`;
+      instructionsPanel.classList.add("visible");
+    }
+
+    function selectApp(appId) {
+      state.selectedAppId = appId;
+      appSelect.value = appId;
+      updateInstructions();
+      instructionsPanel.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
+    async function loadHubApps() {
+      try {
+        const [{ initializeApp, getApps }, { getFirestore, collection, getDocs }] = await Promise.all([
+          import("https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js"),
+          import("https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js"),
+        ]);
+
+        const app = getApps().length > 0 ? getApps()[0] : initializeApp(FIREBASE_CONFIG);
+        const db = getFirestore(app);
+        const docs = await getDocs(collection(db, APP_COLLECTION_NAME));
+        const hubApps = docs.docs
+          .map((doc) => doc.data() || {})
+          .filter(isPublicHubAppDocument)
+          .map(normalizeAppData);
+
+        if (hubApps.length > 0) {
+          state.apps = dedupeApps(hubApps);
+          catalogState.textContent = "App list loaded from the PJeyLabs Hub catalog.";
+        } else {
+          state.apps = [];
+          state.selectedAppId = "";
+          catalogState.textContent = NO_PUBLIC_APPS_MESSAGE;
+        }
+      } catch (error) {
+        console.error("Could not load PJeyLabs Hub app catalog", error);
+        state.apps = [];
+        state.selectedAppId = "";
+        catalogState.textContent = NO_PUBLIC_APPS_MESSAGE;
+      }
+
+      renderAppChoices();
+    }
+
+    appSelect.addEventListener("change", (event) => {
+      const appId = event.target.value;
+      state.selectedAppId = appId;
+      updateInstructions();
+      if (appId) {
+        instructionsPanel.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    });
+
+    loadHubApps();
+  </script>
+</body>
+</html>
