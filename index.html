@@ -1973,13 +1973,17 @@
       privacy.href = "/privacy-policy/";
       privacy.textContent = "Privacy Policy";
 
+      const terms = document.createElement("a");
+      terms.href = "/terms-and-conditions/";
+      terms.textContent = "Terms & Conditions";
+
       const deleteAccount = document.createElement("a");
       deleteAccount.href = "/delete-account/";
       deleteAccount.textContent = "Delete Account/Data";
 
       const links = document.createElement("div");
       links.className = "footer-links";
-      links.append(email, website, privacy, deleteAccount);
+      links.append(email, website, privacy, terms, deleteAccount);
 
       const copyright = document.createElement("span");
       copyright.textContent = "© 2026 PJey Labs. All rights reserved.";
