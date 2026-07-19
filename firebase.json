@@ -20,6 +20,27 @@
           {
             "key": "X-Frame-Options",
             "value": "DENY"
+          },
+          {
+            "key": "Strict-Transport-Security",
+            "value": "max-age=31536000; includeSubDomains"
+          },
+          {
+            "key": "Content-Security-Policy",
+            "value": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.gstatic.com; style-src 'self' 'unsafe-inline'; img-src 'self' https://i.ibb.co; connect-src 'self' https://firestore.googleapis.com; font-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'"
+          },
+          {
+            "key": "Cache-Control",
+            "value": "no-cache, max-age=0, must-revalidate"
+          }
+        ]
+      },
+      {
+        "source": "**/*.@(css|js|png|jpg|jpeg)",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "public, max-age=3600, must-revalidate"
           }
         ]
       }
@@ -28,6 +49,7 @@
       "firebase.json",
       "firestore.rules",
       "**/.*",
+      "!/.well-known/security.txt",
       "**/node_modules/**"
     ],
     "cleanUrls": true,
@@ -35,10 +57,6 @@
       {
         "source": "/delete-account",
         "destination": "/delete-account/index.html"
-      },
-      {
-        "source": "**",
-        "destination": "/index.html"
       }
     ]
   },

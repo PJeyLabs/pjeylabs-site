@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, follow" />
+  <title>Page not found | PJey Labs</title>
+  <link rel="icon" type="image/png" href="/favicon.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #060d14;
+      --text: #eef6ff;
+      --muted: #9eb0bf;
+      --accent: #20d68b;
+      --line: rgba(168, 255, 214, 0.18);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 1.5rem;
+      color: var(--text);
+      background:
+        radial-gradient(120% 80% at 25% 0%, rgba(32, 214, 139, 0.15), transparent 58%),
+        radial-gradient(90% 80% at 90% 10%, rgba(32, 214, 139, 0.08), transparent 58%),
+        linear-gradient(180deg, #050910 0%, var(--bg) 44%, #04070c 100%);
+      font-family: "Inter", "Segoe UI", "Noto Sans", system-ui, -apple-system, sans-serif;
+      line-height: 1.5;
+      text-align: center;
+    }
+
+    main {
+      width: min(100%, 640px);
+      padding: clamp(2rem, 7vw, 4rem);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: rgba(15, 22, 31, 0.84);
+      box-shadow: 0 24px 54px rgba(0, 0, 0, 0.45);
+    }
+
+    img {
+      width: clamp(88px, 24vw, 132px);
+      height: auto;
+      border: 1px solid rgba(32, 214, 139, 0.4);
+      border-radius: 14px;
+      box-shadow: 0 18px 44px rgba(0, 0, 0, 0.28);
+    }
+
+    h1 {
+      margin: 1.4rem 0 0.65rem;
+      font-size: clamp(2rem, 7vw, 3.25rem);
+      line-height: 1.1;
+    }
+
+    p {
+      margin: 0 auto 1.7rem;
+      color: var(--muted);
+      font-size: 1.05rem;
+    }
+
+    a {
+      display: inline-flex;
+      min-height: 44px;
+      align-items: center;
+      justify-content: center;
+      padding: 0.72rem 1.15rem;
+      border: 1px solid rgba(32, 214, 139, 0.48);
+      border-radius: 8px;
+      color: #03130c;
+      background: var(--accent);
+      font-weight: 800;
+      text-decoration: none;
+      transition: transform 160ms ease, filter 160ms ease;
+    }
+
+    a:hover,
+    a:focus-visible {
+      filter: brightness(1.08);
+      transform: translateY(-1px);
+      outline: 2px solid var(--text);
+      outline-offset: 3px;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <img src="/pjey-labs-logo.png" width="132" height="132" alt="PJey Labs logo" />
+    <h1>Page not found</h1>
+    <p>The page you are looking for does not exist or may have moved.</p>
+    <a href="/">Back to Home</a>
+  </main>
+</body>
+</html>
