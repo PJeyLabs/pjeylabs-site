@@ -7,10 +7,18 @@
     name="description"
     content="PJey Labs creates practical cross-platform apps and AI-powered tools for productivity, development, and everyday work."
   />
+  <link rel="canonical" href="https://pjeylabs.com/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="PJey Labs" />
+  <meta property="og:title" content="PJey Labs" />
+  <meta property="og:description" content="PJey Labs creates practical cross-platform apps and AI-powered tools for productivity, development, and everyday work." />
+  <meta property="og:url" content="https://pjeylabs.com/" />
+  <meta property="og:image" content="https://pjeylabs.com/pjey-labs-logo.png" />
   <title>PJey Labs</title>
-  <link rel="icon" type="image/png" href="pjey-labs-logo.png" />
-  <link rel="shortcut icon" type="image/png" href="pjey-labs-logo.png" />
+  <link rel="icon" type="image/png" href="favicon.png" />
+  <link rel="shortcut icon" type="image/png" href="favicon.png" />
   <link rel="apple-touch-icon" href="pjey-labs-logo.png" />
+  <link rel="stylesheet" href="assets/css/cookie-consent.css" />
   <style>
     :root {
       --bg: #060d14;
@@ -1443,7 +1451,7 @@
       }
 
       console.debug(`Opening ${download.label} download URL: ${download.href}`);
-      const openedWindow = window.open(download.href, "_blank");
+      const openedWindow = window.open(download.href, "_blank", "noopener,noreferrer");
       if (openedWindow) {
         openedWindow.opener = null;
       }
@@ -1523,7 +1531,7 @@
       }
 
       const heading = document.createElement("div");
-      const title = document.createElement("h3");
+      const title = document.createElement("h2");
       title.textContent = app.name;
       const metadataParts = [];
       if (app.category) {
@@ -1750,7 +1758,7 @@
       section.id = "page-about";
       section.className = "container page hidden";
 
-      const heading = document.createElement("h2");
+      const heading = document.createElement("h1");
       heading.className = "section-title";
       heading.textContent = "About";
 
@@ -1767,7 +1775,7 @@
       logo.style.border = "1px solid rgba(32, 214, 139, 0.4)";
       logo.style.objectFit = "cover";
 
-      const name = document.createElement("h3");
+      const name = document.createElement("h2");
       name.style.marginBottom = "0.2rem";
       name.textContent = "PJey Labs";
       const description = document.createElement("p");
@@ -1778,7 +1786,7 @@
       const contactWrap = document.createElement("div");
       contactWrap.className = "contact-list";
       contactWrap.innerHTML =
-        '<a href="mailto:contact@pjeylabs.com">contact@pjeylabs.com</a><a href="https://www.pjeylabs.com" target="_blank" rel="noopener noreferrer">www.pjeylabs.com</a><a href="/privacy-policy/">Privacy Policy</a><a href="/terms-and-conditions/">Terms & Conditions</a><a href="/delete-account/">Delete Account/Data</a>';
+        '<a href="mailto:contact@pjeylabs.com">contact@pjeylabs.com</a><a href="https://www.pjeylabs.com" target="_blank" rel="noopener noreferrer">www.pjeylabs.com</a><a href="/privacy-policy/">Privacy Policy</a><a href="/terms-and-conditions/">Terms & Conditions</a><a href="/cookie-policy/">Cookie Policy</a><a href="/delete-account/">Delete Account</a>';
 
       card.append(logo, identity, contactWrap);
       section.append(heading, card);
@@ -1790,7 +1798,7 @@
       section.id = "page-products";
       section.className = "container page hidden";
 
-      const heading = document.createElement("h2");
+      const heading = document.createElement("h1");
       heading.className = "section-title";
       heading.textContent = "Products";
 
@@ -1815,7 +1823,7 @@
       section.id = "page-app-hub";
       section.className = "container page hidden";
 
-      const heading = document.createElement("h2");
+      const heading = document.createElement("h1");
       heading.className = "section-title";
       heading.textContent = "App Hub";
 
@@ -1853,7 +1861,7 @@
       stepNumber.setAttribute("aria-hidden", "true");
       stepNumber.textContent = String(number);
 
-      const heading = document.createElement("h3");
+      const heading = document.createElement("h2");
       heading.textContent = titleText;
 
       const copy = document.createElement("p");
@@ -1881,7 +1889,7 @@
       const hero = document.createElement("div");
       hero.className = "test-hero";
 
-      const heading = document.createElement("h2");
+      const heading = document.createElement("h1");
       heading.className = "section-title";
       heading.textContent = "PJ Notes Closed Test";
 
@@ -1921,7 +1929,7 @@
       const note = document.createElement("div");
       note.className = "test-note";
 
-      const noteHeading = document.createElement("h3");
+      const noteHeading = document.createElement("h2");
       noteHeading.textContent = "Important notes";
 
       const notes = document.createElement("ul");
@@ -1977,13 +1985,23 @@
       terms.href = "/terms-and-conditions/";
       terms.textContent = "Terms & Conditions";
 
+      const cookies = document.createElement("a");
+      cookies.href = "/cookie-policy/";
+      cookies.textContent = "Cookie Policy";
+
       const deleteAccount = document.createElement("a");
       deleteAccount.href = "/delete-account/";
-      deleteAccount.textContent = "Delete Account/Data";
+      deleteAccount.textContent = "Delete Account";
+
+      const cookieSettings = document.createElement("button");
+      cookieSettings.type = "button";
+      cookieSettings.className = "cookie-settings-trigger";
+      cookieSettings.dataset.cookieSettings = "";
+      cookieSettings.textContent = "Cookie Settings";
 
       const links = document.createElement("div");
       links.className = "footer-links";
-      links.append(email, website, privacy, terms, deleteAccount);
+      links.append(email, website, privacy, terms, cookies, deleteAccount, cookieSettings);
 
       const copyright = document.createElement("span");
       copyright.textContent = "© 2026 PJey Labs. All rights reserved.";
@@ -2176,5 +2194,6 @@
     });
     hydrateApps();
   </script>
+  <script src="assets/js/cookie-consent.js" defer></script>
 </body>
 </html>
