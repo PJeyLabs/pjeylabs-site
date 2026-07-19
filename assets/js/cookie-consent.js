@@ -221,20 +221,20 @@
     actions.append(acceptAll, reject, settings);
     banner.append(title, copy, actions);
 
-    const saveSelected = createButton("Save Selected", "cookie-consent-button", () => {
+    const savePreferences = createButton("Save Preferences", "cookie-consent-button", () => {
       const selections = {};
       CATEGORIES.forEach((category) => {
         selections[category] = dialog.querySelector(`[data-consent-category="${category}"]`)?.checked === true;
       });
       applyChoice(selections);
     });
-    const settingsReject = createButton("Reject Non-Essential", "cookie-consent-button secondary", () => {
+    const settingsReject = createButton("Reject All", "cookie-consent-button secondary", () => {
       applyChoice({ functional: false, analytics: false, marketing: false });
     });
     const settingsAccept = createButton("Accept All", "cookie-consent-button secondary", () => {
       applyChoice({ functional: true, analytics: true, marketing: true });
     });
-    settingsActions.append(saveSelected, settingsReject, settingsAccept);
+    settingsActions.append(savePreferences, settingsReject, settingsAccept);
     dialog.append(header, categories, settingsActions);
     backdrop.append(dialog);
 
