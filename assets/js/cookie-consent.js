@@ -214,7 +214,7 @@
     const acceptAll = createButton("Accept All", "cookie-consent-button", () => {
       applyChoice({ functional: true, analytics: true, marketing: true });
     });
-    const reject = createButton("Reject Non-Essential", "cookie-consent-button secondary", () => {
+    const reject = createButton("Reject All", "cookie-consent-button secondary", () => {
       applyChoice({ functional: false, analytics: false, marketing: false });
     });
     const settings = createButton("Cookie Settings", "cookie-consent-button secondary", openSettings);
