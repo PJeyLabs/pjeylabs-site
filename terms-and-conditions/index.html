@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta
+    name="description"
+    content="Terms and Conditions for PJey Labs applications, websites, and related services."
+  />
+  <title>Terms &amp; Conditions | PJey Labs</title>
+  <link rel="icon" type="image/png" href="../pjey-labs-logo.png" />
+  <link rel="shortcut icon" type="image/png" href="../pjey-labs-logo.png" />
+  <link rel="apple-touch-icon" href="../pjey-labs-logo.png" />
+  <style>
+    :root {
+      --bg: #060d14;
+      --surface: #0f161f;
+      --text: #eef6ff;
+      --muted: #9eb0bf;
+      --line: rgba(168, 255, 214, 0.15);
+      --line-soft: rgba(168, 255, 214, 0.08);
+      --accent: #20d68b;
+      --radius: 10px;
+      --max: 880px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: "Inter", "Segoe UI", "Noto Sans", system-ui, -apple-system, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(120% 80% at 25% 0%, rgba(32, 214, 139, 0.15), transparent 58%),
+        linear-gradient(180deg, #050910 0%, #060d14 44%, #04070c 100%);
+      line-height: 1.6;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      pointer-events: none;
+      background-image: linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+      background-size: 88px 88px;
+      opacity: 0.5;
+    }
+
+    a {
+      color: var(--accent);
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+
+    .container {
+      width: min(100% - 2rem, var(--max));
+      margin: 0 auto;
+    }
+
+    .site-header {
+      border-bottom: 1px solid var(--line-soft);
+      background: rgba(6, 13, 20, 0.9);
+      backdrop-filter: blur(14px);
+    }
+
+    .header-inner {
+      min-height: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      color: var(--text);
+      font-weight: 800;
+      text-decoration: none;
+    }
+
+    .brand img {
+      width: 40px;
+      height: 40px;
+      border-radius: 8px;
+      border: 1px solid rgba(32, 214, 139, 0.34);
+      object-fit: cover;
+      box-shadow: 0 0 22px rgba(32, 214, 139, 0.2);
+    }
+
+    .back-link {
+      color: var(--muted);
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    .back-link:hover,
+    .back-link:focus-visible {
+      color: var(--text);
+      outline: none;
+    }
+
+    main {
+      padding: clamp(2rem, 5vw, 3.6rem) 0;
+    }
+
+    .terms {
+      border: 1px solid var(--line-soft);
+      border-radius: var(--radius);
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.032), rgba(255, 255, 255, 0.012));
+      padding: clamp(1rem, 3vw, 1.6rem);
+    }
+
+    h1,
+    h2,
+    p,
+    ul {
+      margin-top: 0;
+    }
+
+    h1 {
+      margin-bottom: 0.25rem;
+      font-size: clamp(2rem, 5vw, 3rem);
+      line-height: 1.1;
+    }
+
+    h2 {
+      margin: 1.7rem 0 0.45rem;
+      font-size: 1.15rem;
+      line-height: 1.25;
+    }
+
+    .updated {
+      color: var(--muted);
+      margin-bottom: 1.5rem;
+      font-weight: 700;
+    }
+
+    p,
+    li {
+      color: #c9d7e2;
+    }
+
+    ul {
+      padding-left: 1.2rem;
+    }
+
+    .site-footer {
+      border-top: 1px solid var(--line-soft);
+      padding: 1.1rem 0;
+      background: rgba(6, 13, 20, 0.9);
+      color: var(--muted);
+      font-size: 0.88rem;
+    }
+
+    .footer-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.8rem;
+      flex-wrap: wrap;
+    }
+
+    .footer-links {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      flex-wrap: wrap;
+    }
+
+    .footer-links a {
+      color: var(--muted);
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    .footer-links a:hover,
+    .footer-links a:focus-visible {
+      color: var(--text);
+      outline: none;
+    }
+
+    @media (max-width: 560px) {
+      .footer-inner {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="/">
+        <img src="../pjey-labs-logo.png" width="40" height="40" alt="PJey Labs logo" />
+        <span>PJey Labs</span>
+      </a>
+      <a class="back-link" href="/">Home</a>
+    </div>
+  </header>
+
+  <main class="container">
+    <article class="terms">
+      <h1>Terms &amp; Conditions</h1>
+      <p class="updated">Last Updated: July 19, 2026</p>
+
+      <p>These Terms and Conditions ("Terms") govern your use of applications, websites, and related services provided by PJey Labs (collectively, the "Services").</p>
+      <p>By accessing or using the Services, you agree to these Terms. If you do not agree, do not use the Services.</p>
+
+      <h2>1. Eligibility and Accounts</h2>
+      <p>You must be legally able to enter into these Terms. If you use the Services on behalf of an organisation, you confirm that you have authority to bind that organisation.</p>
+      <p>You are responsible for keeping your account credentials secure and for activity carried out through your account. Information you provide must be accurate and kept up to date.</p>
+
+      <h2>2. Licence to Use the Services</h2>
+      <p>PJey Labs grants you a limited, non-exclusive, non-transferable, revocable licence to use the Services for their intended purpose, subject to these Terms and any terms shown in the relevant app store or product.</p>
+      <p>PJey Labs and its licensors retain all rights in the Services, including software, branding, designs, and content, except for content owned by users or third parties.</p>
+
+      <h2>3. Acceptable Use</h2>
+      <p>You must not:</p>
+      <ul>
+        <li>Use the Services for unlawful, fraudulent, harmful, or abusive activity</li>
+        <li>Attempt to gain unauthorised access to accounts, systems, or data</li>
+        <li>Interfere with the security, availability, or normal operation of the Services</li>
+        <li>Upload malicious code or content that infringes the rights of others</li>
+        <li>Copy, resell, reverse engineer, or modify the Services except where applicable law permits it</li>
+        <li>Use automated means to access the Services in a way that creates an unreasonable load</li>
+      </ul>
+
+      <h2>4. User Content</h2>
+      <p>You retain ownership of content you create or upload. You grant PJey Labs the limited rights needed to host, process, transmit, and display that content solely to operate and improve the Services.</p>
+      <p>You are responsible for your content and must have the rights required to use and share it. We may remove content that violates these Terms or applicable law.</p>
+
+      <h2>5. Purchases and Subscriptions</h2>
+      <p>Some Services may require payment or offer subscriptions. Prices, billing periods, renewal terms, and cancellation options are shown before purchase.</p>
+      <p>Payments may be processed by an app store or third-party payment provider. Their payment, cancellation, and refund terms may also apply. Nothing in these Terms limits refund or cancellation rights that cannot legally be excluded.</p>
+
+      <h2>6. Third-Party Services</h2>
+      <p>The Services may include links to or integrations with third-party services. PJey Labs does not control those services and is not responsible for their content, availability, or practices. Your use of them may be governed by separate terms.</p>
+
+      <h2>7. Updates and Availability</h2>
+      <p>We may update, change, suspend, or discontinue all or part of a Service. We aim to keep the Services available and reliable but do not guarantee uninterrupted or error-free operation.</p>
+
+      <h2>8. Privacy</h2>
+      <p>Our <a href="/privacy-policy/">Privacy Policy</a> explains how PJey Labs handles personal information when you use the Services.</p>
+
+      <h2>9. Disclaimers</h2>
+      <p>The Services are provided "as is" and "as available". To the extent permitted by law, PJey Labs disclaims warranties that are not expressly stated in these Terms. The Services are not a substitute for professional advice unless a specific product expressly states otherwise.</p>
+
+      <h2>10. Limitation of Liability</h2>
+      <p>To the extent permitted by law, PJey Labs will not be liable for indirect, incidental, special, or consequential loss arising from your use of the Services.</p>
+      <p>Nothing in these Terms excludes or limits liability where doing so would be unlawful, or affects statutory rights that cannot be waived.</p>
+
+      <h2>11. Suspension and Termination</h2>
+      <p>You may stop using the Services at any time. You may request deletion of an eligible account through our <a href="/delete-account/">Delete Account/Data</a> page.</p>
+      <p>We may suspend or terminate access when reasonably necessary to protect users or the Services, comply with law, or address a material or repeated breach of these Terms.</p>
+
+      <h2>12. Changes to These Terms</h2>
+      <p>We may update these Terms from time to time. The updated version and its effective date will be posted on this page. Where required, we will provide additional notice. Continued use after the updated Terms take effect constitutes acceptance of them.</p>
+
+      <h2>13. Applicable Law</h2>
+      <p>These Terms are governed by the laws applicable where PJey Labs is established, without limiting any mandatory consumer protections or rights available in your country of residence.</p>
+
+      <h2>14. Contact Information</h2>
+      <p><strong>PJey Labs</strong></p>
+      <p>Email: <a href="mailto:support@pjeylabs.com">support@pjeylabs.com</a></p>
+      <p>Website: <a href="https://pjeylabs.com">https://pjeylabs.com</a></p>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <span>© 2026 PJey Labs. All rights reserved.</span>
+      <nav class="footer-links" aria-label="Footer links">
+        <a href="/privacy-policy/">Privacy Policy</a>
+        <a href="/delete-account/">Delete Account/Data</a>
+      </nav>
+    </div>
+  </footer>
+</body>
+</html>
