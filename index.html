@@ -1373,7 +1373,7 @@
         links,
         sortOrder: sortOrder == null ? Number.MAX_SAFE_INTEGER : sortOrder,
         updatedAt: toEpoch(appData.updatedAt),
-        isActive: appData.isActive === true,
+        isActive: appData.active === true,
       };
     }
 
@@ -1409,11 +1409,22 @@
 
         try {
           const docs = await getDocs(collection(db, APP_COLLECTION_NAME));
-          const mapped = docs.docs
-            .map((doc) => doc.data() || {})
-            .filter(isLikelyAppDocument)
-            .map(normalizeAppData)
-            .filter((item) => hasValue(item.name) && item.isActive);
+          const mapped = [];
+          docs.docs.forEach((docSnapshot) => {
+            try {
+              const appData = docSnapshot.data() || {};
+              if (!isLikelyAppDocument(appData)) {
+                return;
+              }
+
+              const item = normalizeAppData(appData);
+              if (hasValue(item.name) && item.isActive) {
+                mapped.push(item);
+              }
+            } catch (error) {
+              console.error(`Could not process app document "${docSnapshot.id}"`, error);
+            }
+          });
 
           return {
             apps: mapped.sort(compareAppSort),
@@ -2094,7 +2105,15 @@
         return;
       }
 
-      grid.replaceChildren(...apps.map((app) => ProductListItem(app)));
+      const items = [];
+      apps.forEach((app) => {
+        try {
+          items.push(ProductListItem(app));
+        } catch (error) {
+          console.error(`Could not render product "${app.id}"`, error);
+        }
+      });
+      grid.replaceChildren(...items);
     }
 
     function renderAppsHub() {
@@ -2125,7 +2144,15 @@
         return;
       }
 
-      grid.replaceChildren(...apps.map((app) => AppCard(app)));
+      const cards = [];
+      apps.forEach((app) => {
+        try {
+          cards.push(AppCard(app));
+        } catch (error) {
+          console.error(`Could not render app "${app.id}"`, error);
+        }
+      });
+      grid.replaceChildren(...cards);
     }
 
     function renderAppSections() {
