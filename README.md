@@ -27,3 +27,7 @@ scripts. Keep them blocked until consent by using `type="text/plain"` and a
 
 If the purposes, providers, or scripts change, update the Privacy Policy and Cookie
 Policy and increment `CONSENT_VERSION` so visitors are asked for a fresh choice.
+
+## Aktualizacja stron g7
+
+Wrzuć nowe pliki do `g7/`, potem uruchom `./scripts/deploy-g7.sh`.
