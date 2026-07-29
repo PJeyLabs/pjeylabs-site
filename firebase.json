@@ -3,7 +3,7 @@
     "public": ".",
     "headers": [
       {
-        "source": "/g7/**",
+        "source": "/g7{,/**}",
         "headers": [
           {
             "key": "Content-Security-Policy",
