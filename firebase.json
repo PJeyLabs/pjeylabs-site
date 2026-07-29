@@ -50,7 +50,8 @@
       "firestore.rules",
       "**/.*",
       "!/.well-known/security.txt",
-      "**/node_modules/**"
+      "**/node_modules/**",
+      ".pj_forge/logs/**"
     ],
     "cleanUrls": true,
     "rewrites": [
