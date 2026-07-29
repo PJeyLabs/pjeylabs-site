@@ -62,6 +62,13 @@
       "**/node_modules/**"
     ],
     "cleanUrls": true,
+    "redirects": [
+      {
+        "source": "/g7",
+        "destination": "/g7/",
+        "type": 301
+      }
+    ],
     "rewrites": [
       {
         "source": "/delete-account",
