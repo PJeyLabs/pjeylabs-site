@@ -1,0 +1,37 @@
+{
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass -File \"D:\\MyApps\\pjeylabs-site\\.pj_forge\\pj_forge_hook.ps1\" -EventName UserPromptSubmit -PjForgeMarker pj-forge-hook"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass -File \"D:\\MyApps\\pjeylabs-site\\.pj_forge\\pj_forge_hook.ps1\" -EventName Stop -PjForgeMarker pj-forge-hook"
+          }
+        ]
+      }
+    ],
+    "Notification": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass -File \"D:\\MyApps\\pjeylabs-site\\.pj_forge\\pj_forge_hook.ps1\" -EventName Notification -PjForgeMarker pj-forge-hook"
+          }
+        ]
+      }
+    ]
+  }
+}
