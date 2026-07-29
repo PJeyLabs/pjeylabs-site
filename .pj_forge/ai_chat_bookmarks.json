@@ -4,5 +4,11 @@
     "name": "My WebSite",
     "url": "https://claude.ai/chat/f53f3333-3ed4-4bd6-9f9f-fea4be820f58",
     "order": 0
+  },
+  {
+    "id": "1785363042660269",
+    "name": "G7 WebPage",
+    "url": "https://claude.ai/chat/a8a53a1e-a23c-4e69-9234-36d8b41d4e80",
+    "order": 1
   }
 ]
